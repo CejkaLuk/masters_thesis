@@ -208,6 +208,8 @@ pythontex-files-*/
 *.dpth
 *.md5
 *.auxlock
+## Externalized TikZ pictures
+images/tikz
 
 # todonotes
 *.tdo

@@ -1,55 +1,74 @@
-
-\documentclass[a4paper, twoside, 12pt, czech, american]{book}
+\documentclass[a4paper, twoside, 11pt, czech, american]{book} % ASI template settings with 11pt instead of 12pt
 
 %%% Packages:
 %% Necessary packages:
 \usepackage[T1]{fontenc}							% Font encoding
 \usepackage[utf8]{inputenc}							% Input encoding
-\usepackage[a4paper, hmarginratio=3:2]{geometry}	% Use of the A4 page and setting the margins (the binding will be wider) ()
+%\usepackage[a4paper, hmarginratio=3:2]{geometry}	% Use of the A4 page and setting the margins (the binding will be wider) ()
+\usepackage[a4paper]{geometry}
 
 %% Other packages:
 % Code:
-\usepackage{listings} 			% Code formatting package
+\usepackage{listings} 					% Code formatting package
 
 % Fonts:
-\usepackage{amsmath}  			% Advanced mathematic package
-\usepackage{xcolor}    			% Colorful text
-\usepackage{soul}				% Text fonts syllable by syllable - used for in-text codifying
-\usepackage[varg]{txfonts}		% Times New Roman fonts and math alphabets, for example, provides \mathbb{}
-\usepackage{csquotes}			% Ensure that quoted texts are typeset according to the rules of the main language
-\usepackage{microtype}			% Reduce text overflowing margins
-\usepackage{xurl}				% URL formatting: better linebreaks in footnotes, etc.
-\usepackage[shortcuts]{extdash} % Unbreakable dashes
+\usepackage{amsmath}  					% Advanced mathematic package
+\usepackage{mathtools}					% Mathematics tools
+\usepackage{xcolor}    					% Colorful text
+\usepackage{soul}						% Text fonts syllable by syllable - used for in-text codifying
+\usepackage[varg]{txfonts}				% Times New Roman fonts and math alphabets, for example, provides \mathbb{}
+\usepackage{csquotes}					% Ensure that quoted texts are typeset according to the rules of the main language
+\usepackage{microtype}					% Reduce text overflowing margins
+\usepackage{xurl}						% URL formatting: better linebreaks in footnotes, etc.
+\usepackage[shortcuts]{extdash} 		% Unbreakable dashes
+\usepackage{tocloft}					% Dots in table of contents
+\renewcommand\cftchapdotsep{\cftdotsep} % Dots in table of contents - activate
+\usepackage{enumitem}					% Additional configuration of numbering in enumerate blocks. For example, item 1, subitem 1.1, etc.
+
+% Format pages:
+\usepackage{pdfpages}					% Add PDFs into compiled PDF
 
 % Graphics:
-\usepackage{float} 			  	% Advanced figure placement options
-\usepackage{caption} 			% Captions of figures, tables, etc.
-\usepackage{subcaption}			% Sub-captions of figures, tables, etc. 
-\usepackage{tikz}				% Visual representation of matrices, graphs etc.
-\usepackage{pgfplots} 			% For visualizations, graphics, etc.
-\pgfplotsset{compat=1.3}		% Use pgfplots version 1.3 specifically
+\usepackage{float} 			  			% Advanced figure placement options
+\usepackage{caption} 					% Captions of figures, tables, etc.
+\usepackage{subcaption}					% Sub-captions of figures, tables, etc. 
+\usepackage{tikz}						% Visual representation of matrices, graphs etc.
+\usetikzlibrary{
+	external,							% Externalize tikz pictures to avoid recompiling them with every compilation
+	decorations.pathreplacing,			% Curly braces in tikz figures
+	positioning,						% Advanced relative positioning
+	shapes.arrows,						% Advanced arrow shapes
+	arrows.meta,						% Advanced arrows
+	calc								% Calculate point coordinates
+}
+\tikzexternalize[						% Add '-shell-escape' to the pdflatex compilation command. In TeXstudio: Options -> Configure Texstudio... -> Commands -> PdfLaTeX: 'pdflatex --synctex=1 -interaction=nonstopmode -shell-escape %.tex'
+prefix=images/tikz/,				% Place externalized TikZ-generated images in a specific folder - ignored by git
+optimize command away=\includepdf	% Optimize away including pdf pages to avoid compatibility issues of the 'pdfpages' package and the 'external' tikz library
+]
+\usepackage{pgfplots} 					% For visualizations, graphics, etc.
+\pgfplotsset{compat=1.3}				% Use pgfplots version 1.3 specifically
 
 % Languages:
 \usepackage[czech, american]{babel}							 % Czech and American English are used in this document
 \usepackage{silence}										 % Silence output of warnings
 \WarningFilter{biblatex}{File 'american-iso.lbx' not found!} % Silence weird message that I couldn't find a solution for
 
-% Page formatting:
-\usepackage{pdfpages}			% Add PDFs into compiled PDF
-
 % Referencing:
-\usepackage{footmisc} 							 		  % Refer to footnotes that already exist
-\usepackage[backend=biber,								  % In TeXstudio, the backend here must correspond to: Options -> Configure TeXstudio... -> Build -> Default Bibliography Tool
+\usepackage{footmisc} 							 		  	% Refer to footnotes that already exist
+\usepackage[
+backend=biber,								  		  	% In TeXstudio, the backend here must correspond to: Options -> Configure TeXstudio... -> Build -> Default Bibliography Tool
 style=iso-numeric,
 sorting=none,
-giveninits=true]{biblatex} 					 			  % Bibliography: ISO 690 format, cite shows numbers, sort according to occurence in text, shorten first names
-\addbibresource{chapters/bibliography.bib}				  % Specify path to bibliography file
-\DeclareFieldFormat{labelnumberwidth}{\mkbibbrackets{#1}} % Square brackets around numbers in the bibliography
-\setcounter{biburllcpenalty}{7000}						  % Insert breakpoints after lowercase letters in URLs in the bibliography
-\setcounter{biburlucpenalty}{8000}						  % Insert breakpoints after uppercase letters in URLs in the bibliography
+giveninits=true]{biblatex}								% Bibliography: ISO 690 format, cite shows numbers, sort according to occurrence in the text, shorten first names
+\addbibresource{chapters/bibliography.bib}				  	% Specify path to bibliography file
+\DeclareFieldFormat{labelnumberwidth}{\mkbibbrackets{#1}}	% Square brackets around numbers in the bibliography
+\DeclareFieldFormat*{citetitle}{\mkbibemph{#1}}				% \citetitle{bibid} in text produces the title in emphasis for all sources. Without this, for example, the 'thesis' citation entry is non-emphasized with quotes while online sources are only emphasized (looks bad)
+\setcounter{biburllcpenalty}{7000}						  	% Insert breakpoints after lowercase letters in URLs in the bibliography
+\setcounter{biburlucpenalty}{8000}						  	% Insert breakpoints after uppercase letters in URLs in the bibliography
 
 % Tables:
 \usepackage{tabularx}			 % Advanced table options
+\usepackage{colortbl} 			 % Table cell color
 
 % Fonts (must be mentioned last to avoid warnings in the log)
 \usepackage[hidelinks]{hyperref} % Hide square around URL link
@@ -60,7 +79,7 @@ giveninits=true]{biblatex} 					 			  % Bibliography: ISO 690 format, cite shows
 \clubpenalty=9500 	   % Completely avoid orphans (first lines of a new paragraph on the bottom of a page)
 \brokenpenalty=9500    % Prohibit page breaks after a line that has a split word at the end
 
-% Setup from KSI template
+% ASI template settings
 \topmargin=-15mm      % Top margin slightly smaller
 \textwidth=150mm      % Width of text on the page
 \textheight=240mm     % "Height" of text on the page
@@ -123,11 +142,17 @@ giveninits=true]{biblatex} 					 			  % Bibliography: ISO 690 format, cite shows
 }
 
 
+%%% Custom math operators:
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclarePairedDelimiter\parens{\lparen}{\rparen}
+\newcommand{\minp}[1]{\min\parens*{#1}}
+
 %%% Custom commands:
 \newcommand{\ti}{\textit} 								  									   % Shortcut for cursive font
 \newcommand{\tb}{\textbf} 								  									   % Shortcut for bold fond
-\DeclareRobustCommand{\code}[1]{{\begingroup\sethlcolor{light-gray}\hl{\texttt{#1}}\endgroup}} % Shortcut for code font in text
-\soulregister{\code}{1}
+\DeclareRobustCommand{\code}[1]{{\begingroup\sethlcolor{gray-light}\hl{\texttt{#1}}\endgroup}} % Shortcut for code font in text
+\soulregister{\code}{1}																		   % Codeify inline text character by character
 
 %% Status of writing:
 \newcommand{\TODO}{\textcolor{red}{TODO}}   		   % To-Do command
@@ -232,6 +257,7 @@ giveninits=true]{biblatex} 					 			  % Bibliography: ISO 690 format, cite shows
 
 % Task paper scanned as a 2-page PDF:
 \includepdf[pages={1, 2}]{resources/masters_thesis_assignment_lukas_matthew_cejka.pdf}
+%\includegraphics{resources/masters_thesis_assignment_lukas_matthew_cejka.pdf}
 
 
 
@@ -326,9 +352,9 @@ giveninits=true]{biblatex} 					 			  % Bibliography: ISO 690 format, cite shows
 	{\em Key words:} & \odstavec{\delka}{\keywordEN}
 \end{tabular}
 
-	
-	
-	
+
+
+
 %%%%%%%%%%%% CONTENTS OF THE PAPER %%%%%%%%%%%%
 \selectlanguage{american}%
 \newpage  		 % DO NOT TOUCH!
@@ -344,7 +370,7 @@ giveninits=true]{biblatex} 					 			  % Bibliography: ISO 690 format, cite shows
 %|         The PAPER ITSELF begins here                 |
 %--------------------------------------------------------
 
-\nocite{*} % Write out all citation in the bibliography - even if they're not cited in the text
+\include{chapters/nomenclature}
 
 \include{chapters/introduction}
 
@@ -356,4 +382,8 @@ giveninits=true]{biblatex} 					 			  % Bibliography: ISO 690 format, cite shows
 
 \include{chapters/appendices}
 
-\end{document} 
+% Write out all citation in the bibliography - even if they're not cited in the text
+% This must be last so that citation numbering depends on the order the entries were cited in. Then the remaining non-cited entries can be printed in the bibliography
+\nocite{*}
+	
+\end{document}

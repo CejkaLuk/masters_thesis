@@ -44,7 +44,7 @@ assignees: CejkaLuk
   - [ ] Multiple citations must be in one `\cite{a, b, c}` command, not `\cite{a}\cite{b}\cite{c}`
 - [ ] Variables in _cursive_ font, e.g., ICM_x_ (_x_ can be one of 8, 16, 32)
 - [ ] Consistent label names
-  - Template: `{Type:chapter-section-subsection-subsubsection-paragraph-specific-content-name}`
+  - Template: `{Type:chapter->section->subsection->subsubsection->specific-content-name}`
 - [ ] No line overflowing (text, in-line code, etc.)
 ### Low priority
 - [ ] TiKZ Figures:

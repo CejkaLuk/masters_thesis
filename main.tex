@@ -14,7 +14,7 @@
 % Fonts:
 \usepackage{amsmath}  					% Advanced mathematic package
 \usepackage{mathtools}					% Mathematics tools
-\usepackage{xcolor}    					% Colorful text
+\usepackage[table,xcdraw]{xcolor}    					% Colorful text
 \usepackage{soul}						% Text fonts syllable by syllable - used for in-text codifying
 \usepackage[varg]{txfonts}				% Times New Roman fonts and math alphabets, for example, provides \mathbb{}
 \usepackage{csquotes}					% Ensure that quoted texts are typeset according to the rules of the main language
@@ -30,7 +30,8 @@
 % Graphics:
 \usepackage{float} 			  			% Advanced figure placement options
 \usepackage{caption} 					% Captions of figures, tables, etc.
-\usepackage{subcaption}					% Sub-captions of figures, tables, etc. 
+\usepackage{subcaption}					% Sub-captions of figures, tables, etc.
+\usepackage{nicematrix}					% Visual representation of matrices - experimental
 \usepackage{tikz}						% Visual representation of matrices, graphs etc.
 \usetikzlibrary{
 	external,							% Externalize tikz pictures to avoid recompiling them with every compilation
@@ -68,6 +69,7 @@ giveninits=true]{biblatex}								% Bibliography: ISO 690 format, cite shows num
 % Tables:
 \usepackage{tabularx}			 % Advanced table options
 \usepackage{colortbl} 			 % Table cell color
+\usepackage{diagbox}			 % Diagonal box in table
 
 % Fonts (must be mentioned last to avoid warnings in the log)
 \usepackage[hidelinks]{hyperref} % Hide square around URL link
@@ -374,6 +376,8 @@ giveninits=true]{biblatex}								% Bibliography: ISO 690 format, cite shows num
 \include{chapters/introduction}
 
 \include{chapters/chapter01}
+
+\include{chapters/chapter02}
 
 \include{chapters/conclusion}
 

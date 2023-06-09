@@ -2,6 +2,762 @@
 \addcontentsline{toc}{chapter}{Appendices}	% DO NOT TOUCH!
 \appendix
 
-\chapter{Title}
+\chapter{CMPP Implementation}\label{Appendix:CMPP-implementation}
+The implementation of CMPP and the functions it uses are shown in Listing~\ref{Listing:CMPP-implementation-excerpt}.
 
-\TODO
+\begin{lstlisting}[caption={Excerpt from the implementation of CMPP. The \code{pivotRowOfMatrix\_host()} function, presented below the \code{decompose()} method, is implemented in the parent class of \code{CroutMethod}: \code{BaseDecomposer}. Note that the code has been slightly modified for brevity. For example, the \code{swapRows\_host()} function has been omitted as it is a basic operation, and the checks for appropriate sizing of matrices/vectors have been removed.},label={Listing:CMPP-implementation-excerpt}]
+template< typename Matrix, typename Vector >
+void
+CroutMethod::decompose( Matrix& LU, Vector& piv )
+{
+	using Real = typename Matrix::RealType;
+	using Index = typename Matrix::IndexType;
+	
+	const Index& num_rows = LU.getRows();
+	const Index& num_cols = LU.getColumns();
+	
+	// Pivoting tolerance
+	const Real piv_tol = 1.0e-5;
+	
+	auto LU_view = LU.getView();
+	auto piv_view = piv.getView();
+	
+	// Fill the pivoting vector with increments of 1 starting from 1 to num_rows.
+	BaseDecomposer::setDefaultPivotingValues( piv );
+	
+	Index i, j, k, sum;
+	
+	for( j = 0; j < num_cols; ++j ) {
+		for( i = j; i < num_rows; ++i ) {
+			sum = 0;
+			for( k = 0; k < j; ++k )
+				sum = sum + LU_view( i, k ) * LU_view( k, j );
+			
+			LU_view( i, j ) = LU_view( i, j ) - sum;
+		}
+		
+		if( TNL::abs( LU_view( j, j ) ) <= piv_tol ) {
+			pivotRowOfMatrix_host( j, LU_view, num_rows, num_cols, piv_view );
+			
+			if( LU_view( j, j ) == 0 ) {
+				// Last element in the matrix does not require pivoting as no elements are computed using it, i.e., division by zero cannot occur
+				if( j != num_rows - 1 )
+					throw Exceptions::MatrixSingular( "LU", j, j );
+			}
+		}
+		
+		for( i = j + 1; i < num_rows; ++i ) {
+			sum = 0;
+			for( k = 0; k < j; ++k )
+				sum = sum + LU_view( j, k ) * LU_view( k, i );
+			
+			LU_view( j, i ) = ( LU_view( j, i ) - sum ) / LU_view( j, j );
+		}
+	}
+}
+
+template< typename Index, typename MatrixView, typename VectorView, typename Real = typename MatrixView::RealType >
+std::pair< Real, Index >
+pivotRowOfMatrix_host( const Index& j, MatrixView& M, const Index& num_rows, const Index& num_cols, VectorView& piv )
+{
+	// Find the row below the j-th row with max. value in the j-th column
+	Real max = TNL::abs( M( j, j ) );  // or M(i,j)
+	Index piv_row = j;
+	
+	for( Index i = j + 1; i < num_rows; ++i ) {
+		Real zij = TNL::abs( M( i, j ) );
+		if( zij > max ) {
+			max = zij;
+			piv_row = i;
+		}
+	}
+	
+	if( piv_row != j ) {  // exchange rows j, piv_row
+		swapRows_host( M, j, piv_row, num_cols );
+		piv( j ) = piv_row + 1;
+	}
+	
+	return std::make_pair( max, piv_row );
+}
+\end{lstlisting}
+
+
+
+
+
+\chapter{PCM\textit{x}PP Implementation}\label{Appendix:PCMxPP-implementation}
+The implementation of PCM\textit{x}PP is shown in Listing~\ref{Listing:PCMxPP-implementation-excerpt}.
+
+\begin{lstlisting}[caption={Excerpt from the implementation of PCM\textit{x}PP. The template parameter \code{BLOCK\_SIZE} is equivalent to \textit{x} in PCM\textit{x}PP. On input, matrix \code{LU} is assumed to contain the values of $\mathbf{A}$, and \code{piv} is expected to be appropriately sized. Furthermore, unlike \code{LU}, \code{piv} is assumed to be allocated on the Host. The \code{pivotRowOfMatrix\_device()} function, presented below the \code{decompose()} method, is implemented in the parent class of \code{CroutMethod}: \code{BaseDecomposer}. Note that the code has been slightly modified for brevity. For example, the \code{swapRows\_device()} function has been omitted as it is a basic operation, and the checks for appropriate sizing of matrices/vectors have been removed.},label={Listing:PCMxPP-implementation-excerpt}]
+template< const int BLOCK_SIZE >
+template< typename Matrix, typename VecIndex, typename Device >
+void
+CroutMethod< BLOCK_SIZE >::decompose( Matrix& LU, Containers::RowOrderVector< VecIndex, Device >& piv )
+{
+	using Real = typename Matrix::RealType;
+	using Index = typename Matrix::IndexType;
+	
+	const Index& num_rows = LU.getRows();
+	const Index& num_cols = LU.getColumns();
+	
+	auto LU_view = LU.getView();
+	auto piv_view = piv.getView();
+	
+	// Fill the pivoting vector with increments of 1 starting from 1 to num_rows.
+	piv.setDefaultValues();
+	
+	const Real piv_tol = 1.0e-5;
+	
+	constexpr int threads_perBlock = BLOCK_SIZE * BLOCK_SIZE;
+	// Round to nearest higher multiple of threads_perBlock - only if threads_perBlock is a multiple of 2
+	const Index num_cols_rounded = ( num_cols + threads_perBlock - 1 ) & -threads_perBlock;
+	const Index blocks_perGrid = num_cols_rounded / threads_perBlock;
+	
+	for( Index diag = 0; diag < num_rows; ++diag ) {
+		ColCompute_kernel<<< blocks_perGrid, threads_perBlock >>>( LU_view, diag, num_rows );
+		
+		if( TNL::abs( LU_view.getElement( diag, diag ) ) <= piv_tol ) {
+			std::pair< Real, Index > max_elem = pivotRowOfMatrix_device< threads_perBlock >( diag, LU_view, num_rows, num_cols, piv_view );
+			
+			if( max_elem.first == 0 ) {
+				// Last element does not require pivoting as no elements are computed using it - division by zero cannot occur for the last element
+				if( diag != num_rows - 1 )
+					throw Exceptions::MatrixSingular( "LU", diag, diag );
+			}
+		}
+		
+		RowCompute_kernel<<< blocks_perGrid, threads_perBlock >>>( LU_view, diag, num_cols );
+	}
+}
+
+template< const int THREADS_PER_BLOCK,
+		  typename Index,
+		  typename MatrixView,
+		  typename VectorView,
+		  typename Real = typename MatrixView::RealType >
+std::pair< Real, Index >
+pivotRowOfMatrix_device( const Index& j, MatrixView& M, const Index& num_rows, const Index& num_cols, VectorView& piv )
+{
+	auto fetchAbsElement = [ = ] __cuda_callable__( Index row )
+	{
+		return abs( M( row, j ) );
+	};
+	std::pair< Real, Index > max_elem =
+		TNL::Algorithms::reduceWithArgument< TNL::Devices::Cuda >( j, num_rows, fetchAbsElement, TNL::MaxWithArg{} );
+	
+	// Only need to swap rows if the pivoting row is different from j
+	if( max_elem.second != j ) {
+		swapRows_device< THREADS_PER_BLOCK >( M, j, max_elem.second, num_cols );
+		piv( j ) = max_elem.second + 1;
+	}
+	
+	return max_elem;
+}
+\end{lstlisting}
+
+
+
+
+
+\chapter{ICM\textit{x}PP Implementation}\label{Appendix:ICMxPP-implementation}
+The implementation of ICM\textit{x}PP is shown in Listing~\ref{Listing:ICMxPP-implementation-excerpt}. Note that the kernels called in Listing~\ref{Listing:ICMxPP-implementation-excerpt} are shown separately in Listings~\ref{Listing:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->kernels->diagonal-compute}, \ref{Listing:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->kernels->diagonal-assign}, \ref{Listing:ICMxPP-implementation->kernels->lower-section-compute}, and \ref{Listing:ICMxPP-implementation->kernels->right-section-compute}.
+
+\begin{lstlisting}[caption={Excerpt from the implementation of ICM\textit{x}PP. The template parameter \code{BLOCK\_SIZE} is equivalent to \textit{x} in ICM\textit{x}PP. On input, matrix \code{A} is assumed to contain the values of $\mathbf{A}$, matrix \code{LU} is assumed to contain the initial estimate of the decomposition, and \code{piv} is expected to be appropriately sized and allocated on the Host. On output, matrix \code{LU} contains the values of matrices $\mathbf{L}$ and $\mathbf{U}$ in the format presented in Equation~\ref{Equation:implementation->decomposition-project->implemented-solutions->decomposers->CMPP}, and \code{piv} contains the row permutations. The \code{synchronizeStreams()} function is included below the \code{decompose()} method. The \code{pivotBadElement()} function is shown in Listing~\ref{Listing:ICMxPP-implementation-pivot-bad-element}. The code has been slightly modified for brevity, for example, the checks for appropriate sizing of matrices and vectors have been removed.},label={Listing:ICMxPP-implementation-excerpt}]
+template< const int BLOCK_SIZE >
+template< typename Matrix, typename Vector >
+void
+IterativeCroutMethod< BLOCK_SIZE >::decompose( Matrix& A, Matrix& LU, Vector& piv )
+{
+	using Real = typename Matrix::RealType;
+	using Index = typename Matrix::IndexType;
+	
+	const Index num_rows = LU.getRows();
+	const Index num_cols = LU.getColumns();
+	
+	// Matrix representing the next iteration
+	Matrix LUnext;
+	LUnext.setLike( LU );
+	
+	// Processing tolerance
+	const Real process_tol = 0.0;
+	// Pivoting tolerance
+	const Real piv_tol = 1.0e-5;
+
+	// Flag to indicate that the diagonal section has been processed
+	TNL::Containers::Array< bool, TNL::Devices::Cuda > processed{ 1, false };
+	
+	// Fill the pivoting vector with increments of 1 starting from 1 to num_rows.
+	BaseDecomposer::setDefaultPivotingValues( piv );
+	
+	// Determine the size of the section based on the dimensions of the matrix
+	Index sec_size = min( max( num_cols / 10, (Index) 256 ), (Index) 1024 );
+	sec_size = ( sec_size + BLOCK_SIZE - 1 ) / BLOCK_SIZE * BLOCK_SIZE;
+	
+	// CUDA grid configuration
+	Index blocks = sec_size / BLOCK_SIZE;
+	dim3 threads_perBlock( BLOCK_SIZE, BLOCK_SIZE );
+	dim3 blocks_perGrid( blocks, blocks );
+	
+	// Allocate and initialize an array of stream handles to process sections in parallel
+	const Index nonDiagSecs_perRow = TNL::ceil( (double) num_cols / (double) sec_size ) - 1;
+	auto* streams = (cudaStream_t*) malloc( nonDiagSecs_perRow * sizeof( cudaStream_t ) );
+	for( Index i = 0; i < nonDiagSecs_perRow; ++i )
+		cudaStreamCreate( &( streams[ i ] ) );
+	
+	// Flags indicating the processing status of non-diagonal sections
+	TNL::Containers::Array< bool, TNL::Devices::Cuda, Index > nonDiagSec_processed{ nonDiagSecs_perRow, false };
+	TNL::Containers::Array< bool, TNL::Devices::Host, Index > nonDiagSec_processed_host{ nonDiagSecs_perRow, false };
+	
+	// Views are used from here on
+	auto A_view = A.getView();
+	auto LU_view = LU.getView();
+	auto LUnext_view = LUnext.getView();
+	auto piv_view = piv.getView();
+	auto processed_view = processed.getView();
+	auto nonDiagSec_processed_view = nonDiagSec_processed.getView();
+	
+	// Lambda for fetching the index of bad elements
+	auto get_badEl_colIdxs = [ = ] __cuda_callable__( Index col ) -> Index
+	{
+		return abs( LU_view( col, col ) ) <= piv_tol ? col : num_cols;
+	};
+	
+	// Diagonal section start and end
+	Index dSec_start, dSec_end;
+	// Non-diagonal section start, end, and id
+	Index sec_start, sec_end, sec_id;
+	Index badEl_idx;
+	
+	// Loop through the diagonal sections
+	for( dSec_start = 0, dSec_end = min( num_cols, sec_size ); dSec_start < dSec_end; dSec_start += sec_size, dSec_end = min( num_cols, dSec_end + sec_size ) )
+	{
+		// Set the starting point of the search for the first bad element
+		Index badEl_searchStart = dSec_start;
+		
+		do { // Process the diagonal section and the sections below it
+			// Get next badEl_idx
+			badEl_idx = TNL::Algorithms::reduce< TNL::Devices::Cuda >( badEl_searchStart, dSec_end, get_badEl_colIdxs, TNL::Min{}, num_cols );
+			
+			do {  // Process the diagonal section
+				// Reset the processed flag
+				processed_view.setElement( 0, true );
+				
+				// Compute the values up to and including the bad element
+				DSecCompute_kernel< BLOCK_SIZE ><<< blocks_perGrid, threads_perBlock >>>( A_view, LU_view, LUnext_view, dSec_start, dSec_end, dSec_start, dSec_end, process_tol, processed_view, badEl_idx );
+				
+				// Assign the values computed for the next iteration
+				DSecAssign_kernel<<< blocks_perGrid, threads_perBlock >>>( LU_view, LUnext_view, dSec_start, dSec_end, dSec_start, dSec_end, badEl_idx );
+				
+				// Check if a bad element is present between the previous bad element and the current bad element
+				Index badEl_idx_new = TNL::Algorithms::reduce< TNL::Devices::Cuda >( badEl_searchStart, dSec_end, get_badEl_colIdxs, TNL::Min{}, num_cols );
+				// If a bad element was detected before the current one -> set it as the new bad element
+				if( badEl_idx_new < badEl_idx )
+					badEl_idx = badEl_idx_new;
+			} while( ! processed_view.getElement( 0 ) );
+			
+			// The Diagonal section contains processed values excluding the values to the bottom-right of the bad element
+			// Compute the lower sections up to and including the column containing the bad element
+			
+			// Limit the number of threads used based on the number of columns that will be computed
+			Index badEl_idx_cutoff = min( badEl_idx + 1, dSec_end );
+			Index lSec_width_rounded = ( badEl_idx_cutoff - dSec_start + BLOCK_SIZE - 1 ) & -BLOCK_SIZE;
+			dim3 lSec_blockPerGrid( TNL::max( lSec_width_rounded / BLOCK_SIZE, (Index) 1 ), blocks );
+			
+			// Default to false so that all kernels are run in the first iteration
+			nonDiagSec_processed_view.setValue( false );
+			
+			do { // Process the lower sections in parallel
+				nonDiagSec_processed_host = nonDiagSec_processed;
+				nonDiagSec_processed_view.setValue( true );
+				
+				for( sec_start = dSec_end, sec_end = min( num_cols, dSec_end + sec_size ), sec_id = 0; sec_start < sec_end; sec_start += sec_size, sec_end = min( num_cols, sec_end + sec_size ), ++sec_id )
+				{
+					// Only compute sections that are not yet processed
+					if( ! nonDiagSec_processed_host( sec_id ) ) {
+						LSecCompute_kernel< BLOCK_SIZE ><<< lSec_blockPerGrid, threads_perBlock, 0, streams[ sec_id ] >>>( A_view, LU_view, LUnext_view, dSec_start, badEl_idx_cutoff, sec_start, sec_end, process_tol, nonDiagSec_processed_view, sec_id );
+						
+						NonDiagSecAssign_kernel<<< lSec_blockPerGrid, threads_perBlock, 0, streams[ sec_id ] >>>( LU_view, LUnext_view, dSec_start, badEl_idx_cutoff, sec_start, sec_end );
+					}
+				}
+				// Wait until all sections have been computed in this iteration
+				synchronizeStreams( streams, nonDiagSecs_perRow );
+			} while( ! TNL::Algorithms::reduce( nonDiagSec_processed_view, TNL::LogicalAnd{} ) );
+			
+			// Pivot the bad element
+			pivotBadElement< BLOCK_SIZE >( A_view, LU_view, piv_view, badEl_idx, num_rows, num_cols, badEl_searchStart, piv_tol );
+			
+		} while( badEl_idx < dSec_end - 1 );
+		
+		nonDiagSec_processed_view.setValue( false );
+		
+		// Process sections to the right of the diagonal section in parallel
+		// At this point there are no bad elements in the diagonal section
+		do {
+			nonDiagSec_processed_host = nonDiagSec_processed;
+			nonDiagSec_processed_view.setValue( true );
+			
+			// Launch kernels for all sections below the diagonal section - each section has its stream
+			for( sec_start = dSec_end, sec_end = min( num_cols, dSec_end + sec_size ), sec_id = 0; sec_start < sec_end; sec_start += sec_size, sec_end = min( num_cols, sec_end + sec_size ), ++sec_id )
+			{
+				// Only compute sections that are not yet processed
+				if( ! nonDiagSec_processed_host( sec_id ) ) {
+					RSecCompute_kernel< BLOCK_SIZE ><<< blocks_perGrid, threads_perBlock, 0, streams[ sec_id ] >>>( A_view, LU_view, LUnext_view, sec_start, sec_end, dSec_start, dSec_end, process_tol, nonDiagSec_processed_view, sec_id );
+					
+					NonDiagSecAssign_kernel<<< blocks_perGrid, threads_perBlock, 0, streams[ sec_id ] >>>( LU_view, LUnext_view, sec_start, sec_end, dSec_start, dSec_end );
+				}
+			}
+			// Wait until all sections have been computed in this iteration
+			synchronizeStreams( streams, nonDiagSecs_perRow );
+		} while( ! TNL::Algorithms::reduce( nonDiagSec_processed_view, TNL::LogicalAnd{} ) );
+	}
+	
+	// Release resources
+	for( Index i = 0; i < nonDiagSecs_perRow; ++i )
+		cudaStreamDestroy( streams[ i ] );
+	
+	free( streams );
+}
+
+void
+synchronizeStreams( cudaStream_t* streams, const int num_streams )
+{
+	for( int i = 0; i < num_streams; i++ )
+		cudaStreamSynchronize( streams[ i ] );
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={The definition of the \code{pivotBadElement()} function which is responsible for pivoting a bad element found in column \code{j} of the main diagonal. The \code{pivotRowOfMatrices\_device()} function, presented below the \code{pivotBadElement()} function, is implemented in the parent class of \code{IterativeCroutMethod}: \code{BaseDecomposer}. Note that the variant of the \code{swapRows\_device()} function presented in the \code{pivotRowOfMatrices\_device()} swaps the rows in two matrices.},label={Listing:ICMxPP-implementation-pivot-bad-element}]
+template< const int BLOCK_SIZE, typename MatrixView, typename VectorView, typename Index, typename Real >
+void
+pivotBadElement( MatrixView& A, MatrixView& LU, VectorView& piv, const Index& j, const Index& num_rows, const Index& num_cols, Index& badEl_searchStart, const Real& piv_tol )
+{
+	// The last element of the matrix does not require pivoting as no elements are computed using it, i.e., division by zero cannot occur for the last element
+	if( j >= num_cols - 1 ) {
+		return;
+	}
+	
+	std::pair< Real, Index > max_elem = pivotRowOfMatrices_device< BLOCK_SIZE * BLOCK_SIZE >( j, A, LU, num_rows, num_cols, piv );
+	
+	if( max_elem.first == 0 ) {
+		// The current bad element in the main diagonal is zero even after pivoting -> Decomposition failed
+		throw Exceptions::MatrixSingular( "LU", j, j );
+	}
+	else if( max_elem.first <= piv_tol ) {
+		// The value at the index of the bad element is smaller than the pivoting tolerance, however, it is not zero, so the computation can continue
+		// Search for the next bad element after this one
+		badEl_searchStart = j + 1;
+	}
+}
+
+template< const int THREADS_PER_BLOCK, typename Index, typename MatrixView, typename VectorView, typename Real = typename MatrixView::RealType >
+std::pair< Real, Index >
+pivotRowOfMatrices_device( const Index& j, MatrixView& A, MatrixView& M, const Index& num_rows, const Index& num_cols, VectorView& piv )
+{
+	auto fetchAbsElement = [ = ] __cuda_callable__( Index row )
+	{
+		return abs( M( row, j ) );
+	};
+	
+	std::pair< Real, Index > max_elem = TNL::Algorithms::reduceWithArgument< TNL::Devices::Cuda >( j, num_rows, fetchAbsElement, TNL::MaxWithArg{} );
+	
+	// Only need to swap rows if the pivoting row is different from j
+	if( max_elem.second != j ) {
+		swapRows_device< THREADS_PER_BLOCK >( A, M, j, max_elem.second, num_cols );
+		piv( j ) = max_elem.second + 1;
+	}
+	
+	return max_elem;
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={The implementation of the \code{LSecCompute\_kernel()} kernel which computes one iteration of a lower section. Note that the matrices, vectors, and arrays are passed using their views, and the scalar values are copied to the local memory of each thread.},label={Listing:ICMxPP-implementation->kernels->lower-section-compute}]
+template< const int BLOCK_SIZE, typename ConstMatrixView, typename MatrixView, typename BoolArrayView, typename Index, typename Real >
+__global__
+void
+LSecCompute_kernel( const ConstMatrixView A, MatrixView LU, MatrixView LUnext, const Index sec_start_col, const Index sec_end_col, const Index sec_start_row, const Index sec_end_row, const Real process_tol, BoolArrayView processed, const Index sec_id )
+{
+	Index ty = threadIdx.y;
+	Index tx = threadIdx.x;
+	
+	// Each thread computes one element (row, col)
+	Index row = blockIdx.y * blockDim.y + ty + sec_start_row;
+	Index col = blockIdx.x * blockDim.x + tx + sec_start_col;
+	
+	// Set the IDs of threads that overreach the bounds to the closest boundary
+	Index max_col = sec_end_col - 1;
+	Index max_row = sec_end_row - 1;
+	Index row_adj = min( row, max_row );
+	Index col_adj = min( col, max_col );
+	
+	// Offset the smallest index of the thread's element by BLOCK_SIZE to allow for loop unrolling
+	// In a lower section, the column index is always smaller
+	Index min_row_col = col_adj - BLOCK_SIZE;
+	
+	__shared__ Real L_block[ BLOCK_SIZE ][ BLOCK_SIZE ];
+	__shared__ Real U_block[ BLOCK_SIZE ][ BLOCK_SIZE ];
+	
+	Index i, k; Real sum = 0;
+	
+	// Compute the sum needed for the element (row, col) by loading blocks of elements from global to shared memory and multiplying them
+	for( i = 0; i <= min_row_col; i += BLOCK_SIZE ) {
+		L_block[ ty ][ tx ] = LU( row_adj, i + tx );
+		U_block[ ty ][ tx ] = LU( i + ty, col_adj );
+		
+		__syncthreads();
+		
+		#pragma unroll( BLOCK_SIZE )
+		for( k = 0; k < BLOCK_SIZE; ++k )
+			sum += L_block[ ty ][ k ] * U_block[ k ][ tx ];
+		__syncthreads();
+	}
+	
+	// Loops are unrolled by multiples of BLOCK_SIZE and the remaining elements are computed separately
+	L_block[ ty ][ tx ] = LU( row_adj, min( i + tx, max_col ) );
+	U_block[ ty ][ tx ] = LU( min( i + ty, max_row ), col_adj );
+	
+	__syncthreads();
+	
+	// Terminate threads that overreach the bounds as they have served their purpose of reading data
+	if( row >= sec_end_row || col >= sec_end_col )
+		return;
+	
+	for( k = 0; k < tx; ++k )
+		sum += L_block[ ty ][ k ] * U_block[ k ][ tx ];
+	
+	// Formula for L
+	sum = A( row, col ) - sum;
+	
+	// Check if the element (row, col) has been processed
+	// Read LU( row, col ) from shared memory instead of global memory
+	if( abs( L_block[ ty ][ tx ] - sum ) > process_tol )
+		processed( sec_id ) = false;
+	
+	// Assign the element for the next iteration
+	LUnext( row, col ) = sum;
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={The implementation of the \code{RSecCompute\_kernel()} kernel which computes one iteration of a right section.},label={Listing:ICMxPP-implementation->kernels->right-section-compute}]
+template< const int BLOCK_SIZE, typename ConstMatrixView, typename MatrixView, typename BoolArrayView, typename Index, typename Real >
+__global__
+void
+RSecCompute_kernel( const ConstMatrixView A, MatrixView LU, MatrixView LUnext, const Index sec_start_col, const Index sec_end_col, const Index sec_start_row, const Index sec_end_row, const Real process_tol, BoolArrayView processed, const Index sec_id )
+{
+	Index tx = threadIdx.x;
+	Index ty = threadIdx.y;
+	
+	// Each thread computes one element (row, col)
+	Index row = blockIdx.y * blockDim.y + ty + sec_start_row;
+	Index col = blockIdx.x * blockDim.x + tx + sec_start_col;
+	
+	// Set the IDs of threads that overreach the bounds to the closest boundary
+	Index max_col = sec_end_col - 1;
+	Index max_row = sec_end_row - 1;
+	Index row_adj = min( row, max_row );
+	Index col_adj = min( col, max_col );
+	
+	// Offset the smallest index of the thread's element by BLOCK_SIZE to allow for loop unrolling
+	// In a right section, the row index is always smaller
+	Index min_row_col = row_adj - BLOCK_SIZE;
+	
+	__shared__ Real L_block[ BLOCK_SIZE ][ BLOCK_SIZE ];
+	__shared__ Real U_block[ BLOCK_SIZE ][ BLOCK_SIZE ];
+	
+	Index i, k; Real sum = 0;
+	
+	// Compute the sum needed for the element (row, col) by loading blocks of elements from global to shared memory and multiplying them
+	for( i = 0; i <= min_row_col; i += BLOCK_SIZE ) {
+		L_block[ ty ][ tx ] = LU( row_adj, i + tx );
+		U_block[ ty ][ tx ] = LU( i + ty, col_adj );
+		
+		__syncthreads();
+		
+		#pragma unroll( BLOCK_SIZE )
+		for( k = 0; k < BLOCK_SIZE; ++k )
+			sum += L_block[ ty ][ k ] * U_block[ k ][ tx ];
+		__syncthreads();
+	}
+	
+	// Loops are unrolled by multiples of BLOCK_SIZE and the remaining elements are computed separately
+	L_block[ ty ][ tx ] = LU( row_adj, min( i + tx, max_col ) );
+	U_block[ ty ][ tx ] = LU( min( i + ty, max_row ), col_adj );
+	
+	__syncthreads();
+	
+	// Terminate threads that overreach the bounds as they have served their purpose of reading data
+	if( row >= sec_end_row || col >= sec_end_col )
+		return;
+	
+	for( k = 0; k < ty; ++k )
+		sum += L_block[ ty ][ k ] * U_block[ k ][ tx ];
+	
+	// Formula for U
+	// Do not check for division by zero as this kernel assumes that no bad element is present in the diagonal section
+	sum = ( A( row, col ) - sum ) / LU( row, row );
+	
+	// Check if the element (row, col) has been processed
+	// Read LU( row, col ) from shared memory instead of global memory
+	if( abs( U_block[ ty ][ tx ] - sum ) > process_tol )
+		processed( sec_id ) = false;
+	
+	// Assign the element for the next iteration
+	LUnext( row, col ) = sum;
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={The implementation of the \code{NonDiagSecAssign\_kernel()} kernel that assigns values of the next iteration to the matrix representing the current iteration.},label={Listing:ICMxPP-implementation->kernels->nondiagonal-assign}]
+template< typename MatrixView, typename Index >
+__global__
+void
+NonDiagSecAssign_kernel( MatrixView LU, MatrixView LUnext, const Index sec_start_col, const Index sec_end_col, const Index sec_start_row, const Index sec_end_row )
+{
+	Index row = blockIdx.y * blockDim.y + threadIdx.y + sec_start_row;
+	Index col = blockIdx.x * blockDim.x + threadIdx.x + sec_start_col;
+	
+	if( row >= sec_end_row || col >= sec_end_col )
+		return;
+	
+	LU( row, col ) = LUnext( row, col );
+}
+\end{lstlisting}
+
+
+
+
+
+\chapter{SSPP Implementation}\label{Appendix:SSPP-implementation}
+The implementation of SSPP is shown in Listing~\ref{Listing:SSPP-implementation-excerpt}.
+
+\begin{lstlisting}[caption={Excerpt from the implementation of SSPP. The code has been slightly modified for brevity, for example, the checks for appropriate sizing of matrices and vectors have been removed.},label={Listing:SSPP-implementation-excerpt}]
+template< typename Matrix, typename Vector >
+void
+SequentialSolver::solve( const Matrix& LU, Matrix& X, const Vector& piv )
+{
+	using Real = typename Matrix::RealType;
+	using Device = TNL::Devices::Host;
+	using Index = typename Matrix::IndexType;
+	
+	const Index num_rows = LU.getRows();
+	const Index num_cols = LU.getColumns();
+	
+	const Index nrhs = X.getColumns();
+	TNL::Containers::Vector< Real, Device, Index > sum( nrhs );
+	
+	// Solve (LU)X = B, where X holds the values of B on input
+	
+	// Order Matrix X according to vec
+	if( ! piv.empty() ) {
+		Decomposers::BaseDecomposer::orderMatrixAccordingTo( X, piv );
+	}
+	
+	// Just to keep the original labels in the loops for clarity
+	auto X_view = X.getView();
+	auto Y_view = X.getView();
+	auto B_view = X.getView();
+	
+	auto LU_view = LU.getConstView();
+	auto sum_view = sum.getView();
+	
+	// Forward substitution: LY = B
+	for( Index i = 0; i < num_rows; ++i ) {
+		sum_view.setValue( 0 );
+		for( Index j = 0; j < i; ++j ) {
+			// sum = sum + LU( i, j ) * Y( j );
+			auto y_row = Y_view.getRow( j );
+			auto rhsSum = [ = ] __cuda_callable__( Index rhs ) mutable
+			{
+				sum_view( rhs ) = sum_view( rhs ) + LU_view( i, j ) * y_row.getValue( rhs );
+			};
+			TNL::Algorithms::parallelFor< Device >( Index{ 0 }, nrhs, rhsSum );
+		}
+		// Y( i ) = ( B( i ) - sum ) / LU( i, i );
+		auto y_row = Y_view.getRow( i );
+		auto b_row = B_view.getRow( i );
+		auto ySet = [ = ] __cuda_callable__( Index rhs ) mutable
+		{
+			y_row.setValue( rhs, ( b_row.getValue( rhs ) - sum_view( rhs ) ) / LU_view( i, i ) );
+		};
+		TNL::Algorithms::parallelFor< Device >( Index{ 0 }, nrhs, ySet );
+	}
+	
+	// Backward substitution: UX = Y
+	for( Index i = num_rows - 1; i >= 0; --i ) {
+		sum_view.setValue( 0 );
+		for( Index j = i + 1; j < num_cols; ++j ) {
+			// sum = sum + LU( i, j ) * X( j );
+			auto x_row = X_view.getRow( j );
+			auto rhsSum = [ = ] __cuda_callable__( Index rhs ) mutable
+			{
+				sum_view( rhs ) = sum_view( rhs ) + LU_view( i, j ) * x_row.getValue( rhs );
+			};
+			TNL::Algorithms::parallelFor< Device >( Index{ 0 }, nrhs, rhsSum );
+		}
+		// X( i ) = Y( i ) - sum;		
+		auto x_row = X_view.getRow( i );
+		auto y_row = Y_view.getRow( i );
+		auto xSet = [ = ] __cuda_callable__( Index rhs ) mutable
+		{
+			x_row.setValue( rhs, y_row.getValue( rhs ) - sum_view( rhs ) );
+		};
+		TNL::Algorithms::parallelFor< Device >( Index{ 0 }, nrhs, xSet );
+	}
+}
+\end{lstlisting}
+
+
+
+
+\chapter{IS\textit{x}PP Implementation}\label{Appendix:ISxPP-implementation}
+The implementation of IS\_\textit{x}PP is shown in Listing~\ref{Listing:ISxPP-implementation-excerpt}. Note that the kernels called in Listing~\ref{Listing:ISxPP-implementation-excerpt} are shown separately in Listings~\ref{Listing:ISxPP-implementation->kernels->forward-substitution}, \ref{Listing:ISxPP-implementation->kernels->backward-substitution}, and \ref{Listing:ISxPP-implementation->kernels->matrix-assign}.
+
+\begin{lstlisting}[caption={Excerpt from the implementation of IS\_\textit{x}PP. The code has been slightly modified for brevity, for example, the checks for appropriate sizing of matrices and vectors have been removed. Note that the CUDA thread blocks used in the implementation are larger in the 1st dimension. Threads adjacent in the 1st dimensions are assigned to neighboring elements in the same column since the matrices are stored in column-major order on the GPU. In other words, to mitigate misaligned global memory access, the 1st dimension of threads is used to access elements in a single column and the 2nd dimension is used to differentiate between right-hand sides.},label={Listing:ISxPP-implementation-excerpt}]
+template< const int THREADS_PER_BLOCK >
+template< typename Matrix, typename Vector >
+void
+IterativeSolver< THREADS_PER_BLOCK >::solve( const Matrix& LU, Matrix& X, const Vector& piv )
+{
+	using Real = typename Matrix::RealType;
+	using Index = typename Matrix::IndexType;
+	
+	const Index num_rows = LU.getRows();
+	const Index num_cols = LU.getColumns();
+	
+	const Index nrhs = X.getColumns();
+	
+	// Solve (LU)X = B, where X holds the values of B on input
+	
+	// Order Matrix X according to vec
+	if( ! piv.empty() ) {
+		Decomposers::BaseDecomposer::orderMatrixAccordingTo( X, piv );
+	}
+	
+	Matrix Xnext;
+	Xnext.setLike( X );
+	
+	Matrix Y;
+	Y.setLike( X );
+	Matrix Ynext;
+	Ynext.setLike( Y );
+	
+	// X holds the values of B on input
+	auto X_view = X.getView();
+	auto Y_view = Y.getView();
+	auto B_view = X.getView();
+	auto Xnext_view = Xnext.getView();
+	auto Ynext_view = Ynext.getView();
+	
+	auto LU_view = LU.getConstView();
+	
+	// Flag to indicate that a section has been processed
+	TNL::Containers::Array< bool, TNL::Devices::Cuda > processed{ 1, true };
+	auto processed_view = processed.getView();
+	const Real process_tol = 0.0;
+	
+	// Round to nearest higher multiple of THREADS_PER_BLOCK
+	Index num_rows_rounded = ( num_rows + THREADS_PER_BLOCK - 1 ) / THREADS_PER_BLOCK * THREADS_PER_BLOCK;
+	
+	// Number of right-hand sides is usually small
+	const Index BLOCK_SIZE_y = 8;
+	const Index nrhs_rounded = ( nrhs + BLOCK_SIZE_y - 1 ) / BLOCK_SIZE_y * BLOCK_SIZE_y;
+	
+	const Index blocks_perGrid_x = num_rows_rounded / THREADS_PER_BLOCK;
+	const Index blocks_perGrid_y = nrhs_rounded / BLOCK_SIZE_y;
+	
+	dim3 threads_perBlock( THREADS_PER_BLOCK, BLOCK_SIZE_y );
+	dim3 blocks_perGrid( blocks_perGrid_x, blocks_perGrid_y );
+	
+	// Forward substitution: LY = B
+	do {
+		processed_view.setElement( 0, true );
+		FowardSubst_kernel<<< blocks_perGrid, threads_perBlock >>>( LU_view, Y_view, Ynext_view, B_view, num_rows, nrhs, processed_view, process_tol );
+		
+		MtxAssign_kernel<<< blocks_perGrid, threads_perBlock >>>( Y_view, Ynext_view, num_rows, nrhs );
+	} while( ! processed_view.getElement( 0 ) );
+	
+	// Backward substitution: UX = Y
+	do {
+		processed_view.setElement( 0, true );
+		BackwardSubst_kernel<<< blocks_perGrid, threads_perBlock >>>( LU_view, X_view, Xnext_view, Y_view, num_rows, num_cols, nrhs, processed_view, process_tol );
+
+		MtxAssign_kernel<<< blocks_perGrid, threads_perBlock >>>( X_view, Xnext_view, num_rows, nrhs );
+	} while( ! processed_view.getElement( 0 ) );
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={The implementation of the \code{FowardSubst\_kernel()} kernel which computes one forward-substitution iteration.},label={Listing:ISxPP-implementation->kernels->forward-substitution}]
+template< typename ConstMatrixView, typename MatrixView, typename Index, typename BoolArrayView, typename Real >
+__global__
+void
+FowardSubst_kernel( const ConstMatrixView LU, MatrixView Y, MatrixView Ynext, const MatrixView B, const Index num_rows, const Index nrhs, BoolArrayView processed, const Real process_tol )
+{
+	// Each thread computes one element (row, rhs)
+	const Index row = blockIdx.x * blockDim.x + threadIdx.x;
+	const Index rhs = blockIdx.y * blockDim.y + threadIdx.y;
+	
+	// Terminate threads that overreach matrix bounds
+	if( row >= num_rows || rhs >= nrhs )
+		return;
+	
+	Real sum = 0;
+	
+	for( Index j = 0; j < row; ++j )
+		sum = sum + LU( row, j ) * Y( j, rhs );
+	
+	sum = ( B( row, rhs ) - sum ) / LU( row, row );
+	
+	// Check if the element (row, rhs) has been processed
+	if( abs( Y( row, rhs ) - sum ) > process_tol )
+		processed( 0 ) = false;
+	
+	// Assign the element for the next iteration
+	Ynext( row, rhs ) = sum;
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={The implementation of the \code{BackwardSubst\_kernel()} kernel which computes one backward-substitution iteration.},label={Listing:ISxPP-implementation->kernels->backward-substitution}]
+template< typename ConstMatrixView, typename MatrixView, typename BoolArrayView, typename Real, typename Index >
+__global__
+void
+BackwardSubst_kernel( const ConstMatrixView LU, MatrixView X, MatrixView Xnext, const MatrixView Y, const Index num_rows, const Index num_cols, const Index nrhs, BoolArrayView processed, const Real process_tol )
+{
+	// Each thread computes one element (row, rhs)
+	const Index row = blockIdx.x * blockDim.x + threadIdx.x;
+	const Index rhs = blockIdx.y * blockDim.y + threadIdx.y;
+	
+	// Terminate threads that overreach matrix bounds
+	if( row >= num_rows || rhs >= nrhs )
+		return;
+	
+	Real sum = 0;
+	
+	for( Index j = row + 1; j < num_cols; ++j )
+		sum = sum + LU( row, j ) * X( j, rhs );
+	
+	sum = Y( row, rhs ) - sum;
+	
+	// Check if the element (row, rhs) has been processed
+	if( abs( X( row, rhs ) - sum ) > process_tol )
+		processed( 0 ) = false;
+	
+	// Assign the element for the next iteration
+	Xnext( row, rhs ) = sum;
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={The implementation of the \code{MtxAssign\_kernel()} kernel that assigns values of the next iteration to the matrix representing the current iteration.},label={Listing:ISxPP-implementation->kernels->matrix-assign}]
+template< typename MatrixView, typename Index >
+__global__
+void
+MtxAssign_kernel( MatrixView M, MatrixView Mnext, const Index num_rows, const Index num_cols )
+{
+	// Each thread assigns one element (row, rhs)
+	const Index row = blockIdx.x * blockDim.x + threadIdx.x;
+	const Index rhs = blockIdx.y * blockDim.y + threadIdx.y;
+	
+	// Terminate threads that overreach matrix bounds
+	if( row >= num_rows || rhs >= num_cols )
+		return;
+	
+	M( row, rhs ) = Mnext( row, rhs );
+}
+\end{lstlisting}

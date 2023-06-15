@@ -2,12 +2,12 @@
 
 This chapter will introduce the theory behind the core parts of this project. First, Nvidia's Graphics Processing Units (GPUs) and their use in General-Purpose Computing (GPGPU) will be briefly described. Then, CUDA, the API for communicating with Nvidia GPUs, will be presented. The final part introduces the method implemented in this project: Iterative Crout's Method with partial pivoting (ICMPP).
 
-\section{GPUs}\label{Section:theory-GPUs}
-In essence, a Graphics Processing Unit (GPU) is a device purpose-built for accelerating the graphical output of a computer system. Simply put, a GPU comprises many smaller processing units. While these units are not as fast as the cores of a CPU, they excel at processing many similar tasks in parallel. An example of such a task is displaying an image on a monitor. In simple terms, to display the image, each pixel must be computed and rendered. If the image is 1,200 by 1,200 pixels, then, the processing entity must compute and render 1,440,000 individual points. Given the many processing units that the GPU has, it is capable of performing this operation efficiently.
+\section{GPUs}\label{Section:theory->GPUs}
+In essence, a Graphics Processing Unit (GPU) is a device designed to accelerate the graphical output of a computer system. Simply put, a GPU comprises many smaller processing units. While these units are not as fast as the cores of a CPU, they excel at processing many similar tasks in parallel. An example of such a task is displaying an image on a monitor. In simple terms, to display the image, each pixel must be computed and rendered. If the image is 1,200 by 1,200 pixels, then, the processing entity must compute and render 1,440,000 individual points. Given the many processing units that the GPU has, it is capable of performing this operation efficiently.
 
 While the common understanding of a GPU is that it is an image-processing device, how it processes images can be leveraged for non-graphical computation-heavy tasks. This is referred to as General-Purpose Computing on Graphics Processing Units (GPGPU).
 
-\subsection{General-Purpose Computing on Graphics Processing Units (GPGPU)}\label{Subsection:theory-GPUs-GPGPU}
+\subsection{General-Purpose Computing on Graphics Processing Units (GPGPU)}\label{Subsection:theory->GPUs->GPGPU}
 General-Purpose Computing on Graphics Processing Units (GPGPU) has become an integral part of High-Performance Computing (HPC) in the last two decades \cite{Cejka2020, Cejka2022}. One of the key parts of GPGPU is to tailor tasks for efficient execution on GPUs. To use a GPU efficiently, it is necessary to parallelize the workload. A common example of a parallelizable task is the multiplication of two matrices. Without parallelism and assuming the naive matrix-multiplication algorithm, this task requires the processing entity to perform the pseudocode shown in Listing~\ref{Listing:theory->GPUs->GPGPUs->multiplication-of-matrices}.
 
 \begin{lstlisting}[caption={Pseudocode for the multiplication of two matrices. Let $\mathbf{A}$ be a $m\times n$ matrix, $\mathbf{B}$ a $n\times p$ matrix, and $\mathbf{C}$ a $m\times p$ matrix.},label={Listing:theory->GPUs->GPGPUs->multiplication-of-matrices}]
@@ -327,7 +327,7 @@ Concurrent kernel execution describes a scenario where two or more kernels from 
 
 Additionally, in Section~\ref{Subsection:theory->CUDA->thread-management} it was mentioned that a kernel is launched on a grid made up of thread blocks. This holds even when multiple kernels are launched simultaneously, i.e., each kernel is launched on a separate grid. When a grid is executing a kernel it is referred to as a resident grid.
 
-Note that the use of concurrent kernel execution is associated with certain limitations \cite{Cejka2022}:
+Note that the use of concurrent kernel execution is associated with certain limitations \cite{Cejka2022, NVIDIADecember2022}:
 
 \begin{enumerate}
 	\item Maximum number of resident grids per device.
@@ -352,7 +352,7 @@ The first limitation is dependent on the compute capability version as presented
 	\label{Table:theory->CUDA->concurrent-kernel-execution->maximum-resident-grids-per-device}
 \end{table}
 
-The second limitation prevents the concurrent execution of kernels from two distinct CUDA applications on the same device.
+The second limitation prevents the concurrent execution of kernels from two distinct CUDA applications on the same device. In particular, if kernels are issued from distinct processes, they cannot run concurrently unless CUDA MPS\footnote{CUDA MPS documentation webpage URL: \url{https://docs.nvidia.com/deploy/mps/index.html}} is used \cite{Crovella16December2016, Crovella17August2017}.
 
 The third limitation states that a device can only run kernels concurrently if its resource limits are not overstepped. However, this does not mean that the kernels will not be run. On the contrary, if two or more kernels are launched using unique streams and the device's resources cannot satisfy the sum of resources required by the kernels, then one of the kernels will be executed first while the other kernels are put aside until resources are available for them. In this context, resources are either local memory or the number of threads the device is capable of running at a point in time.
 
@@ -398,7 +398,7 @@ Assuming that the total local memory required by both kernels called in Listing~
 \end{figure}
 
 \subsection{Parallel Reduction}\label{Subsection:theory->CUDA->parallel-reduction}
-This section aims to present a parallel computation concept relevant to the project. As stated earlier in Section~\ref{Subsection:theory-GPUs-GPGPU}, the parallelization of some tasks is not straightforward. An example of such a task is finding the maximum value in an array.
+This section aims to present a parallel computation concept relevant to the project. As stated earlier in Section~\ref{Subsection:theory->GPUs->GPGPU}, the parallelization of some tasks is not straightforward. An example of such a task is finding the maximum value in an array.
 
 The naive procedure for finding the maximum value is to iterate through the array, compare each encountered element to a temporary variable, and save the larger of the two compared values into the variable. However, this procedure is strictly sequential and thus inefficient when performed on the device in its current form. In this case, \textit{parallel reduction} can be used to parallelize the problem.
 
@@ -746,9 +746,9 @@ Solving a system of linear equations using LUP is a two-step process \cite{Cejka
 		\end{enumerate}
 \end{enumerate}
 
-Once $\mathbf{x}$ is populated with the solution, it can be directly applied to the system presented in Equation~\ref{Equation:theory->ICMPP->LUP->system-linear-equations-1rhs}, i.e., there is no need for additional permuting.
+Once $\mathbf{x}$ contains the solution, it can be directly applied to the system presented in Equation~\ref{Equation:theory->ICMPP->LUP->system-linear-equations-1rhs}, i.e., there is no need for additional permuting.
 
-Note that $\mathbf{b}$ is only required in Step~\ref{Item:theory->ICMPP->LUP->solving-system-linear-equations->substitution}, i.e., it is not used to decompose $\mathbf{A}$. As mentioned in \citetitle{Cejka2022} \cite{Cejka2022} and in \citetitle{Lindfield2019} \cite{Lindfield2019}, this presents an advantage for LUP over Gaussian elimination if multiple right-hand sides are present. The reason behind this is that with Gaussian elimination, only one right-hand side can and must be present for the decomposition. Thus, to solve a system with multiple right-hand sides, Gaussian elimination must decompose $\mathbf{A}$ for each side. On the other hand, LUP requires $\mathbf{A}$ to be decomposed only once.
+Note that $\mathbf{b}$ is only required in Step~\ref{Item:theory->ICMPP->LUP->solving-system-linear-equations->substitution}, i.e., it is not used to decompose $\mathbf{A}$. As mentioned in \citetitle{Cejka2022} \cite{Cejka2022} and in \citetitle{Lindfield2019} \cite{Lindfield2019}, this presents an advantage for LUP over Gaussian elimination in cases where right-hand sides are not provided at once. For example, when solving time-dependent partial differential equations, each time step presents a system whose right-hand side is determined by the solution of the system belonging to the previous time step. In such cases, Gaussian elimination would need to be performed in its entirety for every new right-hand side, whereas LUP would be used to decompose $\mathbf{A}$ once, and then the output of the decomposition would be reused for every new right-hand side.
 
 While there are many different approaches to LUP, this project focuses on \textit{Crout's Method with partial pivoting} (CMPP) and \textit{Iterative Crout's Method with partial pivoting} (ICMPP).
 
@@ -781,12 +781,15 @@ When it comes to LUP algorithms, a distinctive feature of CM is that it generate
 
 The algorithm itself consists of the following steps (assuming input matrix $\mathbf{A} \in \mathbb{R}^{n \times n}$ where $n \in \mathbb{N}$) \cite{Press2007, Forsythe1960}:
 
-\begin{enumerate}[label*=\textbf{\arabic*}]
+\begin{enumerate}
 	\item Set $j$ equal to 1.
-	\item \label{Item:theory->ICMPP->LUP->CMPP->algorithm-steps->stop-execution-if} If $j$ is greater than $n$, then stop the execution as matrices $\mathbf{L}$ and $\mathbf{U}$ have been successfully computed.
-	\item \label{Item:theory->ICMPP->LUP->CMPP->algorithm-steps->compute-values-in-column-j} Compute values from $l_{j,j}$ to $l_{n,j}$ in column $j$ of $\mathbf{L}$.
-	\item \label{Item:theory->ICMPP->LUP->CMPP->algorithm-steps->pivot-row-j} Pivot row $j$:
-	\begin{enumerate}[label*=\textbf{.\arabic*}]
+	\item \label{Item:theory->ICMPP->LUP->CMPP->algorithm-steps->stop-execution-if}
+		If $j$ is greater than $n$, then stop the execution as matrices $\mathbf{L}$ and $\mathbf{U}$ have been successfully computed.
+	\item \label{Item:theory->ICMPP->LUP->CMPP->algorithm-steps->compute-values-in-column-j}
+		Compute values from $l_{j,j}$ to $l_{n,j}$ in column $j$ of $\mathbf{L}$.
+	\item \label{Item:theory->ICMPP->LUP->CMPP->algorithm-steps->pivot-row-j}
+		Pivot row $j$:
+	\begin{enumerate}
 		\item In the values computed in step \ref{Item:theory->ICMPP->LUP->CMPP->algorithm-steps->compute-values-in-column-j}, find the index ($p$) of the element largest in absolute value:
 		\begin{equation}
 			p = \argmax_k \left\{ \left| l_{k, j} \right|: k=j,\dots, n \right\} \,.
@@ -966,7 +969,7 @@ Seeing as the potential for parallelization is seemingly limited for CMPP's algo
 
 The decomposition of matrix $\mathbf{A} \in \mathbb{R}^{n \times n}$ into the product of matrices $\mathbf{L}, \mathbf{U} \in \mathbb{R}^{n \times n}$, and a permutation matrix $\mathbf{P} \in \left\{0,1\right\}^{n \times n}$ using ICMPP consists of the following steps \cite{Cejka2022}:
 
-\begin{enumerate}[label*=\textbf{\arabic*}]
+\begin{enumerate}
 	\item Create an initial estimate of matrices $\mathbf{L}^{0}$ and $\mathbf{U}^{0}$ using $\mathbf{A}$:
 		\begin{align}
 			l_{i,j}^{0} &= a_{i,j} & u_{i,j}^{0} &= 0 \quad &i < j \nonumber\,, \\
@@ -975,7 +978,8 @@ The decomposition of matrix $\mathbf{A} \in \mathbb{R}^{n \times n}$ into the pr
 		\end{align}
 		and initialize $\mathbf{P}$ as the identity matrix.
 	\item Denote the current iteration as $t \in \mathbb{N}$ and initialize it to 1.
-	\item \label{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt} Compute $\mathbf{L}^{t}$ using Formula~\ref{Equation:theory->ICMPP->LUP->CMPP->lij}:
+	\item \label{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt}
+		Compute $\mathbf{L}^{t}$ using Formula~\ref{Equation:theory->ICMPP->LUP->CMPP->lij}:
 		\begin{align}
 			l_{i,j}^{t} &= a_{ij} - \sum_{k=1}^{j-1}l_{i,k}^{t-1}u_{k,j}^{t-1} &\quad i \geq j \nonumber\,.
 		\end{align}
@@ -983,7 +987,7 @@ The decomposition of matrix $\mathbf{A} \in \mathbb{R}^{n \times n}$ into the pr
 		Take the first $j \in \widehat{n}; n \in \mathbb{N}$ that satisfies the condition $\left|l^{t-1}_{j, j} - l^{t}_{j, j}\right| < \epsilon$ (where $\epsilon$ denotes a tolerance, e.g., 0.001) and \textit{iteratively converge} all elements in $\mathbf{L}^{t}$ below row $j$ from column 1 to column $j$ (including both boundaries), i.e., $l^{t}_{b, c}$ where $j < b \leq n$ and $1 \leq c \leq j$. If no such $j$ satisfies the condition, proceed to Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Ut}. In this context, \textit{iteratively converge} signifies to continue computing the mentioned elements using Formula~\ref{Equation:theory->ICMPP->LUP->CMPP->lij} until they all satisfy the condition $\left|l^{t-1}_{b, c} - l^{t}_{b, c}\right| < \epsilon$.
 	\item \label{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row}
 		Pivot row $j$ (same as Step~\ref{Item:theory->ICMPP->LUP->CMPP->algorithm-steps->pivot-row-j} in the CMPP algorithm description on page~\pageref{Item:theory->ICMPP->LUP->CMPP->algorithm-steps->pivot-row-j}):
-		\begin{enumerate}[label*=\textbf{.\arabic*}]
+		\begin{enumerate}
 			\item \label{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row->argmax}
 				Find the index ($p$) of the element largest in absolute value under element $l^{t}_{j, j}$:
 				\begin{equation}
@@ -1000,7 +1004,7 @@ The decomposition of matrix $\mathbf{A} \in \mathbb{R}^{n \times n}$ into the pr
 			u_{i,j}^{t} &= \frac{1}{l_{ii}^{t}} \left ( a_{ij} - \sum_{k=1}^{i-1}l_{ik}^{t}u_{kj}^{t-1} \right ) &\quad i < j \nonumber\,.
 		\end{align}
 	\item \label{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->evaluate-convergence-rule}
-		If the absolute difference between $\mathbf{L}^{t-1}$ and $\mathbf{L}^{t}$, or between $\mathbf{U}^{t-1}$ and $\mathbf{U}^{t}$, exceeds tolerance $\epsilon$, then increment $t$ by 1 and return to Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt}.
+		If the maximum absolute difference between $\mathbf{L}^{t-1}$ and $\mathbf{L}^{t}$, or between $\mathbf{U}^{t-1}$ and $\mathbf{U}^{t}$, exceeds tolerance $\epsilon$, then increment $t$ by 1 and return to Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt}.
 	\item The algorithm has converged to an approximate solution of $ \mathbf{A} = \mathbf{LUP} $.
 \end{enumerate}
 
@@ -1016,4 +1020,4 @@ While the instructions in Steps~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-s
 
 Note that due to the nature of iterative methods, it is not possible to accurately predict the number of iterations needed to converge to an approximate solution. Thus, the performance of ICMPP may heavily depend on the nonzero element structure of matrix $\mathbf{A}$.
 
-To summarize, in Sections~\ref{Section:theory-GPUs} and \ref{Section:theory->CUDA} a high-performance parallel computing system was introduced in the form of Nvidia GPUs manageable by CUDA. Then, at the end of Section~\ref{Section:theory->ICMPP}, a parallelizable algorithm was presented. The combination of the aforementioned parts will be the main focus of the following chapters.
+To summarize, in Sections~\ref{Section:theory->GPUs} and \ref{Section:theory->CUDA} a high-performance parallel computing system was introduced in the form of Nvidia GPUs manageable by CUDA. Then, at the end of Section~\ref{Section:theory->ICMPP}, a parallelizable algorithm was presented. The combination of the aforementioned parts will be the main focus of the following chapters.

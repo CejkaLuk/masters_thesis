@@ -172,9 +172,9 @@ As can be seen in Figure~\ref{Figure:theory->CUDA->thread-management->grouping-t
 As shown in Figures \ref{Figure:theory->CUDA->thread-management->thread-parallelism} and \ref{Figure:theory->CUDA->thread-management->thread-divergence}, within a kernel, each thread has access to a collection of predefined variables unique to it. The following is a selection of such commonly-used variables:
 
 \begin{itemize}
-	\item \code{threadIdx} - a 3-component vector containing the IDs of a thread in each dimension of a thread block. Specifically, \code{threadIdx.x} contains the thread's ID in the 1st dimension (\code{x}), \code{threadIdx.y} in the 2nd dimension (\code{y}), and \code{threadIdx.z} in the 3rd dimension (\code{z}). For example, in the 3-by-4 thread block shown in Figure~\ref{Figure:theory->CUDA->thread-management->thread-management-system-overview}, the values of \code{threadIdx} for the bottom-right-most thread are \code{\{3, 2, 1\}}, i.e., \code{threadIdx.x = 3}, \code{threadIdx.x = 2}, \code{threadIdx.z = 1}.
-	\item \code{blockIdx} - a 3-component vector containing the IDs of a block in each dimension of a grid. Similarly to \code{threadIdx}, each vector component contains the block's ID in a specific dimension, i.e., \code{blockIdx.x} contains the ID of the block in the 1st dimension (\code{x}), etc. For example, for the bottom-right-most thread block shown in Figure~\ref{Figure:theory->CUDA->thread-management->thread-management-system-overview}, \code{blockIdx} would be \code{\{2, 1, 1\}}, i.e., \code{blockIdx.x = 2}, \code{blockIdx.y = 1}, \code{blockIdx.z = 1}.
-	\item \code{blockDim} - a 3-component vector containing the sizes of a block's dimensions. For example, for the thread block shown in Figure~\ref{Figure:theory->CUDA->thread-management->thread-management-system-overview}, \code{blockDim} would be \code{\{3, 4, 1\}}, i.e., \code{blockDim.x = 3}, \code{blockDim.y = 4}, \code{blockDim.z = 1}.
+	\item \code{threadIdx} - The 3-component vector containing the IDs of a thread in each dimension of a thread block. Specifically, \code{threadIdx.x} contains the thread's ID in the 1st dimension (\code{x}), \code{threadIdx.y} in the 2nd dimension (\code{y}), and \code{threadIdx.z} in the 3rd dimension (\code{z}). For example, in the 3-by-4 thread block shown in Figure~\ref{Figure:theory->CUDA->thread-management->thread-management-system-overview}, the values of \code{threadIdx} for the bottom-right-most thread are \code{\{3, 2, 1\}}, i.e., \code{threadIdx.x = 3}, \code{threadIdx.x = 2}, \code{threadIdx.z = 1}.
+	\item \code{blockIdx} - The 3-component vector containing the IDs of a block in each dimension of a grid. Similarly to \code{threadIdx}, each vector component contains the block's ID in a specific dimension, i.e., \code{blockIdx.x} contains the ID of the block in the 1st dimension (\code{x}), etc. For example, for the bottom-right-most thread block shown in Figure~\ref{Figure:theory->CUDA->thread-management->thread-management-system-overview}, \code{blockIdx} would be \code{\{2, 1, 1\}}, i.e., \code{blockIdx.x = 2}, \code{blockIdx.y = 1}, \code{blockIdx.z = 1}.
+	\item \code{blockDim} - The 3-component vector containing the sizes of a block's dimensions. For example, for the thread block shown in Figure~\ref{Figure:theory->CUDA->thread-management->thread-management-system-overview}, \code{blockDim} would be \code{\{3, 4, 1\}}, i.e., \code{blockDim.x = 3}, \code{blockDim.y = 4}, \code{blockDim.z = 1}.
 \end{itemize}
 
 For a summarized overview of predefined variables and functions available, see \citetitle{Gates2023} \cite{Gates2023} or see \citetitle{NVIDIADecember2022} \cite{NVIDIADecember2022} for an extensive overview.
@@ -361,8 +361,8 @@ The fourth limitation is often issued as a disclaimer from Nvidia that warns aga
 To prevent the unpredictable execution order of stream-unique kernels, explicit synchronization can be used. Functions providing explicit synchronization are, for example:
 
 \begin{itemize}
-	\item \code{cudaDeviceSynchronize()} - this function creates a checkpoint where the host waits until all preceding commands in all streams of all host threads have been completed \cite{NVIDIADecember2022}.
-	\item \code{cudaStreamSynchronize( stream )} - this function serves a similar purpose to \code{cudaDeviceSynchronize()} with the exception that the host only waits until the preceding commands of a specific stream have completed.
+	\item \code{cudaDeviceSynchronize()} - This function creates a checkpoint where the host waits until all preceding commands in all streams of all host threads have been completed \cite{NVIDIADecember2022}.
+	\item \code{cudaStreamSynchronize( stream )} - This function serves a similar purpose to \code{cudaDeviceSynchronize()} with the exception that the host only waits until the preceding commands of a specific stream have completed.
 \end{itemize}
 
 To use a stream, other than the default stream, it is first necessary to construct it by instantiating and creating a stream object using \code{cudaStream\_t} and \code{cudaStreamCreate()}. Then, the stream must be supplied to a kernel's execution configuration to launch the kernel using it. Once the stream is no longer needed it must be destroyed using \code{cudaStreamDestroy()}. C++ pseudocode detailing the creation, usage, and destruction of streams is shown in Listing~\ref{Listing:theory->CUDA->concurrent-kernel-execution->creation-usage-destruction-of-streams}.
@@ -647,14 +647,14 @@ For parallel reduction in CUDA, sequential addressing has been shown to be 2x fa
 
 
 
-\section{Iterative Crout's Method With Partial Pivoting (ICMPP)}\label{Section:theory->ICMPP}
+\section{Iterative Crout's Method with Partial Pivoting (ICMPP)}\label{Section:theory->ICMPP}
 The core aspect of HPC is solving advanced computation problems across various fields. The specific types of problems HPC is used to solve are, for example, developing new drugs, deciphering the functioning of the human brain, developing driverless cars, etc. \cite{HY9P0YzuUCw5E5cs}. Solving complex tasks can involve using a wide range of programs that often rely on dependencies to perform fundamental tasks, e.g., solving a system of linear equations, efficiently.
 
 The roots of linear equation solving can be traced back to ancient Chinese mathematics books from around 100 BC \cite{Hart2011}. Since then, it has become a fundamental component of numerical linear algebra. Owing to its early discovery and wide range of uses, many different methods have been developed - Gaussian elimination being arguably the most well-known. However, this project focuses on the use of Lower-Upper decomposition with partial pivoting (LUP) and substitution to solve linear equations. Specifically, the LUP method selected was the iterative variant of Prescott Durand Crout's matrix decomposition method, referred to - in the context of this project - as the \textit{Iterative Crout Method} (ICM). Note that in the context of this project, ICM does not include pivoting; a modification of ICM that includes pivoting will be referred to as \textit{Iterative Crout's Method with partial pivoting} (ICMPP).
 
 First, LUP and its use when solving a system of linear equations will be briefly described. Then, Crout's Method with partial pivoting (CMPP) will be introduced and, finally, ICMPP will be described.
 
-\subsection{LU Decomposition With Partial Pivoting (LUP)}\label{Subsection:theory->ICMPP->LUP}
+\subsection{LU Decomposition with Partial Pivoting (LUP)}\label{Subsection:theory->ICMPP->LUP}
 It can be argued that LUP is simply Lower-Upper decomposition (LU) with the added feature of partial pivoting. To clearly explain LUP, LU will first be introduced.\\
 LU is a procedure that factors an input matrix into the product of a lower-triangular matrix and an upper-triangular matrix
 
@@ -754,7 +754,7 @@ While there are many different approaches to LUP, this project focuses on \texti
 
 
 
-\subsection{Crout's Method With Partial Pivoting (CMPP)}\label{Subsection:theory->ICMPP->LUP->CMPP}
+\subsection{Crout's Method with Partial Pivoting (CMPP)}\label{Subsection:theory->ICMPP->LUP->CMPP}
 This section aims to introduce an LUP algorithm known as \textit{Crout's Method with partial pivoting} (CMPP). CMPP's base form, Crout's Method (CM), is also referred to as \textit{Crout's matrix decomposition} or \textit{Crout's factorization} and was developed by Prescott Durand Crout \cite{Press2007} in the 20th century. In the context of this project, CM refers to the method without partial pivoting and whereas CMPP refers to the method with partial pivoting.
 
 When it comes to LUP algorithms, a distinctive feature of CM is that it generates a unit upper-triangular matrix $\mathbf{U} \in \mathbb{R}^{n \times n} \left(n \in \mathbb{N}\right)$, i.e., one where all the elements on its main diagonal are equal to 1:
@@ -896,9 +896,8 @@ void cmpp( A, L, U, piv, n )
 	double sum = 0;
 	
 	// Fill main diagonal of U with 1s
-	for( i = 0; i < n; ++i ) {
+	for( i = 0; i < n; ++i )
 		U[ i ][ i ] = 1;
-	}	
 	
 	// Loop through the main diagonal
 	for( j = 0; j < n; ++j ) {
@@ -906,9 +905,8 @@ void cmpp( A, L, U, piv, n )
 		// Compute column j in L
 		for( i = j; i < n; ++i ) {
 			sum = 0;
-			for( k = 0; k < j; ++k ) {
+			for( k = 0; k < j; ++k )
 				sum += L[ i ][ k ] * U[ k ][ j ];
-			}
 			
 			L[ i ][ j ] = A[ i ][ j ] - sum;
 		}
@@ -930,9 +928,8 @@ void cmpp( A, L, U, piv, n )
 		// Compute row j in U
 		for( i = j; i < n; ++i ) {
 			sum = 0;
-			for( k = 0; k < j; ++k ) {
+			for( k = 0; k < j; ++k )
 				sum = sum + L[ j ][ k ] * U[ k ][ i ];
-			}
 			
 			U[ j ][ i ] = ( A[ j ][ i ] - sum ) / L[ j ][ j ]; @\label{Line:theory->ICMPP->LUP->CMPP->pseudocode->set-uji}@
 		}
@@ -964,7 +961,7 @@ Thus far, the variation of CMPP discussed will either produce an exact solution 
 
 An alternative group of methods to direct methods is known as iterative methods. Unlike direct methods, iterative methods converge to a solution, but there is no guarantee that the exact solution will be obtained. An example of an iterative variant of CMPP: \textit{Iterative Crout's Method with partial pivoting} (ICMPP) will be described in the next part.
 
-\subsection{Iterative Crout's Method With Partial Pivoting (ICMPP)}\label{Subsection:theory->ICMPP->LUP->ICMPP}
+\subsection{Iterative Crout's Method with Partial Pivoting (ICMPP)}\label{Subsection:theory->ICMPP->LUP->ICMPP}
 Seeing as the potential for parallelization is seemingly limited for CMPP's algorithm, an alternative approach can be used. One such alternative, put forward by \citename{Anzt2019}{author} in \citetitle{Anzt2019} \cite{Anzt2019}, involves using the formulas of CM in an iterative method. Although the method proposed by the authors generates incomplete factorization, i.e., some nonzero elements are omitted during factorization, its principle can be extracted to create an iterative decomposition method that produces a complete factorization. As detailed in \citetitle{Cejka2022} \cite{Cejka2022}, the complete-factorization approach converges to a sufficiently approximate solution of $\mathbf{A} = \mathbf{LU}$. This approach, labeled as \textit{Iterative Crout's Method} (ICM), has been modified to include partial pivoting, thus creating \textit{Iterative Crout's Method with partial pivoting} (ICMPP).
 
 The decomposition of matrix $\mathbf{A} \in \mathbb{R}^{n \times n}$ into the product of matrices $\mathbf{L}, \mathbf{U} \in \mathbb{R}^{n \times n}$, and a permutation matrix $\mathbf{P} \in \left\{0,1\right\}^{n \times n}$ using ICMPP consists of the following steps \cite{Cejka2022}:
@@ -1011,11 +1008,11 @@ The decomposition of matrix $\mathbf{A} \in \mathbb{R}^{n \times n}$ into the pr
 While the instructions in Steps~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt} to \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->evaluate-convergence-rule} must be performed consecutively, the operations in each step can be executed in parallel:
 
 \begin{itemize}
-	\item Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt} - the element $l^{t}_{i,j} \left(i, j \in \widehat{n}; n \in \mathbb{N}\right)$ is dependent only on elements from matrices $\mathbf{A}$, $\mathbf{L}^{t-1}$, and $\mathbf{U}^{t-1}$. Since the values in the first matrix are constant - excluding the swapping of rows - and the last two matrices were set in the previous iteration, no elements from $\mathbf{L}^{t}$ are dependent on each other. Thus, all elements $l^{t}_{i,j}$ can be computed simultaneously.
-	\item Step \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->converge-lower-sections} - the absolute-value condition can be checked in parallel, and, similarly to Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt}, the iterative convergence is computed according to the same formula.
-	\item Step \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row} - the $\max$ operation mentioned in Section~\ref{Subsection:theory->CUDA->parallel-reduction} can be adapted to suit the needs of $\argmax$ used in Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row->argmax}. While the swapping of elements in two rows can be performed in parallel, Steps~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row->swap-rows} and \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row->singular-matrix-check} must be executed consecutively.
-	\item Step \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Ut} - the element $u^{t}_{i,j} \left(i, j \in \widehat{n}; n \in \mathbb{N}\right)$ is dependent only on elements from matrices $\mathbf{A}$, $\mathbf{L}^{t}$, and $\mathbf{U}^{t-1}$. Matrices $\mathbf{A}$ and $\mathbf{U}^{t-1}$ were covered in the description of parallelization of Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt} and matrix $\mathbf{L}^{t}$ was finalized in Steps~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt} to \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row}. Thus, since no elements from $\mathbf{U}^{t}$ are dependent on each other, they can be computed simultaneously.
-	\item Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->evaluate-convergence-rule} - since the evaluation of the convergence rule has no dependencies, it is entirely parallelizable.
+	\item Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt} - The element $l^{t}_{i,j} \left(i, j \in \widehat{n}; n \in \mathbb{N}\right)$ is dependent only on elements from matrices $\mathbf{A}$, $\mathbf{L}^{t-1}$, and $\mathbf{U}^{t-1}$. Since the values in the first matrix are constant - excluding the swapping of rows - and the last two matrices were set in the previous iteration, no elements from $\mathbf{L}^{t}$ are dependent on each other. Thus, all elements $l^{t}_{i,j}$ can be computed simultaneously.
+	\item Step \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->converge-lower-sections} - The absolute-value condition can be checked in parallel, and, similarly to Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt}, the iterative convergence is computed according to the same formula.
+	\item Step \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row} - The $\max$ operation mentioned in Section~\ref{Subsection:theory->CUDA->parallel-reduction} can be adapted to suit the needs of $\argmax$ used in Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row->argmax}. While the swapping of elements in two rows can be performed in parallel, Steps~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row->swap-rows} and \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row->singular-matrix-check} must be executed consecutively.
+	\item Step \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Ut} - The element $u^{t}_{i,j} \left(i, j \in \widehat{n}; n \in \mathbb{N}\right)$ is dependent only on elements from matrices $\mathbf{A}$, $\mathbf{L}^{t}$, and $\mathbf{U}^{t-1}$. Matrices $\mathbf{A}$ and $\mathbf{U}^{t-1}$ were covered in the description of parallelization of Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt} and matrix $\mathbf{L}^{t}$ was finalized in Steps~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt} to \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row}. Thus, since no elements from $\mathbf{U}^{t}$ are dependent on each other, they can be computed simultaneously.
+	\item Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->evaluate-convergence-rule} - Since the evaluation of the convergence rule has no dependencies, it is entirely parallelizable.
 \end{itemize}
 
 Note that due to the nature of iterative methods, it is not possible to accurately predict the number of iterations needed to converge to an approximate solution. Thus, the performance of ICMPP may heavily depend on the nonzero element structure of matrix $\mathbf{A}$.

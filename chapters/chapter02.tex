@@ -66,7 +66,7 @@ The two CUDA libraries used in the \textit{Decomposition} project are \textit{cu
 Similarly to the introduction of TNL in Section~\ref{Subsection:implementation->libraries-used->TNL}, only the functionalities utilized in the project will be briefly presented.
 
 \subsubsection{cuSOLVER}\label{Subsection:implementation->libraries-used->CUDA-libraries->cuSOLVER}
-The cuSOLVER library provides functionalities for decomposing matrices and finding solutions to linear systems. While it can be argued that sparse matrices are more common in GPGPU, the library includes methods for both dense and sparse matrices.
+The cuSOLVER library provides functionalities for decomposing matrices and finding solutions to linear systems. While it can be argued that sparse matrices are more common in HPC, the library includes methods for both dense and sparse matrices.
 
 As mentioned in Sections~\ref{Subsection:theory->ICMPP->LUP->ICMPP} and \ref{Subsection:implementation->libraries-used->TNL}, the \textit{Decomposition} project aims to present a novel approach to dense-matrix decomposition. Thus, to provide a comparison with an industry standard, the \code{cusolverDnXgetrf()} function was included in a TNL-compatible wrapper. The chosen function performs LU decomposition with partial pivoting:
 
@@ -74,7 +74,7 @@ As mentioned in Sections~\ref{Subsection:theory->ICMPP->LUP->ICMPP} and \ref{Sub
 	\mathbf{PA} = \mathbf{LU} \,,
 \end{equation}
 
-where $\mathbf{P}$ is a permutation matrix, $\mathbf{A}$ is a coefficient matrix, $\mathbf{L}$ is a unit lower-triangular matrix, and $\mathbf{U}$ is an upper-triangular matrix. In other words, unlike CM, the main diagonal consisting of 1s is found in $\mathbf{L}$ and not in $\mathbf{U}$.
+where $\mathbf{P}$ is a permutation matrix, $\mathbf{A}$ is a coefficient matrix, $\mathbf{L}$ is a unit lower-triangular matrix, and $\mathbf{U}$ is an upper-triangular matrix. In other words, unlike CM, the main diagonal consisting of ones is found in $\mathbf{L}$ and not in $\mathbf{U}$.
 
 The function is data-agnostic, i.e., both single and double precision can be used. For completeness, note that the function's name follows cuSOLVER's naming conventions \code{cusolverDn<t><operation>} \cite{5D33zKi5iStCty0r}, where:
 
@@ -147,7 +147,7 @@ However, unlike \code{cusolverDnXgetrs()}, \code{cublas<t>trsm()} is only capabl
 	\item To solve $\mathbf{UX}=\mathbf{Y}$, where $\mathbf{X}$ is an appropriately-sized matrix.
 \end{enumerate}
 
-For this purpose, the cuBLAS datatype \code{cublasFillMode\_t} can be used in combination with \code{cublasDiagType\_t} to indicate which part of the matrix should be used by the \code{cublas<t>trsm()} function. The \code{cublasFillMode\_t} datatype can be either \code{CUBLAS\_FILL\_MODE\_LOWER}, \code{CUBLAS\_FILL\_MODE\_UPPER}, or \code{CUBLAS\_FILL\_MODE\_FULL}. The first two options represent the cases when either the lower triangle or the upper triangle of the matrix is to be used, respectively, while the last option represents the case when the entire matrix is to be used. The \code{cublasDiagType\_t} datatype can be either \code{CUBLAS\_DIAG\_NON\_UNIT} or \code{CUBLAS\_DIAG\_UNIT}. The former represents the case when the main diagonal of the matrix does not consist of 1s, whereas the latter represents the case when it does.\\
+For this purpose, the cuBLAS datatype \code{cublasFillMode\_t} can be used in combination with \code{cublasDiagType\_t} to indicate which part of the matrix should be used by the \code{cublas<t>trsm()} function. The \code{cublasFillMode\_t} datatype can be either \code{CUBLAS\_FILL\_MODE\_LOWER}, \code{CUBLAS\_FILL\_MODE\_UPPER}, or \code{CUBLAS\_FILL\_MODE\_FULL}. The first two options represent the cases when either the lower triangle or the upper triangle of the matrix is to be used, respectively, while the last option represents the case when the entire matrix is to be used. The \code{cublasDiagType\_t} datatype can be either \code{CUBLAS\_DIAG\_NON\_UNIT} or \code{CUBLAS\_DIAG\_UNIT}. The former represents the case when the main diagonal of the matrix does not consist of ones, whereas the latter represents the case when it does.\\
 For clarity, to solve $\mathbf{LY}=\mathbf{PB}$ using \code{cublas<t>trsm()}, the function must be called with the following parameters:
 
 \begin{itemize}
@@ -209,10 +209,10 @@ To satisfy the requirements posed above, the following concepts were used and im
 	\item Sample problems - A set of problems that can be used in any test. For example, matrix \code{A} along with its correct decomposition, or a system of linear equations in matrix form along with its solution. To satisfy the "lightweight" requirement, the dimensions of matrices in the problems were limited to a range from 2-by-2 to 38-by-38.
 	\item Parametrized tests - The test methods were parametrized with template parameters provided by GoogleTest. These template parameters are used to pass, for example, the type of matrix with different data types or the algorithm used in the test.
 	\item Configurable result verification - Due to the nature of some algorithms, the results produced by their implementations are not as accurate as others. Thus, certain tests have to expect results within a range.
-	\item Point-of-failure testing - Using GoogleTest, the points of failure each implementation has can be verified in detail. This includes validating the type of exception thrown and examining the contents of the exception's message.
+	\item Point-of-failure testing - Using GoogleTest, it is possible to thoroughly verify the points of failure in each implementation. This includes validating the type of exception thrown and examining the contents of the exception's message.
 \end{itemize}
 
-Furthermore, inspired by TNL and to ensure that the unit tests covered the desired functionalities, code coverage was incorporated into the project using a tool called \citetitle{Cox2023} \cite{Cox2023}. As of 09.06.2023, the line coverage was 90.6\% and the function coverage was 76.6\%. Note that the coverage percentages may be affected by the fact that CUDA kernels were not recognized as "hit" during execution, even if their calls were.\\
+Furthermore, inspired by TNL and to ensure that the unit tests covered the desired functionalities, code coverage was incorporated into the project using a tool called \citetitle{Cox2023} \cite{Cox2023}. As of 9th June 2023, the line coverage was 90.6\% and the function coverage was 76.6\%. Note that the coverage percentages may be affected by the fact that CUDA kernels were not recognized as "hit" during execution, even if their calls were.\\
 The full coverage report is available on request or as an attachment to this thesis.
 
 
@@ -334,7 +334,7 @@ This method will be used in the descriptions that follow.
 
 \subparagraph{Processing by Sections} The ICMPP algorithm, introduced in Section~\ref{Subsection:theory->ICMPP->LUP->ICMPP}, suggests that in every iteration, all values in matrix \code{LU} are to be computed. However, the decomposition of a matrix can require thousands of iterations. Moreover, to decompose an $n\times n$ matrix, such an approach would require $n^2$ elements to be computed in every iteration. Assuming that each CUDA thread was to compute one element in an iteration, this would translate to $n^2$ threads being allocated in every iteration. This approach does not scale well.
 
-Furthermore, due to the dependency of elements described in Section~\ref{Subsection:theory->ICMPP->LUP->CMPP}, computing values of \code{LU} that have extensive chains of dependencies is futile if the elements it depends on are not processed. The chains of dependencies for a specific element are visualized in Figure~\ref{Figure:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->chain-of-dependencies}.
+Furthermore, due to the dependency of elements described in Section~\ref{Subsection:theory->ICMPP->LUP->CMPP}, it is futile to compute values of \code{LU} that have extensive chains of dependencies if the elements they depend on have not been processed. The chains of dependencies for a specific element are visualized in Figure~\ref{Figure:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->chain-of-dependencies}.
 
 \begin{figure}[ht!]
 	\centering
@@ -420,15 +420,17 @@ the sections of matrix \code{LU} are processed in the order shown in Figure~\ref
 	\label{Figure:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->processing-by-sections}
 \end{figure}
 
+Before outlining the concept of \textit{processing by sections}, it is necessary to define a term used thoroughly in this thesis: the \textit{bad element}. In this context, the term \textit{bad element} refers to an element located on the main diagonal of a matrix that breaks the tolerance of conditional partial pivoting. In other words, it is an element on the main diagonal whose absolute value is smaller than or equal to a set tolerance, e.g., 1e-5.
+
 For clarity, the outline of processing the matrix by sections using the ICMPP algorithm is presented below:
 
 \begin{enumerate}
 	\item \label{Item:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->processing-by-sections->diagonal-section->start-at-top-left-diagonal-section}
 		Start with the top-left diagonal section.
 	\item \label{Item:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->processing-by-sections->diagonal-section->reset-previous-bad-element}
-		Set the index from which a bad element will be searched for to the first element in the main diagonal of the diagonal section; the index is stored in the \code{badEl\_searchStart} variable. The term \textit{bad element} refers to an element on the main diagonal that breaks the tolerance of conditional partial pivoting. In other words, it is an element on the main diagonal whose absolute value is smaller than (or equal to) a set tolerance, e.g., 1e-5.
+		Set the index from which a bad element will be searched for to the first element in the main diagonal of the diagonal section; the index is stored in the \code{badEl\_searchStart} variable. 
 	\item \label{Item:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->processing-by-sections->diagonal-section->find-first-bad-element}
-		In the diagonal section, starting with the index \code{badEl\_searchStart}, find the first bad element.  If no bad element is found, then its index is set to an illegal value.
+		In the diagonal section, starting at the index \code{badEl\_searchStart}, find the first bad element. If no bad element is found, the index is set to an illegal value to indicate the absence of a bad element.
 	\item \label{Item:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->processing-by-sections->diagonal-section->process-diagonal-section}
 		Process the diagonal section:
 		\begin{enumerate}
@@ -747,7 +749,7 @@ The core part of the kernel is the use of shared memory. As detailed at the end 
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.8\textwidth, keepaspectratio]{images/ch02/CUDA-matrix-multiplication-by-blocks-using-shared-memory.png}
-	\caption{Visualization of matrix multiplication by blocks of elements using shared memory. Note that this depiction, taken from \citetitle{NVIDIADecember2022} \cite{NVIDIADecember2022}, assumes that matrix multiplication is performed without exceptions. Conversely, the implementation in Listing~\ref{Listing:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->kernels->diagonal-compute} performs matrix multiplication until the element that is being computed in terms of LU decomposition as shown in Figure~\ref{Figure:theory->ICMPP->LUP->CMPP->sum-in-element-computation-dependance} on page~\pageref{Figure:theory->ICMPP->LUP->CMPP->sum-in-element-computation-dependance}.}
+	\caption{Visualization of matrix multiplication by blocks of elements using shared memory. Note that this figure, taken from \citetitle{NVIDIADecember2022} \cite{NVIDIADecember2022}, depicts regular matrix multiplication, i.e., not the limited rendition present in Crout's method. The implementation in Listing~\ref{Listing:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->kernels->diagonal-compute} performs matrix multiplication until the element that is being computed in terms of LU decomposition, as shown in Figure~\ref{Figure:theory->ICMPP->LUP->CMPP->sum-in-element-computation-dependance} on page~\pageref{Figure:theory->ICMPP->LUP->CMPP->sum-in-element-computation-dependance}.}
 	\label{Figure:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->CUDA-matrix-multiplication-with-shared-memory}
 \end{figure}
 

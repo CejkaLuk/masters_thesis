@@ -86,7 +86,7 @@ pivotRowOfMatrix_host( const Index& j, MatrixView& M, const Index& num_rows, con
 
 
 \chapter{PCM\textit{x}PP Implementation}\label{Appendix:PCMxPP-implementation}
-The implementation of PCM\textit{x}PP is shown in Listing~\ref{Listing:PCMxPP-implementation-excerpt}.
+The implementation of PCM\textit{x}PP is shown in Listing~\ref{Listing:PCMxPP-implementation-excerpt}. Note that the kernels called in Listing~\ref{Listing:PCMxPP-implementation-excerpt} are shown separately in Listings~\ref{Listing:PCMxPP-implementation->kernels->column-compute-kernel} and \ref{Listing:PCMxPP-implementation->kernels->row-compute-kernel}.
 
 \begin{lstlisting}[caption={Excerpt from the implementation of PCM\textit{x}PP. The template parameter \code{BLOCK\_SIZE} is equivalent to \textit{x} in PCM\textit{x}PP. On input, matrix \code{LU} is assumed to contain the values of $\mathbf{A}$, and \code{piv} is expected to be appropriately sized. Furthermore, unlike \code{LU}, \code{piv} is assumed to be allocated on the Host. The \code{pivotRowOfMatrix\_device()} function, presented below the \code{decompose()} method, is implemented in the parent class of \code{CroutMethod}: \code{BaseDecomposer}. Note that the code has been slightly modified for brevity. For example, the \code{swapRows\_device()} function has been omitted as it is a basic operation, and the checks for appropriate sizing of matrices/vectors have been removed.},label={Listing:PCMxPP-implementation-excerpt}]
 template< const int BLOCK_SIZE >
@@ -104,7 +104,7 @@ CroutMethod< BLOCK_SIZE >::decompose( Matrix& LU, Containers::RowOrderVector< Ve
 	auto piv_view = piv.getView();
 	
 	// Fill the pivoting vector with increments of 1 starting from 1 to num_rows.
-	piv.setDefaultValues();
+	BaseDecomposer::setDefaultPivotingValues( piv );
 	
 	const Real piv_tol = 1.0e-5;
 	
@@ -152,6 +152,48 @@ pivotRowOfMatrix_device( const Index& j, MatrixView& M, const Index& num_rows, c
 	}
 	
 	return max_elem;
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={The implementation of the \code{ColCompute\_kernel()} kernel which computes one column of \code{LU}.},label={Listing:PCMxPP-implementation->kernels->column-compute-kernel}]
+template< typename MatrixView, typename Index >
+__global__
+void
+ColCompute_kernel( MatrixView LU, const Index col, const Index num_rows )
+{
+	using Real = typename MatrixView::RealType;
+	// Offset threads to start from the diagonal element (including it)
+	const Index row = blockIdx.x * blockDim.x + threadIdx.x + col;
+	
+	if( row >= num_rows )
+		return;
+	
+	Real sum = 0;
+	for( Index k = 0; k < col; ++k )
+		sum += LU( row, k ) * LU( k, col );
+	
+	LU( row, col ) = LU( row, col ) - sum;
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={The implementation of the \code{RowCompute\_kernel()} kernel which computes one row of \code{LU}.},label={Listing:PCMxPP-implementation->kernels->row-compute-kernel}]
+template< typename MatrixView, typename Index >
+__global__
+void
+RowCompute_kernel( MatrixView LU, Index row, const Index num_cols )
+{
+	using Real = typename MatrixView::RealType;
+	// Offset threads to start from element to the right of the diagonal element
+	const Index col = blockIdx.x * blockDim.x + threadIdx.x + row + 1;
+	
+	if( col >= num_cols )
+		return;
+	
+	Real sum = 0;
+	for( Index k = 0; k < row; ++k )
+		sum += LU( row, k ) * LU( k, col );
+	
+	LU( row, col ) = ( LU( row, col ) - sum ) / LU( row, row );
 }
 \end{lstlisting}
 
@@ -610,7 +652,7 @@ SequentialSolver::solve( const Matrix& LU, Matrix& X, const Vector& piv )
 \chapter{IS\textit{x}PP Implementation}\label{Appendix:ISxPP-implementation}
 The implementation of IS\_\textit{x}PP is shown in Listing~\ref{Listing:ISxPP-implementation-excerpt}. Note that the kernels called in Listing~\ref{Listing:ISxPP-implementation-excerpt} are shown separately in Listings~\ref{Listing:ISxPP-implementation->kernels->forward-substitution}, \ref{Listing:ISxPP-implementation->kernels->backward-substitution}, and \ref{Listing:ISxPP-implementation->kernels->matrix-assign}.
 
-\begin{lstlisting}[caption={Excerpt from the implementation of IS\_\textit{x}PP. The code has been slightly modified for brevity, for example, the checks for appropriate sizing of matrices and vectors have been removed. Note that the CUDA thread blocks used in the implementation are larger in the 1st dimension. Threads adjacent in the 1st dimensions are assigned to neighboring elements in the same column since the matrices are stored in column-major order on the GPU. In other words, to mitigate misaligned global memory access, the 1st dimension of threads is used to access elements in a single column and the 2nd dimension is used to differentiate between right-hand sides.},label={Listing:ISxPP-implementation-excerpt}]
+\begin{lstlisting}[caption={Excerpt from the implementation of IS\_\textit{x}PP. The code has been slightly modified for brevity, for example, the checks for appropriate sizing of matrices and vectors have been removed. Note that the CUDA thread blocks used in the implementation are larger in the 1st dimension. Threads adjacent in the 1st dimension are assigned to neighboring elements in the same column since the matrices are stored in column-major order on the GPU. In other words, to mitigate misaligned global memory access, the 1st dimension of threads is used to access elements in a single column and the 2nd dimension is used to differentiate between right-hand sides.},label={Listing:ISxPP-implementation-excerpt}]
 template< const int THREADS_PER_BLOCK >
 template< typename Matrix, typename Vector >
 void

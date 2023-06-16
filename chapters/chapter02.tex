@@ -22,7 +22,7 @@ While TNL provides a wide range of data structures and functionalities, this sec
 	\item \code{Allocator} - The allocator type used for the allocation and deallocation of data. This parameter dictates the memory space the data is allocated in, e.g., on the host (CPU memory space), or the device (CUDA memory space). By default, the allocator corresponding to \code{Device} is set.
 \end{itemize}
 
-At its core, \code{Array} contains a pointer to the data and the size of the array. Additionally, methods providing different functionalities are present, for example, \code{resize()} or \code{forAllElements()}, where the latter executes a given lambda expression\footnote{C++ lambda expressions on cppreference: \url{https://en.cppreference.com/w/cpp/language/lambda}} for each element of the array; the lambda is executed by the same device whose memory space contains the data. Note that while all methods can be executed on the host (CPU), only those prefixed with \code{\_\_cuda\_callable\_\_} (macro comprising \code{\_\_device\_\_ \_\_host\_\_}) can be executed on the device (Nvidia GPU).
+At its core, \code{Array} contains a pointer to the data and the size of the array. Additionally, methods providing different functionalities are present, for example, \code{resize()} or \code{forAllElements()}, where the latter executes a given lambda expression\footnote{C++ lambda expressions on cppreference: \url{https://en.cppreference.com/w/cpp/language/lambda}} for each element of the array; the lambda is executed by the same device whose memory space contains the data. Note that while all methods can be executed on the host (CPU), only those prefixed with \code{\_\_cuda\_callable\_\_} can be executed on the device (Nvidia GPU). The \code{\_\_cuda\_callable\_\_} macro is defined as \code{\_\_device\_\_ \_\_host\_\_}, where \code{\_\_device\_\_} indicates that the function can only be called from and executed on the device, and \code{\_\_host\_\_} indicates that the function can only be called from and executed by the host.
 
 \paragraph{Vector} Extending \code{Array} is the \code{TNL::Containers::Vector} class \cite{ixA8ZYptYohwlgwt}. Its template parameters are identical to that of \code{Array} except for changes in nomenclature. While its parent class possesses functionalities largely centered around memory management, \code{Vector} adds basic vector operations such as addition, subtraction, scalar multiplication, etc.
 
@@ -79,8 +79,8 @@ where $\mathbf{P}$ is a permutation matrix, $\mathbf{A}$ is a coefficient matrix
 The function is data-agnostic, i.e., both single and double precision can be used. For completeness, note that the function's name follows cuSOLVER's naming conventions \code{cusolverDn<t><operation>} \cite{5D33zKi5iStCty0r}, where:
 
 \begin{itemize}
-	\item \code{t} represents the data type. For example, \code{S}, \code{D}, \code{C}, \code{Z}, or \code{X}, i.e., \code{float}, \code{double}, \code{cuComplex}, \code{cuDoubleComplex}, or the generic type, respectively.
-	\item \code{operation} represents the factorization operation. For example, \code{potrf} (Cholesky factorization), \code{getrf} (LU with partial pivoting), \code{geqrf} (QR factorization), or \code{sytrf} (Bunch-Kaufman factorization).
+	\item \code{t} represents the data type, for example, \code{S}, \code{D}, \code{C}, \code{Z}, or \code{X}, i.e., \code{float}, \code{double}, \code{cuComplex}, \code{cuDoubleComplex}, or the generic type, respectively; and
+	\item \code{operation} represents the factorization operation, for example, \code{potrf} (Cholesky factorization), \code{getrf} (LU with partial pivoting), \code{geqrf} (QR factorization), or \code{sytrf} (Bunch-Kaufman factorization).
 \end{itemize}
 
 While the \code{cusolverDnXgetrf()} function takes many parameters, only a select few will be shown in Listing~\ref{Listing:implementation->libraries-used->CUDA-libraries->cuSOLVER->cusolverDnXgetrf-parameters}.
@@ -225,16 +225,16 @@ In the context of this project, an implementation from the \textit{Decomposers} 
 \subsubsection{Decomposers}\label{Subsection:implementation->decomposition-project->implemented-solutions->decomposers}
 In particular, the \textit{Decomposers} group consists of implementations that perform LUP, i.e., $\mathbf{PA} = \mathbf{LU}$, or LU decomposition without partial pivoting, i.e., $\mathbf{A} = \mathbf{LU}$. The full list of decomposers and their characteristics is presented in Table~\ref{Table:implementation->decomposition-project->implemented-solutions->decomposers->decomposers-in-the-project}.
 
-\begin{table}[!ht]
+\begin{table}[ht!]
 	\centering
 	\begin{tabular}{|l|l|l|l|}
 		\hline
-		Decomposer                                		     & With / Without PP & Unit diag. In & Device Supported \\ \hline
-		\cellcolor[HTML]{EFEFEF}\textbf{CM(PP)}  		     & Yes / Yes         & $\mathbf{U}$  & CPU              \\
-		\cellcolor[HTML]{EFEFEF}cuSolverDnXgetrf(PP)	     & Yes / Yes         & $\mathbf{L}$  & GPU              \\
-		\textbf{GEM}                               		     & Yes / No          & $\mathbf{L}$  & CPU              \\
-		\cellcolor[HTML]{EFEFEF}\textbf{ICM\_\textit{x}(PP)} & Yes / Yes         & $\mathbf{U}$  & CPU*, GPU        \\
-		\cellcolor[HTML]{EFEFEF}\textbf{PCM\_\textit{x}(PP)} & Yes               & $\mathbf{U}$  & GPU              \\ \hline
+		\rowcolor[HTML]{C0C0C0} \textbf{Decomposer}          & \textbf{With / Without PP} & \textbf{Unit diag. in} & \textbf{Device supported} \\ \hline
+		\cellcolor[HTML]{EFEFEF}\textbf{CM(PP)}              & Yes / Yes                  & $\mathbf{U}$           & CPU                       \\
+		\cellcolor[HTML]{EFEFEF}CuSolverDnXgetrf(PP)         & Yes / Yes                  & $\mathbf{L}$           & GPU                       \\
+		\textbf{GEM}                                         & Yes / No                   & $\mathbf{L}$           & CPU                       \\
+		\cellcolor[HTML]{EFEFEF}\textbf{ICM\_\textit{x}(PP)} & Yes / Yes                  & $\mathbf{U}$           & CPU*, GPU                 \\
+		\cellcolor[HTML]{EFEFEF}\textbf{PCM\_\textit{x}(PP)} & Yes                        & $\mathbf{U}$           & GPU                       \\ \hline
 	\end{tabular}
 	\caption{The decomposers made available by the Decomposition project. The decomposers highlighted in gray are discussed in this thesis, and those in \textbf{bold} font were implemented by the author of the project. The "PP" suffix indicates whether partial pivoting is used. The "\textit{x}" in the name of certain decomposers signifies their CUDA thread configuration. The "Unit diag. In" column indicates which of the two matrices, $\mathbf{L}$ or $\mathbf{U}$, contains the unit diagonal on output. Note that ICM\_\textit{x}PP is only implemented on the GPU as the CPU implementation would be highly inefficient.}
 	\label{Table:implementation->decomposition-project->implemented-solutions->decomposers->decomposers-in-the-project}
@@ -244,7 +244,7 @@ As can be seen from Table~\ref{Table:implementation->decomposition-project->impl
 
 Next, the implementations of the selected decomposers will be presented.
 
-\paragraph{Crout's Method With Partial Pivoting (CMPP)} The sequential algorithm of CMPP, detailed in Section~\ref{Subsection:theory->ICMPP->LUP->CMPP}, was implemented only for the CPU since it would not be efficient on the GPU without any modifications. The declaration of the \code{decompose()} method for the CMPP decomposer is shown in Listing~\ref{Listing:implementation->decomposition-project->implemented-solutions->decomposers->CMPP}, and the definition can be found in Appendix~\ref{Appendix:CMPP-implementation}. The definition of \code{decompose()} differs from the algorithm described in Section~\ref{Subsection:theory->ICMPP->LUP->CMPP} in the tolerance of partial pivoting. In this context, \textit{tolerance} refers to the conditions under which a row is pivoted. While most LUP algorithms have no tolerance, i.e., they pivot every row, the CMPP decomposer only pivots a row if its diagonal element, $l_{j,j}$, is smaller in absolute value than (or equal to) a specified threshold, e.g., 1e-5. In the context of this project, this behavior is referred to as \textit{conditional partial pivoting}. Initially, conditional partial pivoting, described in Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->converge-lower-sections} of ICMPP's algorithm on page~\pageref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->converge-lower-sections}, was included in the CMPP decomposer to test the stability of the concept. However, it remained as further testing showed promising results.
+\paragraph{Crout's Method with Partial Pivoting (CMPP)} The sequential algorithm of CMPP, detailed in Section~\ref{Subsection:theory->ICMPP->LUP->CMPP}, was implemented only for the CPU since it would not be efficient on the GPU without any modifications. The declaration of the \code{decompose()} method for the CMPP decomposer is shown in Listing~\ref{Listing:implementation->decomposition-project->implemented-solutions->decomposers->CMPP}, and the definition can be found in Appendix~\ref{Appendix:CMPP-implementation}. The definition of \code{decompose()} differs from the algorithm described in Section~\ref{Subsection:theory->ICMPP->LUP->CMPP} in the tolerance of partial pivoting. In this context, \textit{tolerance} refers to the conditions under which a row is pivoted. While most LUP algorithms have no tolerance, i.e., they pivot every row, the CMPP decomposer only pivots a row if its diagonal element, $l_{j,j}$, is smaller in absolute value than (or equal to) a specified threshold, e.g., 1e-5. In the context of this project, this behavior is referred to as \textit{conditional partial pivoting}. Initially, conditional partial pivoting, described in Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->converge-lower-sections} of ICMPP's algorithm on page~\pageref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->converge-lower-sections}, was included in the CMPP decomposer to test the stability of the concept. However, it remained as further testing showed promising results.
 
 \begin{lstlisting}[caption={The declaration of the \code{decompose()} method for the CMPP decomposer. On input, matrix \code{LU} is assumed to contain the values of $\mathbf{A}$, and \code{piv} is expected to be appropriately sized. On output, matrix \code{LU} contains the values of matrices $\mathbf{L}$ and $\mathbf{U}$ in the format presented in Equation~\ref{Equation:implementation->decomposition-project->implemented-solutions->decomposers->CMPP}, and \code{piv} contains the row permutations in the format set by cuSOLVER and cuBLAS, i.e., row \code{i} was swapped with row \code{piv[i]} \cite{5D33zKi5iStCty0r}. The template parameters, \code{Matrix} and \code{Vector}, are expected to be data structures from TNL that inherit from the \code{TNL::Matrices::DenseMatrix} and \code{TNL::Containers::Vector} types, respectively.},label={Listing:implementation->decomposition-project->implemented-solutions->decomposers->CMPP}]
 template< typename Matrix, typename Vector >
@@ -267,7 +267,7 @@ decompose( Matrix& LU, Vector& piv );
 
 Similarly to cuSOLVER, \code{piv} can contain any values on input as they are all replaced during computation. However, in the case of the CMPP decomposer, the values of \code{piv} are initialized to their default values within the \code{decompose()} method prior to the main computation. Specifically, the default values follow the format set by cuSOLVER and cuBLAS, i.e., \code{piv[0] = 1}, \code{piv[1] = 2}, etc. Note that the values of \code{piv} must be set to their default pivoting values by every decomposer that uses conditional partial pivoting. The reasoning behind this requirement stems from the fact that conditional partial pivoting does not attempt to pivot all rows.
 
-\paragraph{Parallel Crout's Method With Partial Pivoting (PCM\_\textit{x}PP)} Originally, the PCM\_\textit{x}PP decomposer was conceived as a GPU-compatible alternative to CMPP that preserves its accuracy as a direct method. However, it remained in the project as its performance was often comparable to that of ICM\_\textit{x}PP. The algorithm of PCM\_\textit{x}PP is identical to that of CMPP except for minor parallelizations. Specifically, the algorithm consists of the following steps (changes compared to the algorithm of CMPP are highlighted in green):
+\paragraph{Parallel Crout's Method with Partial Pivoting (PCM\_\textit{x}PP)} Originally, the PCM\_\textit{x}PP decomposer was conceived as a GPU-compatible alternative to CMPP that preserves its accuracy as a direct method. However, it remained in the project as its performance was often comparable to that of ICM\_\textit{x}PP. The algorithm of PCM\_\textit{x}PP is identical to that of CMPP except for minor parallelizations. Specifically, the algorithm consists of the following steps (changes compared to the algorithm of CMPP are highlighted in green):
 
 \begin{enumerate}
 	\item Set $j$ equal to 1.
@@ -300,7 +300,7 @@ The declaration of the \code{decompose()} method for the PCM\_\textit{x}PP decom
 
 In the caption of Table~\ref{Table:implementation->decomposition-project->implemented-solutions->decomposers->decomposers-in-the-project}, it was mentioned that the \textit{x} in PCM\_\textit{x}PP signifies the CUDA thread configuration of the decomposer. Specifically, the number of threads in each one-dimensional CUDA thread block is defined as $x^2$.
 
-\paragraph{Iterative Crout's Method With Partial Pivoting (ICM\_\textit{x}PP)} One of the main tasks for this thesis was to implement an LU decomposition algorithm with partial pivoting (LUP) for the GPU. As part of \citetitle{Cejka2022} \cite{Cejka2022}, LU decomposition (without partial pivoting) was implemented both for the CPU and for the GPU in the form of ICM\textit{x}. However, the performance of the CPU implementation was low, and it served solely as an initial proof-of-concept that was neither developed nor optimized further. Therefore, in the context of this thesis, the ICM\_\textit{x}PP algorithm, introduced in Section~\ref{Subsection:theory->ICMPP->LUP->ICMPP}, was implemented only for the GPU, as specified in Table~\ref{Table:implementation->decomposition-project->implemented-solutions->decomposers->decomposers-in-the-project}. While the implementation of ICM\_\textit{x}PP was optimized throughout the development of the project, only the final version will be detailed in this thesis.
+\paragraph{Iterative Crout's Method with Partial Pivoting (ICM\_\textit{x}PP)} One of the main tasks for this thesis was to implement an LU decomposition algorithm with partial pivoting (LUP) for the GPU. As part of \citetitle{Cejka2022} \cite{Cejka2022}, LU decomposition (without partial pivoting) was implemented both for the CPU and for the GPU in the form of ICM\textit{x}. However, the performance of the CPU implementation was low, and it served solely as an initial proof-of-concept that was neither developed nor optimized further. Therefore, in the context of this thesis, the ICM\_\textit{x}PP algorithm, introduced in Section~\ref{Subsection:theory->ICMPP->LUP->ICMPP}, was implemented only for the GPU, as specified in Table~\ref{Table:implementation->decomposition-project->implemented-solutions->decomposers->decomposers-in-the-project}. While the implementation of ICM\_\textit{x}PP was optimized throughout the development of the project, only the final version will be detailed in this thesis.
 
 The GPU implementation of ICM\_\textit{x}PP follows the algorithm introduced in Section~\ref{Subsection:theory->ICMPP->LUP->ICMPP} with minor modifications. Therefore, its description is split into three parts:
 
@@ -462,7 +462,7 @@ IterativeCroutMethod< BLOCK_SIZE >::decompose( Matrix& A, Matrix& LU, Vector& pi
 {
 	using Index = typename Matrix::IndexType;
 	
-	// A and LU are both assumed to be n x n matrices
+	const Index num_rows = LU.getRows();
 	const Index num_cols = LU.getColumns();
 	
 	Index sec_size = min( max( num_cols / 10, (Index) 256 ), (Index) 1024 );
@@ -479,12 +479,13 @@ The next excerpt, shown in Listing~\ref{Listing:implementation->decomposition-pr
 
 \begin{lstlisting}[caption={An excerpt from the definition of the overloaded \code{decompose()} method for the ICM\_\textit{x}PP decomposer. The excerpt highlights how the processing of a diagonal section is implemented. For clarity, variables used in the code are declared and documented. The \code{DSecCompute\_kernel()} and \code{DSecAssign\_kernel()} kernels compute and assign values of the diagonal section, respectively. The kernels are presented separately in Listings~\ref{Listing:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->kernels->diagonal-compute} and \ref{Listing:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->kernels->diagonal-assign}.},label={Listing:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->processing-diagonal-section},escapechar=@]
 // ...
+using Real = typename Matrix::RealType;
 // Matrix representing LU in the next iteration
 Matrix LUnext;
 LUnext.setLike( LU );
 
 // Processing tolerance
-const Real process_tol = 0; @\label{Line:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->processing-diagonal-section->processing-tolerance}@
+const Real process_tol = 0.0; @\label{Line:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->processing-diagonal-section->processing-tolerance}@
 // Pivoting tolerance
 const Real piv_tol = 1.0e-5;
 
@@ -554,7 +555,7 @@ To find a bad element in the diagonal section, \code{TNL::Algorithms::reduce()} 
 
 Then, the diagonal section is processed as described in Step~\ref{Item:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->processing-by-sections->diagonal-section->process-diagonal-section}. Note that the processing flag \code{processed} is a one-element array containing a boolean that is used to indicate whether the diagonal section is processed. Line~\ref{Line:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->processing-diagonal-section->processed-reset} shows that with the start of every loop, its value is set to \code{true}. Then, its view (\code{ArrayView} - explained in Section~\ref{Subsection:implementation->libraries-used->TNL}) is passed to the kernel where each thread evaluates whether the element it computed is processed or not. If it is not, then the thread sets the value of \code{processed} to \code{false}. While, generally, it is not good practice for multiple threads to write in an undefined order to the same memory address, in this case, it does not matter. The reasoning behind this statement is that the value written by all threads is the same. Furthermore, when the value of \code{processed} is read in the condition of the while loop on Line~\ref{Line:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->processing-diagonal-section->while-loop-condition}, it is done so only after the kernels have been executed. This is due to the fact that, as mentioned in Sections~\ref{Subsection:theory->CUDA->thread-management} and \ref{Subsection:theory->CUDA->concurrent-kernel-execution}, tasks issued via the default stream are executed serially. In other words, the kernels are asynchronously called from the host, executed on the device in the order they were called, and then the value of \code{processed} is copied from the device to the host.
 
-Another important aspect of the implementation is the processing tolerance, \code{process\_tol}. As can be seen on Line~\ref{Line:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->processing-diagonal-section->processing-tolerance} in Listing~\ref{Listing:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->processing-diagonal-section}, is it set to 0.0. The value was chosen to provide accurate results as even small nonzero values, e.g., 1e-10, could greatly reduce the accuracy while increasing the performance by a negligible amount. The reason behind the great reduction in accuracy stems from the "avalanche" effect described earlier in \textit{Processing by Sections}. However, in this case, the avalanche exhibits a quality-decreasing characteristic since the elements in the top-left corner would not be of the highest quality due to the relaxed tolerance. In other words, the imperfectness of elements in the top-left corner causes a butterfly effect resulting in highly inaccurate results. For more details, see Sections~2.2.1 and 2.3, and Chapter~3 in \citetitle{Cejka2022} \cite{Cejka2022}.
+Another important aspect of the implementation is the processing tolerance, \code{process\_tol}. As can be seen on Line~\ref{Line:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->processing-diagonal-section->processing-tolerance} in Listing~\ref{Listing:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->processing-diagonal-section}, it is set to \code{0.0}. The value was chosen to provide accurate results as even small nonzero values, e.g., 1e-10, could greatly reduce the accuracy while increasing the performance by a negligible amount. The reason behind the great reduction in accuracy stems from the "avalanche" effect described earlier in \textit{Processing by Sections}. However, in this case, the avalanche exhibits a quality-decreasing characteristic since the elements in the top-left corner would not be of the highest quality due to the relaxed tolerance. In other words, the imperfectness of elements in the top-left corner causes a butterfly effect resulting in highly inaccurate results. For more details, see Sections~2.2.1 and 2.3, and Chapter~3 in \citetitle{Cejka2022} \cite{Cejka2022}.
 
 Once the values of the diagonal section have been processed either up to and including the bad element, or all, then the processing of the sections below the diagonal section begins. Once they are processed, the bad element can be pivoted. This order of operations assures that the elements below the bad element are processed when it needs to be replaced. Listing~\ref{Listing:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->processing-lower-sections} shows the processing of the lower sections and the pivoting of the bad element. Note that the implementation of the pivoting function is shown in Listing~\ref{Listing:ICMxPP-implementation-pivot-bad-element}.
 
@@ -572,6 +573,10 @@ TNL::Containers::Array< bool, TNL::Devices::Cuda, Index > nonDiagSec_processed{ 
 TNL::Containers::Array< bool, TNL::Devices::Host, Index > nonDiagSec_processed_host{ nonDiagSecs_perRow, false };
 // ...
 auto nonDiagSec_processed_view = nonDiagSec_processed.getView();
+
+// Fill the pivoting vector with increments of 1 starting from 1 to num_rows.
+BaseDecomposer::setDefaultPivotingValues( piv );
+auto piv_view = piv.getView();
 // ...
 
 // Non-diagonal section start, end, and id (used to access the streams)
@@ -803,11 +808,11 @@ The full list of solvers and their characteristics is presented in Table~\ref{Ta
 	\centering
 	\begin{tabular}{|l|l|l|l|}
 		\hline
-		Decomposer                 & With / Without PP & Unit diag. In 				 & Device Supported \\ \hline
-		\textbf{SS(PP)}  		   & Yes / Yes         & $\mathbf{U}$  				 & CPU              \\
-		cublas<t>trsm(PP)	   	   & Yes / Yes         & $\mathbf{L}$, $\mathbf{U}$  & GPU              \\
-		cuSolverDnXgetrs(PP)	   & Yes / Yes         & $\mathbf{L}$				 & GPU              \\
-		\textbf{IS\_\textit{x}(PP)}  & Yes / Yes         & $\mathbf{U}$				 & CPU, GPU         \\ \hline
+		\rowcolor[HTML]{C0C0C0}\textbf{Solver}              & \textbf{With / Without PP} & \textbf{Unit diag. in}     & \textbf{Device supported} \\ \hline
+		\cellcolor[HTML]{EFEFEF}\textbf{SS(PP)}             & Yes / Yes                  & $\mathbf{U}$               & CPU                       \\
+		\cellcolor[HTML]{EFEFEF}CuBLAStrsm(PP)           & Yes / Yes                  & $\mathbf{L}$, $\mathbf{U}$ & GPU                       \\
+		\cellcolor[HTML]{EFEFEF}CuSolverDnXgetrs(PP)        & Yes / Yes                  & $\mathbf{L}$               & GPU                       \\
+		\cellcolor[HTML]{EFEFEF}\textbf{IS\_\textit{x}(PP)} & Yes / Yes                  & $\mathbf{U}$               & CPU, GPU                  \\ \hline
 	\end{tabular}
 	\caption{The solvers made available by the Decomposition project. The solvers in \textbf{bold} font were implemented by the author of the project. The "PP" suffix indicates whether partial pivoting is used. The "\textit{x}" in the name of certain solvers signifies their CUDA thread configuration. The "Unit diag. In" column indicates the format of the input matrix the solver supports, i.e., if the unit diagonal should be in $\mathbf{L}$, $\mathbf{U}$, or either.}
 	\label{Table:implementation->decomposition-project->implemented-solutions->solvers->solvers-in-the-project}
@@ -815,11 +820,11 @@ The full list of solvers and their characteristics is presented in Table~\ref{Ta
 
 As can be seen from Table~\ref{Table:implementation->decomposition-project->implemented-solutions->solvers->solvers-in-the-project}, two solvers were implemented as part of this project: SSPP and IS\_\textit{x}PP.
 
-\paragraph{Sequential Solver With Partial Pivoting (SSPP)} Similarly to the CMPP decomposer, the Sequential Solver with partial pivoting (SSPP) is a basic algorithm implemented only for the CPU as its sequential algorithm would be inefficient on the GPU.
+\paragraph{Sequential Solver with Partial Pivoting (SSPP)} Similarly to the CMPP decomposer, the Sequential Solver with partial pivoting (SSPP) is a basic algorithm implemented only for the CPU as its sequential algorithm would be inefficient on the GPU.
 
 The purpose of the SSPP solver is to provide an accurate and simple solver. Therefore, it was not optimized or improved upon except for adding support for multiple right-hand sides. The definition of the \code{solve()} method for the SSPP solver is shown in Listing~\ref{Listing:SSPP-implementation-excerpt} of Appendix~\ref{Appendix:SSPP-implementation}. The implementation showcases how multiple right-hand sides can be handled in forward substitution using \code{TNL::Algorithms::parallelFor()} (described in Section~\ref{Subsection:implementation->libraries-used->TNL->parallel-functionalities}).
 
-\paragraph{Iterative Solver With Partial Pivoting (IS\_\textit{x}PP)} The IS\_\textit{x}PP solver was implemented as an experimental method that aimed to combine the approach of ICM\_\textit{x}PP and the algorithm of SSPP. However, it was not a part of the diploma thesis assignment and was therefore not prioritized in terms of optimization. Thus, the implementation of IS\_\textit{x}PP is naive in the sense that it performs iterations of both substitutions until their respective matrices are processed. In other words, it repeatedly computes all values in $\mathbf{LY} = \mathbf{B}$ simultaneously until the values of $\mathbf{Y}$ stop changing between iterations according to a set tolerance. Then, it performs the same for $\mathbf{UX} = \mathbf{Y}$ and $\mathbf{X}$. While the solver is implemented both for the CPU and the GPU, the former implementation serves solely as a means to verify the approach, therefore, it is not presented in this thesis. The definition of the \code{solve()} method for the IS\_\textit{x}PP solver is shown in Listing~\ref{Listing:ISxPP-implementation-excerpt}.
+\paragraph{Iterative Solver with Partial Pivoting (IS\_\textit{x}PP)} The IS\_\textit{x}PP solver was implemented as an experimental method that aimed to combine the approach of ICM\_\textit{x}PP and the algorithm of SSPP. However, it was not a part of the diploma thesis assignment and was therefore not prioritized in terms of optimization. Thus, the implementation of IS\_\textit{x}PP is naive in the sense that it performs iterations of both substitutions until their respective matrices are processed. In other words, it repeatedly computes all values in $\mathbf{LY} = \mathbf{B}$ simultaneously until the values of $\mathbf{Y}$ stop changing between iterations according to a set tolerance. Then, it performs the same for $\mathbf{UX} = \mathbf{Y}$ and $\mathbf{X}$. While the solver is implemented both for the CPU and the GPU, the former implementation serves solely as a means to verify the approach, therefore, it is not presented in this thesis. The definition of the \code{solve()} method for the IS\_\textit{x}PP solver is shown in Listing~\ref{Listing:ISxPP-implementation-excerpt}.
 
 \paragraph{Compatibility of Decomposers and Solvers} Combining the information from Tables~\ref{Table:implementation->decomposition-project->implemented-solutions->decomposers->decomposers-in-the-project} and \ref{Table:implementation->decomposition-project->implemented-solutions->solvers->solvers-in-the-project} yields the overview of compatible decomposers and solvers presented in Table~\ref{Table:implementation->decomposition-project->implemented-solutions->solvers->compatibile-decomposers-and-solvers}.
 
@@ -827,15 +832,16 @@ The purpose of the SSPP solver is to provide an accurate and simple solver. Ther
 	\centering
 	\begin{tabular}{|l|c|c|c|c|}
 		\hline
-		\diagbox{Decomposer}{Solver} & SSPP & IS\_\textit{x}PP & cublas<t>trsm(PP) & cuSolverDnXgetrs(PP) \\ \hline
-		CM(PP)  		    		 & Yes  & Yes  			   & Yes 			   & No      	          \\
-		PCM\_\textit{x}(PP) 		 & Yes  & Yes  			   & Yes 			   & No      	          \\
-		ICM\_\textit{x}(PP)  		 & Yes  & Yes  			   & Yes 			   & No      	          \\
-		cuSolverDnXgetrf(PP)	     & No   & No  			   & Yes 			   & Yes      	          \\ \hline
+		\rowcolor[HTML]{C0C0C0} \textbf{Decomposer} \textbackslash\space \textbf{Solver} & \cellcolor[HTML]{EFEFEF}SS(PP) & \cellcolor[HTML]{EFEFEF}IS\_\textit{x}(PP) & \cellcolor[HTML]{EFEFEF}CuBLAStrsm(PP) & \cellcolor[HTML]{EFEFEF}CuSolverDnXgetrs(PP) \\ \hline
+		\cellcolor[HTML]{EFEFEF}CM(PP)                                         &              Yes               &                    Yes                     &                  Yes                   &                      No                      \\
+		\cellcolor[HTML]{EFEFEF}PCM\_\textit{x}(PP)                            &              Yes               &                    Yes                     &                  Yes                   &                      No                      \\
+		\cellcolor[HTML]{EFEFEF}ICM\_\textit{x}(PP)                            &              Yes               &                    Yes                     &                  Yes                   &                      No                      \\
+		\cellcolor[HTML]{EFEFEF}CuSolverDnXgetrf(PP)                           &               No               &                     No                     &                  Yes                   &                     Yes                      \\ \hline
 	\end{tabular}
 	\caption{Compatibility of decomposer and solvers made available by the Decomposition project. To clarify, a decomposer-solver combination is compatible if the two can be used to complete a linear solver.}
 	\label{Table:implementation->decomposition-project->implemented-solutions->solvers->compatibile-decomposers-and-solvers}
 \end{table}
+
 
 
 \subsection{Benchmarks}\label{Subsection:implementation->decomposition-project->benchmarks}
@@ -880,7 +886,7 @@ As mentioned in \citetitle{Cejka2022} \cite{Cejka2022}, many aspects of the impl
 \section{BDDCML Integration}\label{Section:implementation->BDDCML}
 Another key task for this thesis was to apply the decomposers and solvers made available by the Decomposition project in the Multilevel BDDC Solver Library (BDDCML) \cite{Sistek2011, Sistek2012, Sousedik2013, Sistek2015}. According to the project's website\footnote{\label{Footnote:implementation->BDDCML-integration->BDDCML-webpage}BDDCML webpage URL: \url{https://users.math.cas.cz/~sistek/software/bddcml.html}}, the goal of BDDCML is to provide a scalable parallel solver of linear equations for systems originating from finite element computations. The implementation of the library was inspired by the Adaptive-Multilevel variant of the Balancing Domain Decomposition by Constraints (BDDC) method. More information regarding BDDCML can be found on its website\footref{Footnote:implementation->BDDCML-integration->BDDCML-webpage} or in its GitHub repository\footnote{Multilevel BDDC Solver Library GitHub repository URL: \url{https://github.com/sistek/bddcml}}.
 
-\paragraph{Integration With the Decomposition Project} BDDCML is written in Fortran 95 and the Decomposition project is written in C++. Therefore, to use decomposers and solvers from the Decomposition project in BDDCML, the TNL-BDDCML Interface\footnote{tnl\_bddcml\_interface Bitbucket repository URL: \url{https://bitbucket.org/tnl-decomposition/tnl_bddcml_interface/src/master}} was used. The interface was implemented by Ing. Jakub Šístek, Ph.D. as a means to use data structures and functionalities provided by TNL in BDDCML, for example, the allocation and deallocation of a \code{TNL::Matrices::DenseMatrix} instance on the GPU, GEMV, etc.\\
+\paragraph{Integration with the Decomposition Project} BDDCML is written in Fortran 95 and the Decomposition project is written in C++. Therefore, to use decomposers and solvers from the Decomposition project in BDDCML, the TNL-BDDCML Interface\footnote{tnl\_bddcml\_interface Bitbucket repository URL: \url{https://bitbucket.org/tnl-decomposition/tnl_bddcml_interface/src/master}} was used. The interface was implemented by Ing. Jakub Šístek, Ph.D. as a means to use data structures and functionalities provided by TNL in BDDCML, for example, the allocation and deallocation of a \code{TNL::Matrices::DenseMatrix} instance on the GPU, GEMV, etc.\\
 For the Decomposition project, Fortran wrappers calling the \code{decompose()} method of a specific decomposer or the \code{solve()} method of a specific solver were added to the interface.
 
 Note that both the interface and BDDCML needed to be extended. Therefore, the repositories were forked and the changes related to the Decomposition project were added separately. The final versions of both repositories that contain changes related to the Decomposition project are available on request or as an attachment to this thesis.

@@ -222,8 +222,10 @@ IterativeCroutMethod< BLOCK_SIZE >::decompose( Matrix& A, Matrix& LU, Vector& pi
 	
 	// Processing tolerance
 	const Real process_tol = 0.0;
-	// Pivoting tolerance
-	const Real piv_tol = 1.0e-5;
+	// Pivoting tolerance - inclusive lower bound
+	const Real piv_tol_lower = 1.0e-5;
+	// Pivoting tolerance - uppder bound
+	const Real piv_tol_upper = 1.0e+5;
 
 	// Flag to indicate that the diagonal section has been processed
 	TNL::Containers::Array< bool, TNL::Devices::Cuda > processed{ 1, false };
@@ -261,7 +263,7 @@ IterativeCroutMethod< BLOCK_SIZE >::decompose( Matrix& A, Matrix& LU, Vector& pi
 	// Lambda for fetching the index of bad elements
 	auto get_badEl_colIdxs = [ = ] __cuda_callable__( Index col ) -> Index
 	{
-		return abs( LU_view( col, col ) ) <= piv_tol ? col : num_cols;
+		return ( abs( LU_view( col, col ) ) <= piv_tol_lower || piv_tol_upper < abs( LU_view( col, col ) ) ) ? col : num_cols;
 	};
 	
 	// Diagonal section start and end
@@ -290,11 +292,8 @@ IterativeCroutMethod< BLOCK_SIZE >::decompose( Matrix& A, Matrix& LU, Vector& pi
 				// Assign the values computed for the next iteration
 				DSecAssign_kernel<<< blocks_perGrid, threads_perBlock >>>( LU_view, LUnext_view, dSec_start, dSec_end, dSec_start, dSec_end, badEl_idx );
 				
-				// Check if a bad element is present between the previous bad element and the current bad element
-				Index badEl_idx_new = TNL::Algorithms::reduce< TNL::Devices::Cuda >( badEl_searchStart, dSec_end, get_badEl_colIdxs, TNL::Min{}, num_cols );
-				// If a bad element was detected before the current one -> set it as the new bad element
-				if( badEl_idx_new < badEl_idx )
-					badEl_idx = badEl_idx_new;
+				// Check if a bad element is present in a different column
+				badEl_idx = TNL::Algorithms::reduce< TNL::Devices::Cuda >( badEl_searchStart, dSec_end, get_badEl_colIdxs, TNL::Min{}, num_cols );
 			} while( ! processed_view.getElement( 0 ) );
 			
 			// The Diagonal section contains processed values excluding the values to the bottom-right of the bad element
@@ -326,7 +325,7 @@ IterativeCroutMethod< BLOCK_SIZE >::decompose( Matrix& A, Matrix& LU, Vector& pi
 			} while( ! TNL::Algorithms::reduce( nonDiagSec_processed_view, TNL::LogicalAnd{} ) );
 			
 			// Pivot the bad element
-			pivotBadElement< BLOCK_SIZE >( A_view, LU_view, piv_view, badEl_idx, num_rows, num_cols, badEl_searchStart, piv_tol );
+			pivotBadElement< BLOCK_SIZE >( A_view, LU_view, piv_view, badEl_idx, num_rows, num_cols, badEl_searchStart, piv_tol_lower, piv_tol_upper );
 			
 		} while( badEl_idx < dSec_end - 1 );
 		
@@ -371,7 +370,7 @@ synchronizeStreams( cudaStream_t* streams, const int num_streams )
 \begin{lstlisting}[caption={The definition of the \code{pivotBadElement()} function which is responsible for pivoting a bad element found in column \code{j} of the main diagonal. The \code{pivotRowOfMatrices\_device()} function, presented below the \code{pivotBadElement()} function, is implemented in the parent class of \code{IterativeCroutMethod}: \code{BaseDecomposer}. Note that the variant of the \code{swapRows\_device()} function presented in the \code{pivotRowOfMatrices\_device()} swaps the rows in two matrices.},label={Listing:ICMxPP-implementation-pivot-bad-element}]
 template< const int BLOCK_SIZE, typename MatrixView, typename VectorView, typename Index, typename Real >
 void
-pivotBadElement( MatrixView& A, MatrixView& LU, VectorView& piv, const Index& j, const Index& num_rows, const Index& num_cols, Index& badEl_searchStart, const Real& piv_tol )
+pivotBadElement( MatrixView& A, MatrixView& LU, VectorView& piv, const Index& j, const Index& num_rows, const Index& num_cols, Index& badEl_searchStart, const Real& piv_tol_lower, const Real& piv_tol_upper )
 {
 	// The last element of the matrix does not require pivoting as no elements are computed using it, i.e., division by zero cannot occur for the last element
 	if( j >= num_cols - 1 ) {
@@ -384,8 +383,12 @@ pivotBadElement( MatrixView& A, MatrixView& LU, VectorView& piv, const Index& j,
 		// The current bad element in the main diagonal is zero even after pivoting -> Decomposition failed
 		throw Exceptions::MatrixSingular( "LU", j, j );
 	}
-	else if( max_elem.first <= piv_tol ) {
-		// The value at the index of the bad element is smaller than the pivoting tolerance, however, it is not zero, so the computation can continue
+	else if( isnan( max_elem.first ) ) {
+		// The current bad element in the main diagonal is NaN -> Decomposition failed
+		throw Exceptions::NotANumber( j, j );
+	}
+	else if( max_elem.first <= piv_tol_lower || piv_tol_upper < max_elem.first ) {
+		// The value at the index of the bad element is not within the allowed range, however, it is not zero/nan, so the computation can continue
 		// Search for the next bad element after this one
 		badEl_searchStart = j + 1;
 	}

@@ -427,7 +427,7 @@ Before outlining the concept of \textit{processing by sections}, it is necessary
 	\label{Equation:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->tolerance-of-conditional-partial-pivoting}
 \end{equation}
 
-where $\epsilon_1$ denotes the inclusive lower bound of the tolerance interval and $\epsilon_2$ denotes the upper bound. By default, $\epsilon_1$ is set to 1e-5 and $\epsilon_2$ is set to 1e+5. If the absolute value of $lu_{j, j}$ falls this interval, it is considered a \textit{bad element} that requires pivoting. The upper bound was introduced for ICM\_\textit{x}PP as a result of extensive testing performed on a set of matrices with varying characteristics. In some cases, without the upper bound, the ICM\_\textit{x}PP decomposer produced matrices with \code{NaN} values. This issue is discussed further in Section~\ref{Subsection:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices}.
+where $\epsilon_1$ denotes the inclusive lower bound of the tolerance interval and $\epsilon_2$ denotes the upper bound. By default, $\epsilon_1$ is set to 1e-5 and $\epsilon_2$ is set to 1e+5. If the absolute value of $lu_{j, j}$ falls outside this interval, it is considered a \textit{bad element} that requires pivoting. The upper bound was introduced for ICM\_\textit{x}PP as a result of extensive testing performed on a set of matrices with varying characteristics. In some cases, without the upper bound, the ICM\_\textit{x}PP decomposer produced matrices with \code{NaN} values. This issue is discussed further in Section~\ref{Subsection:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices}.
 
 For clarity, the outline of processing the matrix by sections using the ICMPP algorithm is presented below:
 
@@ -817,7 +817,7 @@ The full list of solvers and their characteristics is presented in Table~\ref{Ta
 		\hline
 		\rowcolor[HTML]{C0C0C0}\textbf{Solver}              & \textbf{With / Without PP} & \textbf{Unit diag. in}     & \textbf{Device supported} \\ \hline
 		\cellcolor[HTML]{EFEFEF}\textbf{SS(PP)}             & Yes / Yes                  & $\mathbf{U}$               & CPU                       \\
-		\cellcolor[HTML]{EFEFEF}CuBLAStrsm(PP)           & Yes / Yes                  & $\mathbf{L}$, $\mathbf{U}$ & GPU                       \\
+		\cellcolor[HTML]{EFEFEF}CuBLAStrsm(PP)              & Yes / Yes                  & $\mathbf{L}$, $\mathbf{U}$ & GPU                       \\
 		\cellcolor[HTML]{EFEFEF}CuSolverDnXgetrs(PP)        & Yes / Yes                  & $\mathbf{L}$               & GPU                       \\
 		\cellcolor[HTML]{EFEFEF}\textbf{IS\_\textit{x}(PP)} & Yes / Yes                  & $\mathbf{U}$               & CPU, GPU                  \\ \hline
 	\end{tabular}
@@ -840,10 +840,10 @@ The purpose of the SSPP solver is to provide an accurate and simple solver. Ther
 	\begin{tabular}{|l|c|c|c|c|}
 		\hline
 		\rowcolor[HTML]{C0C0C0} \textbf{Decomposer} \textbackslash\space \textbf{Solver} & \cellcolor[HTML]{EFEFEF}SS(PP) & \cellcolor[HTML]{EFEFEF}IS\_\textit{x}(PP) & \cellcolor[HTML]{EFEFEF}CuBLAStrsm(PP) & \cellcolor[HTML]{EFEFEF}CuSolverDnXgetrs(PP) \\ \hline
-		\cellcolor[HTML]{EFEFEF}CM(PP)                                         &              Yes               &                    Yes                     &                  Yes                   &                      No                      \\
-		\cellcolor[HTML]{EFEFEF}PCM\_\textit{x}(PP)                            &              Yes               &                    Yes                     &                  Yes                   &                      No                      \\
-		\cellcolor[HTML]{EFEFEF}ICM\_\textit{x}(PP)                            &              Yes               &                    Yes                     &                  Yes                   &                      No                      \\
-		\cellcolor[HTML]{EFEFEF}CuSolverDnXgetrf(PP)                           &               No               &                     No                     &                  Yes                   &                     Yes                      \\ \hline
+		\cellcolor[HTML]{EFEFEF}CM(PP)               & Yes & Yes & Yes & No  \\
+		\cellcolor[HTML]{EFEFEF}CuSolverDnXgetrf(PP) & No  & No  & Yes & Yes \\
+		\cellcolor[HTML]{EFEFEF}ICM\_\textit{x}(PP)  & Yes & Yes & Yes & No  \\
+		\cellcolor[HTML]{EFEFEF}PCM\_\textit{x}(PP)  & Yes & Yes & Yes & No  \\ \hline
 	\end{tabular}
 	\caption{Compatibility of decomposer and solvers made available by the Decomposition project. To clarify, a decomposer-solver combination is compatible if the two can be used to complete a linear solver.}
 	\label{Table:implementation->decomposition-project->implemented-solutions->solvers->compatibile-decomposers-and-solvers}
@@ -866,18 +866,18 @@ Both benchmarks are initiated via a bash script that sets up the logging directo
 		Perform the benchmarked operation using a selected implementation.
 \end{enumerate}
 
-Each benchmarked operation can be performed in loops with the results of all loops averaged to amount for statistically significant results. The results can include, for example, the execution time of the operation and its standard deviation, the maximum difference between the actual results and expected results, etc. The averaged results are logged using \code{TNL::Benchmarks::JsonLogging} as JSON objects into log files which can be later transformed into HTML tables and MATLAB plots using a Python script provided in \code{src/Benchmarks/utils}.
+Each benchmarked operation can be performed in loops with the results of all loops averaged to amount for statistically significant results. The results can include, for example, the execution time of the operation and its standard deviation, the maximum absolute difference between the actual results and the expected results, etc. The averaged results are logged using \code{TNL::Benchmarks::JsonLogging} as JSON objects into log files which can be later transformed into HTML tables and MATLAB plots using a Python script provided in \code{src/Benchmarks/utils}.
 
-Note that the maximum difference is computed on the CPU to assure the highest possible accuracy. The maximum difference is defined for decomposers as:
+Note that the maximum absolute difference is computed on the CPU to assure the highest possible accuracy. The maximum absolute difference is defined for decomposers as:
 
 \begin{equation}
 	\max \left| \mathbf{A} - \mathbf{PLU} \right| \,,
 	\label{Equation:implementation->decomposition-project->benchmarks->decomposers->maximum-difference}
 \end{equation}
 
-where $\mathbf{A}$ is the input matrix, $\mathbf{P}$ is the permutation matrix (represented in code by a pivoting vector), and matrices $\mathbf{L}$ and $\mathbf{U}$ are the results of the LU decomposition operation. To clarify, the maximum difference for decomposers is the largest absolute difference between a computed element and its expected result.
+where $\mathbf{A}$ is the input matrix, $\mathbf{P}$ is the permutation matrix (represented in code by a pivoting vector), and matrices $\mathbf{L}$ and $\mathbf{U}$ are the results of the LU decomposition operation. To clarify, the maximum absolute difference for decomposers is the largest absolute difference between a computed element and its expected result.
 
-For solvers the maximum difference is defined as:
+For solvers the maximum absolute difference is defined as:
 
 \begin{equation}
 	\max \left| \mathbf{PLUX} - \mathbf{B} \right| \,,

@@ -14,7 +14,7 @@
 % Fonts:
 \usepackage{amsmath}  					% Advanced mathematic package
 \usepackage{mathtools}					% Mathematics tools
-\usepackage[table,xcdraw]{xcolor}    					% Colorful text
+\usepackage[table,xcdraw]{xcolor}    	% Colorful text
 \usepackage{soul}						% Text fonts syllable by syllable - used for in-text codifying
 \usepackage[varg]{txfonts}				% Times New Roman fonts and math alphabets, for example, provides \mathbb{}
 \usepackage{csquotes}					% Ensure that quoted texts are typeset according to the rules of the main language
@@ -23,9 +23,13 @@
 \usepackage[shortcuts]{extdash} 		% Unbreakable dashes
 \usepackage{tocloft}					% Dots in table of contents
 \renewcommand\cftchapdotsep{\cftdotsep} % Dots in table of contents - activate
+\usepackage{siunitx}									 % For correct typesetting of the scientific notation
+\sisetup{output-exponent-marker=\ensuremath{\mathrm{e}}} % Set up exponent marker for 'e-' - see https://tex.stackexchange.com/a/269848/182615
+\sisetup{retain-explicit-plus=true}						 % Set up exponent marker for 'e+' 
 
 % Format pages:
 \usepackage{pdfpages}					% Add PDFs into compiled PDF
+\pdfsuppresswarningpagegroup=1			% Supprress warnings when multiple PDF documents are included in one page - see https://tex.stackexchange.com/a/78020/182615
 
 % Graphics:
 \usepackage{float} 			  			% Advanced figure placement options
@@ -46,7 +50,9 @@ prefix=images/tikz/,				% Place externalized TikZ-generated images in a specific
 optimize command away=\includepdf	% Optimize away including pdf pages to avoid compatibility issues of the 'pdfpages' package and the 'external' tikz library
 ]
 \usepackage{pgfplots} 					% For visualizations, graphics, etc.
+\usepackage{pgfplotstable}				% For reading data from csv files (tables)
 \pgfplotsset{compat=1.3}				% Use pgfplots version 1.3 specifically
+\usepackage{multirow}					% Merge rows of a table
 
 % Languages:
 \usepackage[czech, american]{babel}							 % Czech and American English are used in this document
@@ -54,7 +60,7 @@ optimize command away=\includepdf	% Optimize away including pdf pages to avoid c
 \WarningFilter{biblatex}{File 'american-iso.lbx' not found!} % Silence weird message that I couldn't find a solution for
 
 % Referencing:
-\usepackage{footmisc} 							 		  	% Refer to footnotes that already exist
+\usepackage{footmisc} 							 		  	% Refer to footnotes that already exist & support for multiple footnotes
 \usepackage[
 backend=biber,								  		  	% In TeXstudio, the backend here must correspond to: Options -> Configure TeXstudio... -> Build -> Default Bibliography Tool
 style=iso-numeric,
@@ -69,6 +75,7 @@ giveninits=true]{biblatex}								% Bibliography: ISO 690 format, cite shows num
 % Tables:
 \usepackage{tabularx}			 % Advanced table options
 \usepackage{colortbl} 			 % Table cell color
+\usepackage{tablefootnote}		 % Footnote in tables
 
 % Fonts (must be mentioned last to avoid warnings in the log)
 \usepackage[hidelinks]{hyperref} % Hide square around URL link
@@ -370,13 +377,13 @@ giveninits=true]{biblatex}								% Bibliography: ISO 690 format, cite shows num
 %|         The PAPER ITSELF begins here                 |
 %--------------------------------------------------------
 
-\include{chapters/nomenclature}
-
 \include{chapters/introduction}
 
 \include{chapters/chapter01}
 
 \include{chapters/chapter02}
+
+\include{chapters/chapter03}
 
 \include{chapters/conclusion}
 

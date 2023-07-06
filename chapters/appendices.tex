@@ -85,10 +85,10 @@ pivotRowOfMatrix_host( const Index& j, MatrixView& M, const Index& num_rows, con
 
 
 
-\chapter{PCM\textit{x}PP Implementation}\label{Appendix:PCMxPP-implementation}
-The implementation of PCM\textit{x}PP is shown in Listing~\ref{Listing:PCMxPP-implementation-excerpt}. Note that the kernels called in Listing~\ref{Listing:PCMxPP-implementation-excerpt} are shown separately in Listings~\ref{Listing:PCMxPP-implementation->kernels->column-compute-kernel} and \ref{Listing:PCMxPP-implementation->kernels->row-compute-kernel}.
+\chapter{PCM\_\textit{x}PP Implementation}\label{Appendix:PCMxPP-implementation}
+The implementation of PCM\_\textit{x}PP is shown in Listing~\ref{Listing:PCMxPP-implementation-excerpt}. Note that the kernels called in Listing~\ref{Listing:PCMxPP-implementation-excerpt} are shown separately in Listings~\ref{Listing:PCMxPP-implementation->kernels->column-compute-kernel} and \ref{Listing:PCMxPP-implementation->kernels->row-compute-kernel}.
 
-\begin{lstlisting}[caption={Excerpt from the implementation of PCM\textit{x}PP. The template parameter \code{BLOCK\_SIZE} is equivalent to \textit{x} in PCM\textit{x}PP. On input, matrix \code{LU} is assumed to contain the values of $\mathbf{A}$, and \code{piv} is expected to be appropriately sized. Furthermore, unlike \code{LU}, \code{piv} is assumed to be allocated on the Host. The \code{pivotRowOfMatrix\_device()} function, presented below the \code{decompose()} method, is implemented in the parent class of \code{CroutMethod}: \code{BaseDecomposer}. Note that the code has been slightly modified for brevity. For example, the \code{swapRows\_device()} function has been omitted as it is a basic operation, and the checks for appropriate sizing of matrices/vectors have been removed.},label={Listing:PCMxPP-implementation-excerpt}]
+\begin{lstlisting}[caption={Excerpt from the implementation of PCM\_\textit{x}PP. The template parameter \code{BLOCK\_SIZE} is equivalent to \textit{x} in PCM\_\textit{x}PP. On input, matrix \code{LU} is assumed to contain the values of $\mathbf{A}$, and \code{piv} is expected to be appropriately sized. Furthermore, unlike \code{LU}, \code{piv} is assumed to be allocated on the Host. The \code{pivotRowOfMatrix\_device()} function, presented below the \code{decompose()} method, is implemented in the parent class of \code{CroutMethod}: \code{BaseDecomposer}. Note that the code has been slightly modified for brevity. For example, the \code{swapRows\_device()} function has been omitted as it is a basic operation, and the checks for appropriate sizing of matrices/vectors have been removed.},label={Listing:PCMxPP-implementation-excerpt}]
 template< const int BLOCK_SIZE >
 template< typename Matrix, typename VecIndex, typename Device >
 void
@@ -155,7 +155,7 @@ pivotRowOfMatrix_device( const Index& j, MatrixView& M, const Index& num_rows, c
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption={The implementation of the \code{ColCompute\_kernel()} kernel which computes one column of \code{LU}.},label={Listing:PCMxPP-implementation->kernels->column-compute-kernel}]
+\begin{lstlisting}[caption={Implementation of the \code{ColCompute\_kernel()} kernel which computes one column of \code{LU}.},label={Listing:PCMxPP-implementation->kernels->column-compute-kernel}]
 template< typename MatrixView, typename Index >
 __global__
 void
@@ -176,7 +176,7 @@ ColCompute_kernel( MatrixView LU, const Index col, const Index num_rows )
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption={The implementation of the \code{RowCompute\_kernel()} kernel which computes one row of \code{LU}.},label={Listing:PCMxPP-implementation->kernels->row-compute-kernel}]
+\begin{lstlisting}[caption={Implementation of the \code{RowCompute\_kernel()} kernel which computes one row of \code{LU}.},label={Listing:PCMxPP-implementation->kernels->row-compute-kernel}]
 template< typename MatrixView, typename Index >
 __global__
 void
@@ -201,10 +201,10 @@ RowCompute_kernel( MatrixView LU, Index row, const Index num_cols )
 
 
 
-\chapter{ICM\textit{x}PP Implementation}\label{Appendix:ICMxPP-implementation}
-The implementation of ICM\textit{x}PP is shown in Listing~\ref{Listing:ICMxPP-implementation-excerpt}. Note that the kernels called in Listing~\ref{Listing:ICMxPP-implementation-excerpt} are shown separately in Listings~\ref{Listing:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->kernels->diagonal-compute}, \ref{Listing:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->kernels->diagonal-assign}, \ref{Listing:ICMxPP-implementation->kernels->lower-section-compute}, and \ref{Listing:ICMxPP-implementation->kernels->right-section-compute}.
+\chapter{ICM\_\textit{x}PP Implementation}\label{Appendix:ICMxPP-implementation}
+The implementation of ICM\_\textit{x}PP is shown in Listing~\ref{Listing:ICMxPP-implementation-excerpt}. Note that the kernels called in Listing~\ref{Listing:ICMxPP-implementation-excerpt} are shown separately in Listings~\ref{Listing:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->kernels->diagonal-compute}, \ref{Listing:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->kernels->diagonal-assign}, \ref{Listing:ICMxPP-implementation->kernels->lower-section-compute}, and \ref{Listing:ICMxPP-implementation->kernels->right-section-compute}.
 
-\begin{lstlisting}[caption={Excerpt from the implementation of ICM\textit{x}PP. The template parameter \code{BLOCK\_SIZE} is equivalent to \textit{x} in ICM\textit{x}PP. On input, matrix \code{A} is assumed to contain the values of $\mathbf{A}$, matrix \code{LU} is assumed to contain the initial estimate of the decomposition, and \code{piv} is expected to be appropriately sized and allocated on the Host. On output, matrix \code{LU} contains the values of matrices $\mathbf{L}$ and $\mathbf{U}$ in the format presented in Equation~\ref{Equation:implementation->decomposition-project->implemented-solutions->decomposers->CMPP}, and \code{piv} contains the row permutations. The \code{synchronizeStreams()} function is included below the \code{decompose()} method. The \code{pivotBadElement()} function is shown in Listing~\ref{Listing:ICMxPP-implementation-pivot-bad-element}. The code has been slightly modified for brevity, for example, the checks for appropriate sizing of matrices and vectors have been removed.},label={Listing:ICMxPP-implementation-excerpt}]
+\begin{lstlisting}[caption={Excerpt from the implementation of ICM\_\textit{x}PP. The template parameter \code{BLOCK\_SIZE} is equivalent to \textit{x} in ICM\_\textit{x}PP. On input, matrix \code{A} is assumed to contain the values of $\mathbf{A}$, matrix \code{LU} is assumed to contain the initial estimate of the decomposition, and \code{piv} is expected to be appropriately sized and allocated on the Host. On output, matrix \code{LU} contains the values of matrices $\mathbf{L}$ and $\mathbf{U}$ in the format presented in Equation~\ref{Equation:implementation->decomposition-project->implemented-solutions->decomposers->CMPP}, and \code{piv} contains the row permutations. The \code{synchronizeStreams()} function is included below the \code{decompose()} method. The \code{pivotBadElement()} function is shown in Listing~\ref{Listing:ICMxPP-implementation-pivot-bad-element}. The code has been slightly modified for brevity, for example, the checks for appropriate sizing of matrices and vectors have been removed.},label={Listing:ICMxPP-implementation-excerpt}]
 template< const int BLOCK_SIZE >
 template< typename Matrix, typename Vector >
 void
@@ -367,17 +367,16 @@ synchronizeStreams( cudaStream_t* streams, const int num_streams )
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption={The definition of the \code{pivotBadElement()} function which is responsible for pivoting a bad element found in column \code{j} of the main diagonal. The \code{pivotRowOfMatrices\_device()} function, presented below the \code{pivotBadElement()} function, is implemented in the parent class of \code{IterativeCroutMethod}: \code{BaseDecomposer}. Note that the variant of the \code{swapRows\_device()} function presented in the \code{pivotRowOfMatrices\_device()} swaps the rows in two matrices.},label={Listing:ICMxPP-implementation-pivot-bad-element}]
+\begin{lstlisting}[caption={The definition of the \code{pivotBadElement()} function which is responsible for pivoting a bad element found in column \code{j} of the main diagonal. The \code{pivotRowOfMatrices\_device()} function, presented below the \code{pivotBadElement()} function, is implemented in the parent class of \code{IterativeCroutMethod}: \code{BaseDecomposer}. Note that the variant of the \code{swapRows\_device()} function presented in the \code{pivotRowOfMatrices\_device()} swaps the rows in two matrices.},label={Listing:ICMxPP-implementation-pivot-bad-element},escapechar=@]
 template< const int BLOCK_SIZE, typename MatrixView, typename VectorView, typename Index, typename Real >
 void
 pivotBadElement( MatrixView& A, MatrixView& LU, VectorView& piv, const Index& j, const Index& num_rows, const Index& num_cols, Index& badEl_searchStart, const Real& piv_tol_lower, const Real& piv_tol_upper )
 {
 	// The last element of the matrix does not require pivoting as no elements are computed using it, i.e., division by zero cannot occur for the last element
-	if( j >= num_cols - 1 ) {
+	if( j >= num_cols - 1 )
 		return;
-	}
 	
-	std::pair< Real, Index > max_elem = pivotRowOfMatrices_device< BLOCK_SIZE * BLOCK_SIZE >( j, A, LU, num_rows, num_cols, piv );
+	std::pair< Real, Index > max_elem = pivotRowOfMatrices_device< BLOCK_SIZE * BLOCK_SIZE >( j, A, LU, num_rows, num_cols, piv ); @\label{Listing:ICMxPP-implementation->pivot-bad-element->pivotRowOfMatrices-device-call}@
 	
 	if( max_elem.first == 0 ) {
 		// The current bad element in the main diagonal is zero even after pivoting -> Decomposition failed
@@ -415,7 +414,7 @@ pivotRowOfMatrices_device( const Index& j, MatrixView& A, MatrixView& M, const I
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption={The implementation of the \code{LSecCompute\_kernel()} kernel which computes one iteration of a lower section. Note that the matrices, vectors, and arrays are passed using their views, and the scalar values are copied to the local memory of each thread.},label={Listing:ICMxPP-implementation->kernels->lower-section-compute}]
+\begin{lstlisting}[caption={Implementation of the \code{LSecCompute\_kernel()} kernel which computes one iteration of a lower section. Note that the matrices, vectors, and arrays are passed using their views, and the scalar values are copied to the local memory of each thread.},label={Listing:ICMxPP-implementation->kernels->lower-section-compute}]
 template< const int BLOCK_SIZE, typename ConstMatrixView, typename MatrixView, typename BoolArrayView, typename Index, typename Real >
 __global__
 void
@@ -482,7 +481,7 @@ LSecCompute_kernel( const ConstMatrixView A, MatrixView LU, MatrixView LUnext, c
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption={The implementation of the \code{RSecCompute\_kernel()} kernel which computes one iteration of a right section.},label={Listing:ICMxPP-implementation->kernels->right-section-compute}]
+\begin{lstlisting}[caption={Implementation of the \code{RSecCompute\_kernel()} kernel which computes one iteration of a right section.},label={Listing:ICMxPP-implementation->kernels->right-section-compute}]
 template< const int BLOCK_SIZE, typename ConstMatrixView, typename MatrixView, typename BoolArrayView, typename Index, typename Real >
 __global__
 void
@@ -550,7 +549,7 @@ RSecCompute_kernel( const ConstMatrixView A, MatrixView LU, MatrixView LUnext, c
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption={The implementation of the \code{NonDiagSecAssign\_kernel()} kernel that assigns values of the next iteration to the matrix representing the current iteration.},label={Listing:ICMxPP-implementation->kernels->nondiagonal-assign}]
+\begin{lstlisting}[caption={Implementation of the \code{NonDiagSecAssign\_kernel()} kernel that assigns values of the next iteration to the matrix representing the current iteration.},label={Listing:ICMxPP-implementation->kernels->nondiagonal-assign}]
 template< typename MatrixView, typename Index >
 __global__
 void
@@ -652,10 +651,10 @@ SequentialSolver::solve( const Matrix& LU, Matrix& X, const Vector& piv )
 
 
 
-\chapter{IS\textit{x}PP Implementation}\label{Appendix:ISxPP-implementation}
+\chapter{IS\_\textit{x}PP Implementation}\label{Appendix:ISxPP-implementation}
 The implementation of IS\_\textit{x}PP is shown in Listing~\ref{Listing:ISxPP-implementation-excerpt}. Note that the kernels called in Listing~\ref{Listing:ISxPP-implementation-excerpt} are shown separately in Listings~\ref{Listing:ISxPP-implementation->kernels->forward-substitution}, \ref{Listing:ISxPP-implementation->kernels->backward-substitution}, and \ref{Listing:ISxPP-implementation->kernels->matrix-assign}.
 
-\begin{lstlisting}[caption={Excerpt from the implementation of IS\_\textit{x}PP. The code has been slightly modified for brevity, for example, the checks for appropriate sizing of matrices and vectors have been removed. Note that the CUDA thread blocks used in the implementation are larger in the 1st dimension. Threads adjacent in the 1st dimension are assigned to neighboring elements in the same column since the matrices are stored in column-major order on the GPU. In other words, to mitigate misaligned global memory access, the 1st dimension of threads is used to access elements in a single column and the 2nd dimension is used to differentiate between right-hand sides.},label={Listing:ISxPP-implementation-excerpt}]
+\begin{lstlisting}[caption={Excerpt from the implementation of IS\_\textit{x}PP. The code has been slightly modified for brevity, for example, the checks for appropriate sizing of matrices and vectors have been removed. Note that the CUDA thread blocks used in the implementation are larger in the 1st dimension. Threads adjacent in the 1st dimension are assigned to neighboring elements in the same column since the matrices are stored in column-major order on the GPU. In other words, to mitigate misaligned global memory access, the 1st dimension of threads is used to access elements in a single column and the 2nd dimension is used to differentiate between right-hand sides.},label={Listing:ISxPP-implementation-excerpt},escapechar=@]
 template< const int THREADS_PER_BLOCK >
 template< typename Matrix, typename Vector >
 void
@@ -702,7 +701,7 @@ IterativeSolver< THREADS_PER_BLOCK >::solve( const Matrix& LU, Matrix& X, const 
 	Index num_rows_rounded = ( num_rows + THREADS_PER_BLOCK - 1 ) / THREADS_PER_BLOCK * THREADS_PER_BLOCK;
 	
 	// Number of right-hand sides is usually small
-	const Index BLOCK_SIZE_y = 8;
+	const Index BLOCK_SIZE_y = 8; @\label{Listing:ISxPP-implementation-excerpt->num-threads-2nd-dim}@
 	const Index nrhs_rounded = ( nrhs + BLOCK_SIZE_y - 1 ) / BLOCK_SIZE_y * BLOCK_SIZE_y;
 	
 	const Index blocks_perGrid_x = num_rows_rounded / THREADS_PER_BLOCK;
@@ -729,7 +728,7 @@ IterativeSolver< THREADS_PER_BLOCK >::solve( const Matrix& LU, Matrix& X, const 
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption={The implementation of the \code{FowardSubst\_kernel()} kernel which computes one forward-substitution iteration.},label={Listing:ISxPP-implementation->kernels->forward-substitution}]
+\begin{lstlisting}[caption={Implementation of the \code{FowardSubst\_kernel()} kernel which computes one forward-substitution iteration.},label={Listing:ISxPP-implementation->kernels->forward-substitution}]
 template< typename ConstMatrixView, typename MatrixView, typename Index, typename BoolArrayView, typename Real >
 __global__
 void
@@ -759,7 +758,7 @@ FowardSubst_kernel( const ConstMatrixView LU, MatrixView Y, MatrixView Ynext, co
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption={The implementation of the \code{BackwardSubst\_kernel()} kernel which computes one backward-substitution iteration.},label={Listing:ISxPP-implementation->kernels->backward-substitution}]
+\begin{lstlisting}[caption={Implementation of the \code{BackwardSubst\_kernel()} kernel which computes one backward-substitution iteration.},label={Listing:ISxPP-implementation->kernels->backward-substitution}]
 template< typename ConstMatrixView, typename MatrixView, typename BoolArrayView, typename Real, typename Index >
 __global__
 void
@@ -789,7 +788,7 @@ BackwardSubst_kernel( const ConstMatrixView LU, MatrixView X, MatrixView Xnext, 
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption={The implementation of the \code{MtxAssign\_kernel()} kernel that assigns values of the next iteration to the matrix representing the current iteration.},label={Listing:ISxPP-implementation->kernels->matrix-assign}]
+\begin{lstlisting}[caption={Implementation of the \code{MtxAssign\_kernel()} kernel that assigns values of the next iteration to the matrix representing the current iteration.},label={Listing:ISxPP-implementation->kernels->matrix-assign}]
 template< typename MatrixView, typename Index >
 __global__
 void
@@ -805,4 +804,61 @@ MtxAssign_kernel( MatrixView M, MatrixView Mnext, const Index num_rows, const In
 	
 	M( row, rhs ) = Mnext( row, rhs );
 }
+\end{lstlisting}
+
+
+
+
+
+\chapter{Python Script for Generating Random Dense Matrices}\label{Appendix:python-script-for-generating-random-dense-matrices}
+The script used to generate random dense matrices for the benchmark implemented in the Decomposition project is presented in Listing~\ref{Listing:python-script-for-generating-random-dense-matrices->script}. 
+
+\begin{lstlisting}[caption={Implementation of the \code{generate-rand-dense-mtxs.py} script used to generate dense matrices in the Matrix Market File Format, as described in Section~\ref{Subsection:implementation->decomposition-project->benchmarks}. Each element in the matrix is randomly generated within the range of -1000 to 1000. The \code{zeros\_on\_diag} variable, declared on Line~\ref{Line:python-script-for-generating-random-dense-matrices->script->zeros-on-diag-variable}, serves as a flag indicating whether the dense matrix can have zeros on its main diagonal. When the variable is set to \code{True}, there is a 50\% chance for each element on the main diagonal to be a zero, as shown on Line~\ref{Line:python-script-for-generating-random-dense-matrices->script->zero-in-element-of-main-diagonal}.},label={Listing:python-script-for-generating-random-dense-matrices->script},language=Python,escapechar=@]
+import numpy as np
+
+from random import random
+
+num_mtx_files = 15
+num_rows_cols_range = [500, 11000]
+elements_range = [-1000, 1000]
+zeros_on_diag = True @\label{Line:python-script-for-generating-random-dense-matrices->script->zeros-on-diag-variable}@
+
+mtx_files = np.random.randint(low=num_rows_cols_range[0], high=num_rows_cols_range[1], size=num_mtx_files)
+pivoting = "_pivoting" if zeros_on_diag == True else ""
+
+for num_rows_cols in mtx_files:
+	dense_mtx_filename = f"Cejka{num_rows_cols}_<{elements_range[0]}-{elements_range[1]}>{pivoting}.mtx"
+	print(f"Generating {dense_mtx_filename}...")
+	
+	header_lines = [
+	"%%MatrixMarket matrix coordinate real general",
+	"%---------------------------------------------------------------------",
+	"% Cejka Dense Matrix Collection, Tim Davis",
+	"% Insert URL here",
+	f"% name: Cejka/{dense_mtx_filename}",
+	"% date: 2023",
+	"% author: L. M. Cejka",
+	"% kind: Random Dense Matrix with 0.5 prob. of 0 on diag.",
+	"%---------------------------------------------------------------------",
+	]
+	header_lines = [line + "\n" for line in header_lines]
+	
+	mtx_info = f"{num_rows_cols} {num_rows_cols} {num_rows_cols*num_rows_cols}\n"
+	
+	rand_floats = np.random.uniform(low=elements_range[0], high=elements_range[1], size=(num_rows_cols*num_rows_cols,))
+	rand_floats = [flt + 1 if flt == 0 else flt for flt in rand_floats]
+	rand_floats = [str(flt) + "\n" for flt in rand_floats]
+	zero_with_newline = str(0) + "\n"
+	
+	num_zeros_on_diag = 0
+	
+	with open(dense_mtx_filename, 'w') as f:
+		f.writelines(header_lines)
+		f.write(mtx_info)
+		for col in range(1, num_rows_cols + 1):
+			for row in range(1, num_rows_cols + 1):
+				if zeros_on_diag and row == col and row != num_rows_cols:
+					f.write(f"{row} {col} {rand_floats[(col - 1) * num_rows_cols + row - 1] if random() < 0.5 else zero_with_newline}") @\label{Line:python-script-for-generating-random-dense-matrices->script->zero-in-element-of-main-diagonal}@
+				else:
+					f.write(f"{row} {col} {rand_floats[(col - 1) * num_rows_cols + row - 1]}")
 \end{lstlisting}

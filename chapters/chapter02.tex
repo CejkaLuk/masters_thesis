@@ -332,7 +332,7 @@ decompose( Matrix& A, Matrix& LU, Vector& piv );
 
 This method will be used in the descriptions that follow.
 
-\subparagraph{Processing by Sections} The ICMPP algorithm, introduced in Section~\ref{Subsection:theory->ICMPP->LUP->ICMPP}, suggests that in every iteration, all values in matrix \code{LU} are to be computed. However, the decomposition of a matrix can require thousands of iterations. Moreover, to decompose an $n\times n$ matrix, such an approach would require $n^2$ elements to be computed in every iteration. Assuming that each CUDA thread was to compute one element in an iteration, this would translate to $n^2$ threads being allocated in every iteration. This approach does not scale well.
+\subparagraph{Processing by Sections} The ICMPP algorithm, introduced in Section~\ref{Subsection:theory->ICMPP->LUP->ICMPP}, suggests that in every iteration, all values in matrix \code{LU} are to be computed. However, the decomposition of a matrix can require thousands of iterations. Moreover, to decompose an $n$-by-$n$ matrix, such an approach would require $n^2$ elements to be computed in every iteration. Assuming that each CUDA thread was to compute one element in an iteration, this would translate to $n^2$ threads being allocated in every iteration. This approach does not scale well.
 
 Furthermore, due to the dependency of elements described in Section~\ref{Subsection:theory->ICMPP->LUP->CMPP}, it is futile to compute values of \code{LU} that have extensive chains of dependencies if the elements they depend on have not been processed. The chains of dependencies for a specific element are visualized in Figure~\ref{Figure:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->chain-of-dependencies}.
 
@@ -416,7 +416,7 @@ the sections of matrix \code{LU} are processed in the order shown in Figure~\ref
 			}
 		\end{tikzpicture}
 	\end{bNiceArray}\]
-	\caption{Visualization of matrix \code{LU} divided into sections of size $s\times s$. The number inside each section indicates the order in which it is processed. First, the top-left section, labeled as section "0", is processed. Then, the sections below it, i.e., sections labeled with a "1", are processed in parallel. Subsequently, the sections to the right of section "0" are processed in parallel, etc.}
+	\caption{Visualization of matrix \code{LU} divided into sections of size $s$-by-$s$. The number inside each section indicates the order in which it is processed. First, the top-left section, labeled as section "0", is processed. Then, the sections below it, i.e., sections labeled with a "1", are processed in parallel. Subsequently, the sections to the right of section "0" are processed in parallel, etc.}
 	\label{Figure:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->processing-by-sections}
 \end{figure}
 
@@ -479,7 +479,7 @@ IterativeCroutMethod< BLOCK_SIZE >::decompose( Matrix& A, Matrix& LU, Vector& pi
 }
 \end{lstlisting}
 
-Initially, the size of a section is set to $1/10$ of the dimensions of \code{LU}. However, the value is limited to the interval $\left[256, 1024\right]$, i.e., if the size of a section exceeds either boundary of the interval, it is adjusted to the value of the nearest boundary. Then, the value is rounded to the nearest multiple of \code{BLOCK\_SIZE} (8, 16, or 32) that is greater than or equal to it. For example, if \code{LU} is a 3,000-by-3,000 matrix, then the size of a section will be $300\times300$. However, if \code{LU} is a 12,000-by-12,000 matrix, then the size of each section is adjusted to $1024\times1024$.\\
+Initially, the size of a section is set to $1/10$ of the dimensions of \code{LU}. However, the value is limited to the interval $\left[256, 1024\right]$, i.e., if the size of a section exceeds either boundary of the interval, it is adjusted to the value of the nearest boundary. Then, the value is rounded to the nearest multiple of \code{BLOCK\_SIZE} (8, 16, or 32) that is greater than or equal to it. For example, if \code{LU} is a 3,000-by-3,000 matrix, then the size of a section will be 300-by-300. However, if \code{LU} is a 12,000-by-12,000 matrix, then the size of each section is adjusted to 1024-by-1024.\\
 The interval was determined as a result of extensive testing performed as part of \citetitle{Cejka2022} \cite{Cejka2022}. For clarity, the value is rounded to assure correct loop unrolling with shared memory in the computing kernels. For a thorough explanation, see the last paragraph of Section~2.1 in \citetitle{Cejka2022} \cite{Cejka2022}.
 
 The next excerpt, shown in Listing~\ref{Listing:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->processing-diagonal-section}, highlights the processing of a diagonal section.
@@ -746,7 +746,7 @@ DSecCompute_kernel( const ConstMatrixView A, MatrixView LU, MatrixView LUnext, c
 	}
 	
 	// Check if the element (row, col) has been processed
-	if( abs( LU_rowCol - sum ) > process_tol )
+	if( abs( LU_rowCol - sum ) > process_tol ) @\label{Line:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->kernels->diagonal-compute->processing-check}@
 		processed( 0 ) = false;
 	
 	// Assign the element for the next iteration
@@ -797,7 +797,7 @@ The kernels for computing the lower and right sections are similar to that of th
 \subsubsection{Solvers}\label{Subsection:implementation->decomposition-project->implemented-solutions->solvers}
 The \textit{Solvers} group consists of implementations that, given the output of an LU decomposition algorithm, solve a linear system. To solve a linear system, solvers perform the operations described in Step~\ref{Item:theory->ICMPP->LUP->solving-system-linear-equations->substitution} of the two-step process mentioned in Section~\ref{Subsection:theory->ICMPP->LUP}. For convenience, the operations are summarized below.
 
-Specifically, assuming a system of $n \in \mathbb{N}$ linear equations with $n$ unknowns and $m \in \mathbb{N}$ right-hand sides, solvers solve a linear system defined as $\mathbf{LUX} = \mathbf{PB}$, where $\mathbf{L}$ and $\mathbf{U}$ are the output of an LU decomposition algorithm, $\mathbf{X}$ is an $n\times m$ matrix of unknowns, $\mathbf{P}$ is an $n\times n$ permutation matrix, and $\mathbf{B}$ is an $n\times m$ matrix of right-hand sides. In the context of the Decomposition project, solvers perform the following steps:
+Specifically, assuming a system of $n \in \mathbb{N}$ linear equations with $n$ unknowns and $m \in \mathbb{N}$ right-hand sides, solvers solve a linear system defined as $\mathbf{LUX} = \mathbf{PB}$, where $\mathbf{L}$ and $\mathbf{U}$ are the output of an LU decomposition algorithm, $\mathbf{X}$ is an $n$-by-$m$ matrix of unknowns, $\mathbf{P}$ is an $n$-by-$n$ permutation matrix, and $\mathbf{B}$ is an $n$-by-$m$ matrix of right-hand sides. In the context of the Decomposition project, solvers perform the following steps:
 
 \begin{enumerate}
 	\item If partial pivoting is enabled, permute the rows of matrix $\mathbf{B}$ according to matrix $\mathbf{P}$.
@@ -881,6 +881,7 @@ For solvers the maximum difference is defined as:
 
 \begin{equation}
 	\max \left| \mathbf{PLUX} - \mathbf{B} \right| \,,
+	\label{Equation:implementation->decomposition-project->benchmarks->solvers->maximum-difference}
 \end{equation}
 
 where matrices $\mathbf{P}$, $\mathbf{L}$, and $\mathbf{U}$ are the same as in Equation~\ref{Equation:implementation->decomposition-project->benchmarks->decomposers->maximum-difference}, $\mathbf{X}$ is the computed matrix of unknowns, and $\mathbf{B}$ is the matrix of right-hand sides. To clarify, the computed unknowns are used in the system of equations in matrix form, and then the largest absolute difference between the left- and right-hand sides is used.

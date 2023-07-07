@@ -181,7 +181,7 @@ giveninits=true]{biblatex}								% Bibliography: ISO 690 format, cite shows num
 % The following was filled in accordance with the original task paper
 \newcommand{\titleCZ}{Paralelní výpočet LU rozkladu na GPU pro numerické řešení parciálních diferenciálních rovnic}					 % Czech title of the project
 \newcommand{\titleEN}{Parallel Computation of LU Decomposition on GPUs for the Numerical Solution of Partial Differential Equations} % English title of the project
-\newcommand{\paperAuthor}{Bc. Lukáš Čejka}   				 % Name and surname, including academic titles
+\newcommand{\paperAuthor}{Bc. Lukáš Matthew Čejka}   		 % Name and surname, including academic titles
 \newcommand{\supervisor}{doc. Ing. Tomáš Oberhuber, Ph.D.} 	 % Name and surname of supervisor, including academic titles
 \newcommand{\supervisorWorkspace}{\ksi, \fjfi, \cvut} 		 % Workplace of supervisor
 
@@ -191,10 +191,10 @@ giveninits=true]{biblatex}								% Bibliography: ISO 690 format, cite shows num
 \newcommand{\yearSubmitted}{2023}  							 % Year of handing in the thesis (not the academic years)
 \newcommand{\place}{Praze} 									 % City of studying
 
-\newcommand{\keywordCZ}{\TODO}
-\newcommand{\keywordEN}{\TODO}
-\newcommand{\abstractCZ}{\TODO}
-\newcommand{\abstractEN}{\TODO}
+\newcommand{\keywordCZ}{Paralelní LU rozklad s tzv. pivotingem, Iterativní metody, Grafická karta (GPU), Compute Unified Device Architecture (CUDA), Template Numerical Library (TNL), High-Performance Computing (HPC), Porovnání výkonu, Porovnání přesnosti, cuBLAS, cuSOLVER, BDDCML}
+\newcommand{\keywordEN}{Parallel LU decomposition with Pivoting, Iterative methods, Graphics Processing Unit (GPU), Compute Unified Device Architecture (CUDA), Template Numerical Library (TNL), High-Performance Computing (HPC), Performance comparison, Accuracy comparison, CuBLAS, cuSOLVER, BDDCML}
+\newcommand{\abstractCZ}{Tato diplomová práce se zaměřuje na implementaci iterativního paralelního LU rozkladu s tzv. pivotingem (LUP) na grafické karty (GPU) Nvidia. Primárním cílem této práce je aplikovat implementaci jako předpodmíňovač v existující knihovně a analyzovat její výkon. Za tímto účelem byl vyvinut projekt zahrnující postupy řešení soustav rovnic pomocí LUP spolu s jednotkovými a vykonnostními testy. Dále byl projekt integrován do víceúrovňové knihovny BDDC řešičů. Výkonnostní testy porovnávaly implementaci algoritmu s existujícími knihovnami GPU z hlediska výkonu a přesnosti na moderním výpočetním systému. Na základě komplexní analýzy výsledků výkonnostních testů byla vydána doporučení týkající se vhodnosti implementací pro obecné a účelové použití.}
+\newcommand{\abstractEN}{This diploma thesis focuses on the implementation of an iterative parallel LU decomposition algorithm with Pivoting (LUP) for Nvidia Graphics Processing Units (GPUs). The primary objectives of this thesis are to apply the implementation as a preconditioner in an existing library and analyze its performance. For this purpose, a project was developed, encompassing procedures for solving systems of equations using LUP, along with unit tests and a benchmarking framework. Furthermore, the project was integrated into a multilevel BDDC solver library. The benchmarks conducted compared the implementation of the algorithm to established GPU libraries in terms of performance and accuracy on a state-of-the-art High-Performance Computing (HPC) cluster. Based on a comprehensive analysis of the benchmark results, recommendations were made regarding the suitability of the implementations for general use and specific problems.}
 
 % Declaration in Czech
 \newcommand{\declarationCZ}{Prohlašuji, že jsem svou diplomovou práci vypracoval samostatně a použil jsem pouze podklady (literaturu, projekty, SW atd.) uvedené v přiloženém seznamu.}
@@ -203,10 +203,10 @@ giveninits=true]{biblatex}								% Bibliography: ISO 690 format, cite shows num
 \newcommand{\declarationEN}{I declare that I have carried out my Master's Degree Project independently and I have used only the materials (literature, projects, software, etc.) listed in the bibliography.}
 
 % Acknowledgement in Czech
-\newcommand{\acknowledgementCZ}{Chtěl bych poděkovat doc. Ing. Tomáši Oberhuberovi, Ph.D. za vedení mé diplomové práce a za podnětné návrhy, které ji obohatily. Poděkování patří také zpřístupnění výpočetní infrastruktury projektu financovaného OP VVV CZ.02.1.01/0.0/0.0/16\_019/0000765 ``Výzkumné centrum informatiky''.}
+\newcommand{\acknowledgmentCZ}{Chtěl bych poděkovat doc. Ing. Tomáši Oberhuberovi, Ph.D. za vedení mé diplomové práce a za podnětné návrhy, které ji obohatily. Dále bych rád poděkoval Ing. Jakubu Šístkovi, Ph.D. a Ing. Danielu Večerkovi za sdílené znalosti a výpomoc. Poděkování patří také zpřístupnění výpočetní infrastruktury projektu financovaného OP VVV CZ.02.1.01/0.0/0.0/16\_019/0000765 ``Výzkumné centrum informatiky''.}
 
 % Acknowledgement in English (translation of the Czech acknowledgement)
-\newcommand{\acknowledgementEN}{I would like to thank doc. Ing. Tomas Oberhuber, Ph.D. for supervising my master's thesis and for the inspiring proposals that enriched it. The access to the computational infrastructure of the OP VVV funded project CZ.02.1.01/0.0/0.0/16\_019/0000765 ``Research Center for Informatics'' is also gratefully acknowledged.}
+\newcommand{\acknowledgmentEN}{I would like to thank doc. Ing. Tomas Oberhuber, Ph.D. for supervising my master's thesis and for the inspiring proposals that enriched it. Additionally, I would like to express my gratitude to Ing. Jakub Šístek, Ph.D. and Ing. Daniel Večerka for sharing their knowledge and providing assistance. The access to the computational infrastructure of the OP VVV funded project CZ.02.1.01/0.0/0.0/16\_019/0000765 ``Research Center for Informatics'' is also gratefully acknowledged.}
 
 
 
@@ -309,7 +309,7 @@ giveninits=true]{biblatex}								% Bibliography: ISO 690 format, cite shows num
 \textbf{Poděkování}
 
 \vspace{1em} 				% Vertical space. % DO NOT TOUCH!
-\acknowledgementCZ
+\acknowledgmentCZ
 
 \selectlanguage{american}%
 \vspace{1em}
@@ -317,7 +317,7 @@ giveninits=true]{biblatex}								% Bibliography: ISO 690 format, cite shows num
 
 \selectlanguage{czech}%
 \vspace{1em} 				% Vertical space. % DO NOT TOUCH!
-\acknowledgementEN
+\acknowledgmentEN
 \begin{flushright}
 	\paperAuthor
 \end{flushright}  			% Acknowledgement page ends here

@@ -121,7 +121,7 @@ To compare the performance of the decomposers listed in Table~\ref{Table:compari
 				,x tick label style={rotate=45,anchor=east,yshift=-6pt,align=right}
 				,ymajorgrids
 				,legend style={
-					at={(0.5,1.1)},
+					at={(0.5,1.025)},
 					anchor=south,
 					legend columns=4,
 					/tikz/every even column/.append style={column sep=0.5cm},
@@ -290,7 +290,7 @@ When using double precision, the best-performing variant of ICM\_\textit{x}PP, I
 	\begin{subfigure}[t]{0.51\textwidth}
 		\centering
 		\includegraphics[width=\textwidth, keepaspectratio, clip]{images/ch03/input-matrices/decomposition-benchmarks/c-22_icmxpp_metrics.pdf}
-		\subcaption{Iterative and pivoting metrics of ICM\_\textit{x}PP collected during the decomposition of the \textit{c-22} matrix. Each square represents a 384-by-384 section of the matrix. The color in each square represents the number of iterations performed on that section. The left and top axes show the section id in each dimension, while the bottom axis shows the number of pivots performed in a diagonal section. However, since no elements were pivoted, the values are all zero.}
+		\subcaption{Iterative and pivoting metrics of ICM\_\textit{x}PP collected during the decomposition of the \textit{c-22} matrix. Each square represents a 384-by-384 section of the matrix. The color in each square represents the number of iterations performed on that section. The left and top axes show the section ID in each dimension, while the bottom axis shows the number of pivots performed in a diagonal section. However, since no elements were pivoted, the values are all zero.}
 		\label{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->matrix->c-22->icmxpp-metrics}
 	\end{subfigure}
 	\caption{Nonzero element pattern of the \textit{c-22} matrix along with the iterative and pivoting metrics of ICM\_\textit{x}PP.}
@@ -328,7 +328,7 @@ Next, the variants of ICM\_\textit{x}PP will be compared to each other. While Fi
 			,x tick label style={rotate=45,anchor=east,yshift=-6pt,align=right}
 			,ymajorgrids
 			,legend style={
-				at={(0.5,1.1)},
+				at={(0.5,1.025)},
 				anchor=south,
 				legend columns=4,
 				/tikz/every even column/.append style={column sep=0.5cm},
@@ -363,9 +363,9 @@ Similarly, since ICM\_16PP uses 16-by-16 thread blocks, each warp performs $32/1
 
 The next issue, inefficient global memory access, describes a scenario where the smaller the thread blocks are, the more accesses to global memory they perform. In Section~\ref{Subsection:implementation->decomposition-project->implemented-solutions->decomposers} the following was mentioned in terms of the computation kernels of ICM\_\textit{x}PP:
 
-\begin{quote}
+\begin{quoting}
 	\textit{... each block of threads is responsible for computing a block of elements in \code{LUnext}. Thus, to use shared memory and avoid unnecessary accesses to global memory, the block of threads performs matrix multiplication by iterating over blocks of elements. In other words, it loads a block of elements, multiplies them, and then moves on to the next block. The value a thread computes for each block of elements is added to a local variable, \code{sum}. Matrix multiplication by blocks of elements using shared memory is depicted in Figure~\ref{Figure:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->CUDA-matrix-multiplication-with-shared-memory}.}
-\end{quote}
+\end{quoting}
 
 When a block of threads performs matrix multiplication by iterating over blocks of elements, each iteration involves a 32-by-32 block of threads reading from global memory only once. On the other hand, to cover the same block of elements, 16 8-by-8 blocks of threads are required. Specifically, four 8-by-8 blocks of threads stacked on top of each other are required to compute eight columns, and there are four parts consisting of eight columns each in 32 columns. Therefore, in each iteration, the four blocks stacked on top of each other will read the same 8-by-8 block of elements four times since they cannot access the shared memory of the other thread blocks.
 This means that when a 32-by-32 block of threads computes the values of a 32-by-32 block of elements in \code{LU}, it performs fewer read operations from global memory compared to using an 8-by-8 block of threads to compute the same block of elements.
@@ -396,7 +396,7 @@ The consequences of these inefficiencies are visible in Figure~\ref{Figure:compa
 			,x tick label style={rotate=45,anchor=east,yshift=-6pt,align=right}
 			,ymajorgrids
 			,legend style={
-				at={(0.5,1.1)},
+				at={(0.5,1.025)},
 				anchor=south,
 				legend columns=4,
 				/tikz/every even column/.append style={column sep=0.5cm},
@@ -465,7 +465,7 @@ It should be noted once again that the implementation of PCM\_\textit{x}PP was n
 				,x tick label style={rotate=45,anchor=east,yshift=-6pt,align=right}
 				,ymajorgrids
 				,legend style={
-					at={(0.5,1.1)},
+					at={(0.5,1.025)},
 					anchor=south,
 					legend columns=4,
 					/tikz/every even column/.append style={column sep=0.5cm},
@@ -606,7 +606,7 @@ This section presents a comparison of the execution times of the decomposers lis
 				,ymode=log
 				,ymajorgrids
 				,legend style={
-					at={(0.5,1.1)},
+					at={(0.5,1.025)},
 					anchor=south,
 					legend columns=4,
 					/tikz/every even column/.append style={column sep=0.5cm},
@@ -741,7 +741,7 @@ Another important aspect in the performance of a decomposer is the accuracy of t
 				,ymode=log
 				,ymajorgrids
 				,legend style={
-					at={(0.5,1.1)},
+					at={(0.5,1.025)},
 					anchor=south,
 					legend columns=4,
 					/tikz/every even column/.append style={column sep=0.5cm},
@@ -834,7 +834,7 @@ In the description of the implementation of the ICM\_\textit{x}PP decomposer in 
 			,ymode=log
 			,ymajorgrids
 			,legend style={
-				at={(0.5,1.1)},
+				at={(0.5,1.025)},
 				anchor=south,
 				legend columns=3,
 				/tikz/every even column/.append style={column sep=0.5cm},
@@ -886,7 +886,7 @@ When considering the CMPP and PCM\_\textit{x}PP decomposers, the values in Table
 			,ymode=log
 			,ymajorgrids
 			,legend style={
-				at={(0.5,1.1)},
+				at={(0.5,1.025)},
 				anchor=south,
 				legend columns=2,
 				/tikz/every even column/.append style={column sep=0.5cm},
@@ -911,7 +911,7 @@ When considering the CMPP and PCM\_\textit{x}PP decomposers, the values in Table
 
 As shown in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->cmpp-pcmpp-conditional-vs-full-partial-pivoting}, CMPP and PCM\_\textit{x}PP produced less accurate results with conditional partial pivoting than with full partial pivoting. This decrease in accuracy would be concerning if CMPP and PCM\_\textit{x}PP were intended to be fully-functional decomposers. However, as previously mentioned, both decomposers primarily served as a proof-of-concept for conditional partial pivoting and as a baseline comparison for ICM\_\textit{x}PP.
 
-In the introduction of \textit{processing by sections} in Section~\ref{Subsection:implementation->decomposition-project->implemented-solutions->decomposers}, the upper bound for conditional partial pivoting was introduced. It was explained that the upper bound is necessary only for ICM\_\textit{x}PP, as without it, the decomposer would decompose certain matrices incorrectly. In this context, the version of ICM\_\textit{x}PP without the upper bound for conditional partial pivoting will be referred to as ICM\_\textit{x}PP\_NaN. Specifically, ICM\_\textit{x}PP\_NaN would produce results that contained \code{-NaN} values in seven of the 50 matrices. The only common characteristic of the matrices was that they were all sparse. To illustrate this issue, Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->matrix-with-metrics->ICMxPP-with-nan-results->msc10848} depicts the nonzero element pattern of the \code{LU} matrix produced by ICM\_\textit{x}PP\_NaN through the decomposition of the \textit{msc10848} matrix. The figure also displays the iterative and pivoting metrics of the decomposer that were collected during the decomposition of the aforementioned matrix.
+In the introduction of \namerefItalics{Subparagrah:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->processing-by-sections} in Section~\ref{Subsection:implementation->decomposition-project->implemented-solutions->decomposers}, the upper bound for conditional partial pivoting was introduced. It was explained that the upper bound is necessary only for ICM\_\textit{x}PP, as without it, the decomposer would decompose certain matrices incorrectly. In this context, the version of ICM\_\textit{x}PP without the upper bound for conditional partial pivoting will be referred to as ICM\_\textit{x}PP\_NaN. Specifically, ICM\_\textit{x}PP\_NaN would produce results that contained \code{-NaN} values in seven of the 50 matrices. The only common characteristic of the matrices was that they were all sparse. To illustrate this issue, Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->matrix-with-metrics->ICMxPP-with-nan-results->msc10848} depicts the nonzero element pattern of the \code{LU} matrix produced by ICM\_\textit{x}PP\_NaN through the decomposition of the \textit{msc10848} matrix. The figure also displays the iterative and pivoting metrics of the decomposer that were collected during the decomposition of the aforementioned matrix.
 
 \begin{figure}[ht!]
 	\centering
@@ -981,7 +981,7 @@ When using single precision, the most accurate results were produced by the CuSo
 			,ymode=log
 			,ymajorgrids
 			,legend style={
-				at={(0.5,1.1)},
+				at={(0.5,1.025)},
 				anchor=south,
 				legend columns=2,
 				/tikz/every even column/.append style={column sep=0.5cm},
@@ -1016,6 +1016,7 @@ To summarize the accuracy of results on all matrices, the decomposer that consis
 This section presents benchmark results obtained by solving systems of linear equations that originated from the set of 50 matrices. The benchmark for solvers consists of each matrix being used as a coefficient matrix \code{A} in \code{AX = B}. Specifically, the benchmark comprises the following steps:
 
 \begin{enumerate}
+	\itemsep=0em % Decrease spaces between bullet points - it looks bad in the PDF
 	\item The matrix is decomposed either by CMPP or GEM depending on which of the two matrices, \code{L} or \code{U}, is expected by the solver to contain a unit diagonal. If the unit diagonal is expected in \code{U}, then CMPP is used, whereas if it is expected in \code{L}, then GEM is used.
 	\item To mitigate possible inaccuracies caused by the decomposer, matrices \code{L} and \code{U} are multiplied to create \code{A\_res} which is later used instead of \code{A} for the verification of results.
 	\item The matrix of 10 right-hand sides, \code{B}, is filled with ones.
@@ -1069,7 +1070,7 @@ The comparison of execution times of the solvers listed in Table~\ref{Table:comp
 				,ymode=log
 				,ymajorgrids
 				,legend style={
-					at={(0.5,1.1)},
+					at={(0.5,1.025)},
 					anchor=south,
 					legend columns=4,
 					/tikz/every even column/.append style={column sep=0.5cm},
@@ -1154,7 +1155,7 @@ Additionally, when examining the variants of IS\_\textit{x}PP, it is evident tha
 			,ymode=log
 			,ymajorgrids
 			,legend style={
-				at={(0.5,1.1)},
+				at={(0.5,1.025)},
 				anchor=south,
 				legend columns=5,
 				/tikz/every even column/.append style={column sep=0.5cm},
@@ -1255,7 +1256,7 @@ The accuracy of the values of unknowns produced by solvers is a crucial performa
 				,ymode=log
 				,ymajorgrids
 				,legend style={
-					at={(0.5,1.1)},
+					at={(0.5,1.025)},
 					anchor=south,
 					legend columns=4,
 					/tikz/every even column/.append style={column sep=0.5cm},
@@ -1372,6 +1373,7 @@ This section presents the benchmark results of the "Poisson equation on a cube" 
 For each decomposer, the benchmark involved the following steps:
 
 \begin{enumerate}
+	\itemsep=0em % Decrease spaces between bullet points - it looks bad in the PDF
 	\item Perform a warm-up by running the \code{poisson\_on\_cube} executable with undemanding parameters.
 	\item For each value in the set $\left\{\, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50\,\right\}$, run the \code{poisson\_on\_cube} executable 10 times, providing the value as the first parameter (\code{poisson\_on\_cube value arg2 arg3}). Note that the decomposer is called multiple times within each run.
 	\item Collect and save the logs generated by each run, as they contain the metrics relevant to this benchmark.
@@ -1380,6 +1382,7 @@ For each decomposer, the benchmark involved the following steps:
 The logs are then parsed to obtain the metrics which are subsequently averaged using the scripts mentioned in Section~\ref{Section:implementation->BDDCML}. While the \code{poisson\_on\_cube} executable accepts three parameters, only the value of the first parameter varied throughout the benchmark. The parameters of the executable are as follows:
 
 \begin{enumerate}
+	\itemsep=0em % Decrease spaces between bullet points - it looks bad in the PDF
 	\item \code{num\_el\_per\_sub\_edge} - The number of elements per sub-edge of the cube. In terms of BDDCML, it is denoted by $H/h$, where $H$ is the size of an edge and $h$ represents the size of the edge of an element \cite{6ZBqOb318XgFqC5W}. $H/h$ is also referred to as the \textit{subdomain size} \cite{6ZBqOb318XgFqC5W}.
 	\item \code{num\_sub\_per\_cube\_edge} - The number of sub-edges per cube edge. For this benchmark, the value was set to 4.
 	\item \code{nlevels} - The number of levels in the BDDC method. For this benchmark, the value was set to 2.
@@ -1388,6 +1391,7 @@ The logs are then parsed to obtain the metrics which are subsequently averaged u
 In brief, the "Poisson equation on a cube" problem in BDDCML is divided into three stages that are timed separately\label{Text:comparing-decomposers-and-solvers->bddcml-benchmark->poisson-on-cube-stages}:
 
 \begin{enumerate}
+	\itemsep=0em % Decrease spaces between bullet points - it looks bad in the PDF
 	\item \textit{loading} - This stage involves loading the data for the problem.
 	\item \textit{pc\_setup} - The \textit{Preconditioner Setup} stage includes the utilization of a decomposer as a preconditioner along with a solver.
 	\item \textit{Krylov method} - This stage involves employing matrix-vector multiplication alongside a solver to iteratively improve the solution. The number of iterations required for the Krylov method to reach the desired relative residual serves as an indicator of accuracy for the decomposer utilized in the \textit{pc\_setup} stage, as the matrices used in this stage are provided by the preconditioner.
@@ -1515,7 +1519,7 @@ This section presents the speedup comparison of the decomposers listed in Table~
 			,xmin=0, xmax=55
 			,ymajorgrids
 			,legend style={
-				at={(0.5,1.1)},
+				at={(0.5,1.025)},
 				anchor=south,
 				legend columns=4,
 				/tikz/every even column/.append style={column sep=0.5cm},
@@ -1613,7 +1617,7 @@ The summary of the decomposition benchmarks in Section~\ref{Subsection:comparing
 				,xmin=0, xmax=55
 				,ymajorgrids
 				,legend style={
-					at={(0.5,1.1)},
+					at={(0.5,1.025)},
 					anchor=south,
 					legend columns=3,
 					/tikz/every even column/.append style={column sep=0.5cm},
@@ -1702,7 +1706,7 @@ However, as described in Section~\ref{Text:comparing-decomposers-and-solvers->de
 				,xmin=0, xmax=55
 				,ymajorgrids
 				,legend style={
-					at={(0.5,1.1)},
+					at={(0.5,1.025)},
 					anchor=south,
 					legend columns=3,
 					/tikz/every even column/.append style={column sep=0.5cm},
@@ -1791,7 +1795,7 @@ As expected, Figure~\ref{Figure:comparing-decomposers-and-solvers->bddcml-benchm
 			,ymax=1.2
 			,ymajorgrids
 			,legend style={
-				at={(0.5,1.1)},
+				at={(0.5,1.05)},
 				anchor=south,
 				legend columns=4,
 				/tikz/every even column/.append style={column sep=0.5cm},

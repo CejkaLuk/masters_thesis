@@ -1,0 +1,708 @@
+========== [ START ] Decomposers Benchmark
+
+===== Parameters
+BENCHMARK TYPE               = decomposers
+BENCHMARK TYPE UPPER CASE    = Decomposers
+COMPUTE DIRECTORY            = /data/temporary/cejkaluk/2023-06-21_16-30-17
+=====
+
+---> Removing compiled benchmark files in /data/temporary/cejkaluk/2023-06-21_16-30-17/.local/bin and in build, and headers in /data/temporary/cejkaluk/2023-06-21_16-30-17/.local/include...
+---> Compiling Decomposers Benchmark...
+Configuring Decomposition for Release build ...
+-- The C compiler identification is GNU 12.2.0
+-- The CXX compiler identification is GNU 12.2.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /mnt/appl/software/GCCcore/12.2.0/bin/gcc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /mnt/appl/software/GCCcore/12.2.0/bin/g++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Looking for C++ include filesystem
+-- Looking for C++ include filesystem - found
+-- Performing Test CXX_FILESYSTEM_NO_LINK_NEEDED
+-- Performing Test CXX_FILESYSTEM_NO_LINK_NEEDED - Success
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+-- Check if compiler accepts -pthread
+-- Check if compiler accepts -pthread - yes
+-- Found Threads: TRUE  
+-- Looking for a CUDA compiler
+-- Looking for a CUDA compiler - /mnt/appl/software/CUDA/12.0.0/bin/nvcc
+-- Looking for a CUDA host compiler - /mnt/appl/software/GCCcore/12.2.0/bin/g++
+-- Found CUDAToolkit: /mnt/appl/software/CUDA/12.0.0/include (found version "12.0.76") 
+-- The CUDA compiler identification is NVIDIA 12.0.76
+-- Detecting CUDA compiler ABI info
+-- Detecting CUDA compiler ABI info - done
+-- Check for working CUDA compiler: /mnt/appl/software/CUDA/12.0.0/bin/nvcc - skipped
+-- Detecting CUDA compile features
+-- Detecting CUDA compile features - done
+-- Build options:
+   DECOMP_USE_CUDA = yes
+   CMAKE_CUDA_ARCHITECTURES = native
+   DECOMP_USE_SYSTEM_GTEST= no
+   DECOMP_BUILD_BENCHMARKS = yes
+   DECOMP_BUILD_TESTS = no
+   DECOMPO_BUILD_COVERAGE = no
+   DECOMP_OFFLINE_BUILD = no
+-- Compiler options:
+   CMAKE_C_FLAGS = 
+   CMAKE_C_FLAGS_DEBUG = -g
+   CMAKE_C_FLAGS_RELEASE = -O3 -DNDEBUG
+   CMAKE_CXX_FLAGS =  -Wall -Werror=vla -Wextra-semi -Wno-unknown-pragmas -Wno-maybe-uninitialized
+   CMAKE_CXX_FLAGS_DEBUG = -g
+   CMAKE_CXX_FLAGS_RELEASE = -O3 -DNDEBUG
+   CMAKE_CUDA_FLAGS =  -Wall
+   CMAKE_CUDA_FLAGS_DEBUG = -g
+   CMAKE_CUDA_FLAGS_RELEASE = -O3 -DNDEBUG
+   CMAKE_SHARED_LIBRARY_LINK_C_FLAGS = -rdynamic
+   CMAKE_SHARED_LIBRARY_LINK_C_FLAGS_DEBUG = 
+   CMAKE_SHARED_LIBRARY_LINK_C_FLAGS_RELEASE = 
+   CMAKE_EXE_LINKER_FLAGS = 
+   CMAKE_EXE_LINKER_FLAGS_DEBUG = 
+   CMAKE_EXE_LINKER_FLAGS_RELEASE = 
+   CMAKE_SHARED_LINKER_FLAGS = 
+   CMAKE_SHARED_LINKER_FLAGS_DEBUG = 
+   CMAKE_SHARED_LINKER_FLAGS_RELEASE = 
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /tmp/cejkaluk/2023-06-21_16-30-17/decomposition/build/Release
+Building Decomposition in Release configuration using 64 parallel jobs ...
+[ 16%] Building CUDA object src/Benchmarks/Decomposers/CMakeFiles/decomposers-benchmark.dir/decomposers-benchmark.cu.o
+[ 33%] Building CUDA object src/Benchmarks/Solvers/CMakeFiles/solvers-benchmark.dir/solvers-benchmark.cu.o
+[ 50%] Linking CUDA device code CMakeFiles/solvers-benchmark.dir/cmake_device_link.o
+[ 66%] Linking CUDA executable ../../../bin/solvers-benchmark
+[ 66%] Built target solvers-benchmark
+[ 83%] Linking CUDA device code CMakeFiles/decomposers-benchmark.dir/cmake_device_link.o
+[100%] Linking CUDA executable ../../../bin/decomposers-benchmark
+[100%] Built target decomposers-benchmark
+-- Install configuration: "Release"
+-- Installing: /tmp/cejkaluk/2023-06-21_16-30-17/.local/lib64/cmake/DECOMP/DECOMPTargets.cmake
+-- Installing: /tmp/cejkaluk/2023-06-21_16-30-17/.local/lib64/cmake/DECOMP/DECOMPConfig.cmake
+-- Installing: /tmp/cejkaluk/2023-06-21_16-30-17/.local/lib64/cmake/DECOMP/Modules/FindFilesystem.cmake
+-- Removing existing include directory: /tmp/cejkaluk/2023-06-21_16-30-17/.local/include/Decomposition/
+-- Installing include directory: /tmp/cejkaluk/2023-06-21_16-30-17/.local/include/Decomposition/
+-- Installing: /tmp/cejkaluk/2023-06-21_16-30-17/.local/bin/decomposers-benchmark
+-- Installing: /tmp/cejkaluk/2023-06-21_16-30-17/.local/bin/solvers-benchmark
+
+WARNING !!!
+
+Your system does not see Decomposition which was installed right now.
+You need to add it to your environment variables $PATH and $LD_LIBRARY_PATH.
+Add the following to your shell configuration file (e.g. .bashrc):
+
+export PATH="$PATH:/data/temporary/cejkaluk/2023-06-21_16-30-17/.local/bin"
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/data/temporary/cejkaluk/2023-06-21_16-30-17/.local/lib"
+
+Total Installation time (incl. unit tests - if run): 0 min 58 sec 284 ms
+
+
+===== [ START ] Benchmark (precision = double)
+
+St čen 21 16:32:25 CEST 2023
+-> Running benchmark for: ./mtx-matrices/685_bus/685_bus.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                     685_bus.mtx        double           685           685          3249                           CM PP           CPU  8.236229e-02  4.685883e-05  5.689355e-04    10           N/A        0.000000e+00            5.684342e-14
+                     685_bus.mtx        double           685           685          3249                        ICM_8 PP           GPU  3.714229e-02  1.460496e-03  3.932166e-02    10  2.217480e+00        1.818989e-12            1.818989e-12
+                     685_bus.mtx        double           685           685          3249                       ICM_16 PP           GPU  3.391062e-02  6.035913e-04  1.779948e-02    10  2.428805e+00        1.818989e-12            1.818989e-12
+                     685_bus.mtx        double           685           685          3249                       ICM_32 PP           GPU  3.590393e-02  8.073164e-04  2.248546e-02    10  2.293963e+00        1.818989e-12            1.818989e-12
+
+
+St čen 21 16:32:28 CEST 2023
+-> Running benchmark for: ./mtx-matrices/b2_ss/b2_ss.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                       b2_ss.mtx        double          1089          1089          3895                           CM PP           CPU  3.412376e-01  1.288232e-03  3.775176e-03    10           N/A        0.000000e+00            4.656613e-10
+                       b2_ss.mtx        double          1089          1089          3895                        ICM_8 PP           GPU  3.629638e-01  1.688930e-03  4.653164e-03    10  9.401422e-01        1.216756e+07            5.820766e-11
+                       b2_ss.mtx        double          1089          1089          3895                       ICM_16 PP           GPU  3.586576e-01  2.074252e-03  5.783375e-03    10  9.514299e-01        1.216756e+07            5.820766e-11
+                       b2_ss.mtx        double          1089          1089          3895                       ICM_32 PP           GPU  3.816785e-01  1.381440e-03  3.619380e-03    10  8.940445e-01        1.216756e+07            5.820766e-11
+
+
+St čen 21 16:33:11 CEST 2023
+-> Running benchmark for: ./mtx-matrices/bayer06/bayer06.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                     bayer06.mtx        double          3008          3008         20715                           CM PP           CPU  1.357390e+01  8.334489e-01  6.140084e-02    10           N/A        0.000000e+00            5.960464e-08
+                     bayer06.mtx        double          3008          3008         20715                        ICM_8 PP           GPU  2.676650e+00  2.917661e-03  1.090042e-03    10  5.071227e+00        3.155946e+07            1.192093e-07
+                     bayer06.mtx        double          3008          3008         20715                       ICM_16 PP           GPU  2.396328e+00  2.699679e-03  1.126590e-03    10  5.664458e+00        3.155946e+07            1.192093e-07
+                     bayer06.mtx        double          3008          3008         20715                       ICM_32 PP           GPU  2.398501e+00  3.792914e-03  1.581369e-03    10  5.659327e+00        3.155946e+07            1.192093e-07
+
+
+St čen 21 16:45:03 CEST 2023
+-> Running benchmark for: ./mtx-matrices/bayer09/bayer09.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                     bayer09.mtx        double          3083          3083         11767                           CM PP           CPU  9.672352e+00  2.518062e-02  2.603361e-03    10           N/A        0.000000e+00            1.192093e-07
+                     bayer09.mtx        double          3083          3083         11767                        ICM_8 PP           GPU  2.816101e+00  2.100305e-03  7.458201e-04    10  3.434661e+00        4.644971e-08            1.192093e-07
+                     bayer09.mtx        double          3083          3083         11767                       ICM_16 PP           GPU  2.581060e+00  1.723689e-03  6.678220e-04    10  3.747434e+00        4.644971e-08            1.192093e-07
+                     bayer09.mtx        double          3083          3083         11767                       ICM_32 PP           GPU  2.374942e+00  1.572831e-03  6.622608e-04    10  4.072669e+00        4.644971e-08            1.192093e-07
+
+
+St čen 21 16:57:49 CEST 2023
+-> Running benchmark for: ./mtx-matrices/bcsstk01/bcsstk01.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    bcsstk01.mtx        double            48            48           400                           CM PP           CPU  1.915930e-05  8.903356e-07  4.647015e-02    10           N/A        0.000000e+00            1.192093e-07
+                    bcsstk01.mtx        double            48            48           400                        ICM_8 PP           GPU  7.712660e-03  3.014138e-04  3.908040e-02    10  2.484137e-03        2.663134e+09            2.875458e-07
+                    bcsstk01.mtx        double            48            48           400                       ICM_16 PP           GPU  7.078398e-03  1.216690e-05  1.718878e-03    10  2.706728e-03        2.663134e+09            2.875458e-07
+                    bcsstk01.mtx        double            48            48           400                       ICM_32 PP           GPU  7.640542e-03  1.751275e-04  2.292082e-02    10  2.507584e-03        2.663134e+09            2.875458e-07
+
+
+St čen 21 16:57:50 CEST 2023
+-> Running benchmark for: ./mtx-matrices/bcsstk02/bcsstk02.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    bcsstk02.mtx        double            66            66          4356                           CM PP           CPU  5.360370e-05  2.388836e-06  4.456476e-02    10           N/A        0.000000e+00            9.094947e-13
+                    bcsstk02.mtx        double            66            66          4356                        ICM_8 PP           GPU  4.419212e-03  2.957673e-04  6.692761e-02    10  1.212970e-02        4.547474e-12            1.818989e-12
+                    bcsstk02.mtx        double            66            66          4356                       ICM_16 PP           GPU  4.116056e-03  1.611681e-05  3.915595e-03    10  1.302307e-02        4.547474e-12            1.818989e-12
+                    bcsstk02.mtx        double            66            66          4356                       ICM_32 PP           GPU  4.366396e-03  1.491292e-04  3.415384e-02    10  1.227642e-02        4.547474e-12            1.818989e-12
+
+
+St čen 21 16:57:51 CEST 2023
+-> Running benchmark for: ./mtx-matrices/bcsstk03/bcsstk03.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    bcsstk03.mtx        double           112           112           640                           CM PP           CPU  2.661837e-04  1.067842e-05  4.011673e-02    10           N/A        0.000000e+00            2.384186e-07
+                    bcsstk03.mtx        double           112           112           640                        ICM_8 PP           GPU  1.711518e-02  5.637286e-04  3.293734e-02    10  1.555249e-02        2.964817e+11            7.629395e-06
+                    bcsstk03.mtx        double           112           112           640                       ICM_16 PP           GPU  1.687299e-02  6.711707e-04  3.977781e-02    10  1.577573e-02        2.964817e+11            7.629395e-06
+                    bcsstk03.mtx        double           112           112           640                       ICM_32 PP           GPU  1.737388e-02  6.551436e-04  3.770853e-02    10  1.532091e-02        2.964817e+11            7.629395e-06
+
+
+St čen 21 16:57:52 CEST 2023
+-> Running benchmark for: ./mtx-matrices/bp_0/bp_0.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                        bp_0.mtx        double           822           822          3276                           CM PP           CPU  1.457023e-01  4.967128e-04  3.409094e-03    10           N/A        0.000000e+00            1.776357e-15
+                        bp_0.mtx        double           822           822          3276                        ICM_8 PP           GPU  1.637993e-01  1.360429e-03  8.305465e-03    10  8.895171e-01        0.000000e+00            1.776357e-15
+                        bp_0.mtx        double           822           822          3276                       ICM_16 PP           GPU  1.628681e-01  1.220776e-03  7.495492e-03    10  8.946033e-01        0.000000e+00            1.776357e-15
+                        bp_0.mtx        double           822           822          3276                       ICM_32 PP           GPU  1.739804e-01  2.911866e-04  1.673675e-03    10  8.374638e-01        0.000000e+00            1.776357e-15
+
+
+St čen 21 16:58:12 CEST 2023
+-> Running benchmark for: ./mtx-matrices/bp_1400/bp_1400.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                     bp_1400.mtx        double           822           822          4790                           CM PP           CPU  1.458696e-01  1.048020e-03  7.184636e-03    10           N/A        0.000000e+00            4.656613e-10
+                     bp_1400.mtx        double           822           822          4790                        ICM_8 PP           GPU  2.717353e-01  1.995150e-03  7.342256e-03    10  5.368078e-01        8.633044e+06            3.092282e-11
+                     bp_1400.mtx        double           822           822          4790                       ICM_16 PP           GPU  2.698560e-01  1.794702e-03  6.650594e-03    10  5.405461e-01        8.633044e+06            3.092282e-11
+                     bp_1400.mtx        double           822           822          4790                       ICM_32 PP           GPU  2.895561e-01  2.562997e-03  8.851470e-03    10  5.037697e-01        8.633044e+06            3.092282e-11
+
+
+St čen 21 16:58:37 CEST 2023
+-> Running benchmark for: ./mtx-matrices/c-22/c-22.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                        c-22.mtx        double          3792          3792         28870                           CM PP           CPU  1.709761e+01  9.044045e-02  5.289655e-03    10           N/A        0.000000e+00            1.057540e-13
+                        c-22.mtx        double          3792          3792         28870                        ICM_8 PP           GPU  1.498321e+00  1.024101e-03  6.834991e-04    10  1.141118e+01        9.185896e-11            4.441720e-12
+                        c-22.mtx        double          3792          3792         28870                       ICM_16 PP           GPU  1.330894e+00  9.707539e-04  7.293999e-04    10  1.284671e+01        9.185896e-11            4.441720e-12
+                        c-22.mtx        double          3792          3792         28870                       ICM_32 PP           GPU  1.312540e+00  5.855309e-04  4.461052e-04    10  1.302635e+01        9.185896e-11            4.441720e-12
+
+
+St čen 21 17:01:50 CEST 2023
+-> Running benchmark for: ./mtx-matrices/circuit204/circuit204.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                  circuit204.mtx        double          1020          1020          5883                           CM PP           CPU  2.921272e-01  1.217723e-03  4.168468e-03    10           N/A        0.000000e+00            1.490116e-08
+                  circuit204.mtx        double          1020          1020          5883                        ICM_8 PP           GPU  1.466064e-01  3.974131e-04  2.710749e-03    10  1.992595e+00        6.970643e+13            8.295274e-08
+                  circuit204.mtx        double          1020          1020          5883                       ICM_16 PP           GPU  1.440291e-01  2.532723e-03  1.758480e-02    10  2.028251e+00        6.970643e+13            8.295274e-08
+                  circuit204.mtx        double          1020          1020          5883                       ICM_32 PP           GPU  1.555155e-01  4.363653e-03  2.805927e-02    10  1.878444e+00        6.970643e+13            8.295274e-08
+
+
+St čen 21 17:02:04 CEST 2023
+-> Running benchmark for: ./mtx-matrices/crout_python/crout_python.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                crout_python.mtx        double             4             4            15                           CM PP           CPU  3.210000e-07  8.849984e-08  2.757004e-01    10           N/A        0.000000e+00            0.000000e+00
+                crout_python.mtx        double             4             4            15                        ICM_8 PP           GPU  4.638712e-04  5.889399e-06  1.269620e-02    10  6.920024e-04        0.000000e+00            0.000000e+00
+                crout_python.mtx        double             4             4            15                       ICM_16 PP           GPU  4.574059e-04  8.286148e-06  1.811552e-02    10  7.017837e-04        0.000000e+00            0.000000e+00
+                crout_python.mtx        double             4             4            15                       ICM_32 PP           GPU  4.549363e-04  6.168330e-06  1.355867e-02    10  7.055933e-04        0.000000e+00            0.000000e+00
+
+
+St čen 21 17:02:05 CEST 2023
+-> Running benchmark for: ./mtx-matrices/exdata_1/exdata_1.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    exdata_1.mtx        double          6001          6001       2269500                           CM PP           CPU  8.814956e+01  1.651839e-01  1.873905e-03    10           N/A        0.000000e+00            3.651032e-09
+                    exdata_1.mtx        double          6001          6001       2269500                        ICM_8 PP           GPU  2.592119e+01  7.260041e-03  2.800814e-04    10  3.400676e+00        3.772613e-06            1.062118e-08
+                    exdata_1.mtx        double          6001          6001       2269500                       ICM_16 PP           GPU  1.833705e+01  2.766139e-03  1.508497e-04    10  4.807183e+00        3.772613e-06            1.062118e-08
+                    exdata_1.mtx        double          6001          6001       2269500                       ICM_32 PP           GPU  1.500590e+01  1.151208e-03  7.671701e-05    10  5.874326e+00        3.772613e-06            1.062118e-08
+
+
+St čen 21 17:28:17 CEST 2023
+-> Running benchmark for: ./mtx-matrices/fp/fp.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                          fp.mtx        double          7548          7548        834222                           CM PP           CPU  1.490108e+02  1.885781e-01  1.265533e-03    10           N/A        0.000000e+00            1.136868e-13
+                          fp.mtx        double          7548          7548        834222                        ICM_8 PP           GPU  1.966029e+01  5.465790e-03  2.780116e-04    10  7.579276e+00        4.092726e-12            4.547474e-13
+                          fp.mtx        double          7548          7548        834222                       ICM_16 PP           GPU  1.327808e+01  1.261560e-03  9.501075e-05    10  1.122231e+01        4.092726e-12            4.547474e-13
+                          fp.mtx        double          7548          7548        834222                       ICM_32 PP           GPU  1.037667e+01  1.543767e-03  1.487728e-04    10  1.436017e+01        4.092726e-12            4.547474e-13
+
+
+St čen 21 17:55:21 CEST 2023
+-> Running benchmark for: ./mtx-matrices/freeFlyingRobot_9/freeFlyingRobot_9.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+           freeFlyingRobot_9.mtx        double          4778          4778         39964                           CM PP           CPU  3.949096e+01  1.333999e-01  3.377986e-03    10           N/A        0.000000e+00            1.136214e-07
+           freeFlyingRobot_9.mtx        double          4778          4778         39964                        ICM_8 PP           GPU  1.056758e+01  3.263042e-03  3.087785e-04    10  3.736991e+00        1.572831e+09            1.196750e-07
+           freeFlyingRobot_9.mtx        double          4778          4778         39964                       ICM_16 PP           GPU  8.916688e+00  1.500357e-03  1.682639e-04    10  4.428882e+00        1.572831e+09            1.196750e-07
+           freeFlyingRobot_9.mtx        double          4778          4778         39964                       ICM_32 PP           GPU  7.577402e+00  1.391330e-03  1.836157e-04    10  5.211675e+00        1.572831e+09            1.196750e-07
+
+
+St čen 21 18:06:34 CEST 2023
+-> Running benchmark for: ./mtx-matrices/garon1/garon1.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                      garon1.mtx        double          3175          3175         84723                           CM PP           CPU  1.078546e+01  3.078135e-02  2.853967e-03    10           N/A        0.000000e+00            1.776357e-15
+                      garon1.mtx        double          3175          3175         84723                        ICM_8 PP           GPU  1.521476e+00  1.033251e-03  6.791111e-04    10  7.088813e+00        3.552714e-15            3.552714e-15
+                      garon1.mtx        double          3175          3175         84723                       ICM_16 PP           GPU  1.243790e+00  5.177047e-04  4.162315e-04    10  8.671446e+00        3.552714e-15            3.552714e-15
+                      garon1.mtx        double          3175          3175         84723                       ICM_32 PP           GPU  1.022959e+00  6.767714e-04  6.615823e-04    10  1.054340e+01        3.552714e-15            3.552714e-15
+
+
+St čen 21 18:08:44 CEST 2023
+-> Running benchmark for: ./mtx-matrices/heart1/heart1.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                      heart1.mtx        double          3557          3557       1385317                           CM PP           CPU  1.640102e+01  4.490537e-02  2.737962e-03    10           N/A        0.000000e+00            1.455192e-11
+                      heart1.mtx        double          3557          3557       1385317                        ICM_8 PP           GPU  3.069980e+00  3.205509e-03  1.044147e-03    10  5.342386e+00        1.309672e-10            1.164153e-10
+                      heart1.mtx        double          3557          3557       1385317                       ICM_16 PP           GPU  2.744511e+00  2.045406e-03  7.452718e-04    10  5.975936e+00        1.309672e-10            1.164153e-10
+                      heart1.mtx        double          3557          3557       1385317                       ICM_32 PP           GPU  2.852545e+00  3.078258e-03  1.079127e-03    10  5.749610e+00        1.309672e-10            1.164153e-10
+
+
+St čen 21 18:12:24 CEST 2023
+-> Running benchmark for: ./mtx-matrices/lns_131/lns_131.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                     lns_131.mtx        double           131           131           536                           CM PP           CPU  4.318317e-04  5.096523e-06  1.180210e-02    10           N/A        0.000000e+00            4.656613e-10
+                     lns_131.mtx        double           131           131           536                        ICM_8 PP           GPU  4.857939e-03  1.579648e-05  3.251683e-03    10  8.889195e-02        2.095355e+13            3.906250e-03
+                     lns_131.mtx        double           131           131           536                       ICM_16 PP           GPU  4.795026e-03  2.527440e-05  5.270962e-03    10  9.005827e-02        2.095355e+13            3.906250e-03
+                     lns_131.mtx        double           131           131           536                       ICM_32 PP           GPU  5.252318e-03  2.001435e-05  3.810575e-03    10  8.221736e-02        2.095355e+13            3.906250e-03
+
+
+St čen 21 18:12:25 CEST 2023
+-> Running benchmark for: ./mtx-matrices/msc10848/msc10848.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    msc10848.mtx        double         10848         10848       1229776                           CM PP           CPU  6.534609e+02  6.710716e+01  1.026950e-01    10           N/A        0.000000e+00            9.536743e-07
+                    msc10848.mtx        double         10848         10848       1229776                        ICM_8 PP           GPU  3.870714e+02  4.576287e-02  1.182285e-04    10  1.688218e+00        3.074937e+11            3.051758e-05
+                    msc10848.mtx        double         10848         10848       1229776                       ICM_16 PP           GPU  2.970321e+02  1.321757e-02  4.449879e-05    10  2.199967e+00        3.074937e+11            3.051758e-05
+                    msc10848.mtx        double         10848         10848       1229776                       ICM_32 PP           GPU  2.313460e+02  8.353685e-03  3.610905e-05    10  2.824604e+00        3.074937e+11            3.051758e-05
+
+
+St čen 21 22:25:17 CEST 2023
+-> Running benchmark for: ./mtx-matrices/nd3k/nd3k.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                        nd3k.mtx        double          9000          9000       3279690                           CM PP           CPU  2.613578e+02  2.312523e-01  8.848112e-04    10           N/A        0.000000e+00            7.105427e-15
+                        nd3k.mtx        double          9000          9000       3279690                        ICM_8 PP           GPU  1.638622e+02  2.111705e-02  1.288708e-04    10  1.594985e+00        6.664891e-12            1.421085e-14
+                        nd3k.mtx        double          9000          9000       3279690                       ICM_16 PP           GPU  1.355144e+02  1.014893e-02  7.489194e-05    10  1.928636e+00        6.664891e-12            1.421085e-14
+                        nd3k.mtx        double          9000          9000       3279690                       ICM_32 PP           GPU  1.083278e+02  3.489885e-03  3.221598e-05    10  2.412658e+00        6.664891e-12            1.421085e-14
+
+
+Čt čen 22 00:12:28 CEST 2023
+-> Running benchmark for: ./mtx-matrices/orani678/orani678.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    orani678.mtx        double          2529          2529         90158                           CM PP           CPU  4.433458e+00  2.316788e-02  5.225691e-03    10           N/A        0.000000e+00            9.765625e-04
+                    orani678.mtx        double          2529          2529         90158                        ICM_8 PP           GPU  2.225545e+00  3.554032e-03  1.596927e-03    10  1.992078e+00        8.526238e+12            2.357483e-03
+                    orani678.mtx        double          2529          2529         90158                       ICM_16 PP           GPU  2.029464e+00  1.947439e-03  9.595829e-04    10  2.184546e+00        8.526238e+12            2.357483e-03
+                    orani678.mtx        double          2529          2529         90158                       ICM_32 PP           GPU  2.044833e+00  1.212885e-03  5.931462e-04    10  2.168128e+00        8.526238e+12            2.357483e-03
+
+
+Čt čen 22 00:18:17 CEST 2023
+-> Running benchmark for: ./mtx-matrices/sinc15/sinc15.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                      sinc15.mtx        double         11532         11532        551184                           CM PP           CPU  5.368241e+02  3.613009e-01  6.730341e-04    10           N/A        0.000000e+00            6.250000e-02
+                      sinc15.mtx        double         11532         11532        551184                        ICM_8 PP           GPU  4.941742e+02  6.967992e-02  1.410027e-04    10  1.086305e+00        1.015876e+14            1.152344e+00
+                      sinc15.mtx        double         11532         11532        551184                       ICM_16 PP           GPU  3.819383e+02  2.907301e-02  7.611966e-05    10  1.405526e+00        1.015876e+14            1.152344e+00
+                      sinc15.mtx        double         11532         11532        551184                       ICM_32 PP           GPU  2.903724e+02  8.186042e-03  2.819153e-05    10  1.848743e+00        1.015876e+14            1.152344e+00
+
+
+Čt čen 22 09:28:46 CEST 2023
+-> Running benchmark for: ./mtx-matrices/sistek/poc-20_2_2.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                  poc-20_2_2.mtx        double          1274          1274       1304296                           CM PP           CPU  5.466100e-01  1.197835e-03  2.191389e-03    10           N/A        0.000000e+00            5.684342e-14
+                  poc-20_2_2.mtx        double          1274          1274       1304296                        ICM_8 PP           GPU  5.476983e-02  3.657400e-03  6.677764e-02    10  9.980129e+00        2.328306e-10            2.328306e-10
+                  poc-20_2_2.mtx        double          1274          1274       1304296                       ICM_16 PP           GPU  4.799226e-02  6.406225e-04  1.334846e-02    10  1.138955e+01        2.328306e-10            2.328306e-10
+                  poc-20_2_2.mtx        double          1274          1274       1304296                       ICM_32 PP           GPU  4.950850e-02  6.338924e-04  1.280371e-02    10  1.104073e+01        2.328306e-10            2.328306e-10
+
+
+Čt čen 22 09:28:55 CEST 2023
+-> Running benchmark for: ./mtx-matrices/sistek/poc-24_2_2.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                  poc-24_2_2.mtx        double          1814          1814       2749120                           CM PP           CPU  1.607153e+00  1.274010e-02  7.927123e-03    10           N/A        0.000000e+00            9.094947e-13
+                  poc-24_2_2.mtx        double          1814          1814       2749120                        ICM_8 PP           GPU  1.449034e-01  2.757627e-04  1.903079e-03    10  1.109120e+01        2.910383e-11            2.910383e-11
+                  poc-24_2_2.mtx        double          1814          1814       2749120                       ICM_16 PP           GPU  1.279312e-01  3.808227e-03  2.976777e-02    10  1.256263e+01        2.910383e-11            2.910383e-11
+                  poc-24_2_2.mtx        double          1814          1814       2749120                       ICM_32 PP           GPU  1.233390e-01  7.365423e-03  5.971689e-02    10  1.303037e+01        2.910383e-11            2.910383e-11
+
+
+Čt čen 22 09:29:18 CEST 2023
+-> Running benchmark for: ./mtx-matrices/sistek/poc-28_2_2.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                  poc-28_2_2.mtx        double          2450          2450       5153080                           CM PP           CPU  4.092152e+00  1.607759e-01  3.928884e-02    10           N/A        0.000000e+00            9.094947e-13
+                  poc-28_2_2.mtx        double          2450          2450       5153080                        ICM_8 PP           GPU  2.696753e-01  9.701049e-03  3.597307e-02    10  1.517437e+01        2.910383e-11            1.164153e-10
+                  poc-28_2_2.mtx        double          2450          2450       5153080                       ICM_16 PP           GPU  2.239673e-01  3.989115e-04  1.781115e-03    10  1.827120e+01        2.910383e-11            1.164153e-10
+                  poc-28_2_2.mtx        double          2450          2450       5153080                       ICM_32 PP           GPU  2.062121e-01  7.368266e-04  3.573149e-03    10  1.984438e+01        2.910383e-11            1.164153e-10
+
+
+Čt čen 22 09:30:11 CEST 2023
+-> Running benchmark for: ./mtx-matrices/sistek/poc-32_2_2.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                  poc-32_2_2.mtx        double          3182          3182       8868688                           CM PP           CPU  1.008338e+01  2.524721e-01  2.503844e-02    10           N/A        0.000000e+00            1.136868e-13
+                  poc-32_2_2.mtx        double          3182          3182       8868688                        ICM_8 PP           GPU  4.939617e-01  2.897670e-04  5.866185e-04    10  2.041328e+01        1.746230e-10            5.820766e-11
+                  poc-32_2_2.mtx        double          3182          3182       8868688                       ICM_16 PP           GPU  3.945682e-01  2.862846e-04  7.255644e-04    10  2.555548e+01        1.746230e-10            5.820766e-11
+                  poc-32_2_2.mtx        double          3182          3182       8868688                       ICM_32 PP           GPU  3.184650e-01  3.076175e-04  9.659380e-04    10  3.166244e+01        1.746230e-10            5.820766e-11
+
+
+Čt čen 22 09:32:01 CEST 2023
+-> Running benchmark for: ./mtx-matrices/sistek/poc-8_4_2-938719427.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+         poc-8_4_2-938719427.mtx        double           230           230         28960                           CM PP           CPU  2.613396e-03  3.843411e-06  1.470658e-03    10           N/A        0.000000e+00            4.440892e-16
+         poc-8_4_2-938719427.mtx        double           230           230         28960                        ICM_8 PP           GPU  2.488608e-03  1.041314e-05  4.184323e-03    10  1.050144e+00        1.136868e-13            4.547474e-13
+         poc-8_4_2-938719427.mtx        double           230           230         28960                       ICM_16 PP           GPU  2.378870e-03  8.448991e-06  3.551682e-03    10  1.098587e+00        1.136868e-13            4.547474e-13
+         poc-8_4_2-938719427.mtx        double           230           230         28960                       ICM_32 PP           GPU  2.775913e-03  4.636923e-05  1.670414e-02    10  9.414547e-01        1.136868e-13            4.547474e-13
+
+
+Čt čen 22 09:32:02 CEST 2023
+-> Running benchmark for: ./mtx-matrices/sistek/poc-8_4_2-938719741.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+         poc-8_4_2-938719741.mtx        double           298           298         54816                           CM PP           CPU  5.974660e-03  3.738367e-05  6.257037e-03    10           N/A        0.000000e+00            1.136868e-13
+         poc-8_4_2-938719741.mtx        double           298           298         54816                        ICM_8 PP           GPU  8.031705e-03  2.615055e-04  3.255915e-02    10  7.438844e-01        9.094947e-13            9.094947e-13
+         poc-8_4_2-938719741.mtx        double           298           298         54816                       ICM_16 PP           GPU  8.366996e-03  3.155039e-04  3.770814e-02    10  7.140747e-01        9.094947e-13            9.094947e-13
+         poc-8_4_2-938719741.mtx        double           298           298         54816                       ICM_32 PP           GPU  8.718826e-03  2.438670e-04  2.797016e-02    10  6.852597e-01        9.094947e-13            9.094947e-13
+
+
+Čt čen 22 09:32:03 CEST 2023
+-> Running benchmark for: ./mtx-matrices/sistek/poc-8_4_2-938719829.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+         poc-8_4_2-938719829.mtx        double           298           298         54816                           CM PP           CPU  6.181171e-03  6.416729e-06  1.038109e-03    10           N/A        0.000000e+00            1.136868e-13
+         poc-8_4_2-938719829.mtx        double           298           298         54816                        ICM_8 PP           GPU  8.063821e-03  9.669070e-04  1.199068e-01    10  7.665313e-01        9.094947e-13            9.094947e-13
+         poc-8_4_2-938719829.mtx        double           298           298         54816                       ICM_16 PP           GPU  7.836647e-03  2.704980e-04  3.451706e-02    10  7.887520e-01        9.094947e-13            9.094947e-13
+         poc-8_4_2-938719829.mtx        double           298           298         54816                       ICM_32 PP           GPU  8.417575e-03  3.455315e-04  4.104882e-02    10  7.343173e-01        9.094947e-13            9.094947e-13
+
+
+Čt čen 22 09:32:04 CEST 2023
+-> Running benchmark for: ./mtx-matrices/spaceShuttleEntry_3/spaceShuttleEntry_3.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+         spaceShuttleEntry_3.mtx        double          1834          1834         28757                           CM PP           CPU  1.660363e+00  1.112471e-02  6.700167e-03    10           N/A        0.000000e+00            1.862645e-09
+         spaceShuttleEntry_3.mtx        double          1834          1834         28757                        ICM_8 PP           GPU  6.793084e-01  9.115529e-04  1.341884e-03    10  2.444196e+00        1.391276e+09            2.622604e-06
+         spaceShuttleEntry_3.mtx        double          1834          1834         28757                       ICM_16 PP           GPU  6.348734e-01  7.019509e-04  1.105655e-03    10  2.615266e+00        1.391276e+09            2.622604e-06
+         spaceShuttleEntry_3.mtx        double          1834          1834         28757                       ICM_32 PP           GPU  6.549244e-01  4.292558e-04  6.554281e-04    10  2.535198e+00        1.391276e+09            2.622604e-06
+
+
+Čt čen 22 09:32:55 CEST 2023
+-> Running benchmark for: ./mtx-matrices/TSC_OPF_1047/TSC_OPF_1047.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                TSC_OPF_1047.mtx        double          8140          8140       2012833                           CM PP           CPU  1.824634e+02  3.239631e-01  1.775496e-03    10           N/A        0.000000e+00            1.342414e-09
+                TSC_OPF_1047.mtx        double          8140          8140       2012833                        ICM_8 PP           GPU  3.302354e+01  1.481025e-02  4.484754e-04    10  5.525252e+00        6.449212e+07            4.768372e-07
+                TSC_OPF_1047.mtx        double          8140          8140       2012833                       ICM_16 PP           GPU  2.576376e+01  3.325145e-03  1.290629e-04    10  7.082172e+00        6.449212e+07            4.768372e-07
+                TSC_OPF_1047.mtx        double          8140          8140       2012833                       ICM_32 PP           GPU  2.069373e+01  2.775626e-03  1.341288e-04    10  8.817329e+00        6.449212e+07            4.768372e-07
+
+
+Čt čen 22 10:12:02 CEST 2023
+-> Running benchmark for: ./mtx-matrices/TSOPF_FS_b162_c1/TSOPF_FS_b162_c1.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+            TSOPF_FS_b162_c1.mtx        double         10798         10798        608540                           CM PP           CPU  4.843669e+02  4.914848e-01  1.014695e-03    10           N/A        0.000000e+00            7.275958e-12
+            TSOPF_FS_b162_c1.mtx        double         10798         10798        608540                        ICM_8 PP           GPU  1.755493e+02  3.016346e-02  1.718233e-04    10  2.759150e+00        1.030076e+07            2.793968e-09
+            TSOPF_FS_b162_c1.mtx        double         10798         10798        608540                       ICM_16 PP           GPU  1.336048e+02  7.706368e-03  5.768034e-05    10  3.625371e+00        1.030076e+07            2.793968e-09
+            TSOPF_FS_b162_c1.mtx        double         10798         10798        608540                       ICM_32 PP           GPU  1.021573e+02  5.421426e-03  5.306940e-05    10  4.741383e+00        1.030076e+07            2.793968e-09
+
+
+Čt čen 22 14:14:59 CEST 2023
+-> Running benchmark for: ./mtx-matrices/west0067/west0067.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    west0067.mtx        double            67            67           294                           CM PP           CPU  5.546070e-05  1.251785e-06  2.257067e-02    10           N/A        0.000000e+00            4.218847e-15
+                    west0067.mtx        double            67            67           294                        ICM_8 PP           GPU  9.196305e-03  2.802841e-04  3.047790e-02    10  6.030759e-03        2.238210e-11            7.105427e-15
+                    west0067.mtx        double            67            67           294                       ICM_16 PP           GPU  9.728498e-03  5.456135e-05  5.608404e-03    10  5.700849e-03        2.238210e-11            7.105427e-15
+                    west0067.mtx        double            67            67           294                       ICM_32 PP           GPU  9.938398e-03  3.065065e-05  3.084064e-03    10  5.580447e-03        2.238210e-11            7.105427e-15
+
+
+Čt čen 22 14:15:00 CEST 2023
+-> Running benchmark for: ./mtx-matrices/west0156/west0156.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    west0156.mtx        double           156           156           362                           CM PP           CPU  7.700268e-04  1.349986e-05  1.753168e-02    10           N/A        0.000000e+00            1.421085e-14
+                    west0156.mtx        double           156           156           362                        ICM_8 PP           GPU  1.969768e-02  5.158203e-04  2.618686e-02    10  3.909226e-02        1.905555e+13            1.421085e-14
+                    west0156.mtx        double           156           156           362                       ICM_16 PP           GPU  2.001712e-02  7.132825e-04  3.563362e-02    10  3.846840e-02        1.905555e+13            1.421085e-14
+                    west0156.mtx        double           156           156           362                       ICM_32 PP           GPU  2.028219e-02  6.295101e-04  3.103758e-02    10  3.796566e-02        1.905555e+13            1.421085e-14
+
+
+Čt čen 22 14:15:01 CEST 2023
+-> Running benchmark for: ./mtx-matrices/west0381/west0381.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    west0381.mtx        double           381           381          2134                           CM PP           CPU  1.333423e-02  8.098665e-05  6.073590e-03    10           N/A        0.000000e+00            5.960464e-08
+                    west0381.mtx        double           381           381          2134                        ICM_8 PP           GPU  9.505423e-02  2.937229e-03  3.090056e-02    10  1.402802e-01        4.386522e+08            2.047740e-05
+                    west0381.mtx        double           381           381          2134                       ICM_16 PP           GPU  9.614642e-02  2.368799e-03  2.463741e-02    10  1.386867e-01        4.386522e+08            2.047740e-05
+                    west0381.mtx        double           381           381          2134                       ICM_32 PP           GPU  1.011827e-01  2.101195e-03  2.076634e-02    10  1.317837e-01        4.386522e+08            2.047740e-05
+
+
+Čt čen 22 14:15:07 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka10135_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka10135_<-1000-1000>_pivoting.mtx        double         10135         10135     102713214                           CM PP           CPU  1.282028e+03  6.812752e+00  5.314043e-03    10           N/A        0.000000e+00            7.023800e-08
+Cejka10135_<-1000-1000>_pivoting.mtx        double         10135         10135     102713214                        ICM_8 PP           GPU  4.136554e+02  1.079762e-01  2.610293e-04    10  3.099266e+00        2.014450e+09            2.845170e-06
+Cejka10135_<-1000-1000>_pivoting.mtx        double         10135         10135     102713214                       ICM_16 PP           GPU  3.219375e+02  1.274624e-02  3.959228e-05    10  3.982227e+00        2.014450e+09            2.845170e-06
+Cejka10135_<-1000-1000>_pivoting.mtx        double         10135         10135     102713214                       ICM_32 PP           GPU  2.434973e+02  1.962612e-02  8.060096e-05    10  5.265060e+00        2.014450e+09            2.845170e-06
+
+
+Čt čen 22 18:49:28 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka1157_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka1157_<-1000-1000>_pivoting.mtx        double          1157          1157       1338040                           CM PP           CPU  4.113866e-01  3.131591e-03  7.612282e-03    10           N/A        0.000000e+00            1.521357e-09
+Cejka1157_<-1000-1000>_pivoting.mtx        double          1157          1157       1338040                        ICM_8 PP           GPU  4.600853e-01  2.295536e-03  4.989370e-03    10  8.941528e-01        1.233730e+08            9.014025e-08
+Cejka1157_<-1000-1000>_pivoting.mtx        double          1157          1157       1338040                       ICM_16 PP           GPU  4.398537e-01  2.177254e-03  4.949951e-03    10  9.352805e-01        1.233730e+08            9.014025e-08
+Cejka1157_<-1000-1000>_pivoting.mtx        double          1157          1157       1338040                       ICM_32 PP           GPU  4.611193e-01  2.095113e-03  4.543539e-03    10  8.921479e-01        1.233730e+08            9.014025e-08
+
+
+Čt čen 22 18:49:51 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka2599_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka2599_<-1000-1000>_pivoting.mtx        double          2599          2599       6753502                           CM PP           CPU  4.997110e+00  1.836415e-02  3.674954e-03    10           N/A        0.000000e+00            7.595463e-08
+Cejka2599_<-1000-1000>_pivoting.mtx        double          2599          2599       6753502                        ICM_8 PP           GPU  2.617884e+00  2.222884e-03  8.491145e-04    10  1.908835e+00        3.191961e+08            5.950142e-08
+Cejka2599_<-1000-1000>_pivoting.mtx        double          2599          2599       6753502                       ICM_16 PP           GPU  2.488479e+00  4.980052e-02  2.001243e-02    10  2.008098e+00        3.191961e+08            5.950142e-08
+Cejka2599_<-1000-1000>_pivoting.mtx        double          2599          2599       6753502                       ICM_32 PP           GPU  2.535904e+00  2.601458e-03  1.025850e-03    10  1.970544e+00        3.191961e+08            5.950142e-08
+
+
+Čt čen 22 18:52:38 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka3839_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka3839_<-1000-1000>_pivoting.mtx        double          3839          3839      14736045                           CM PP           CPU  2.078894e+01  3.031316e-02  1.458139e-03    10           N/A        0.000000e+00            1.558708e-07
+Cejka3839_<-1000-1000>_pivoting.mtx        double          3839          3839      14736045                        ICM_8 PP           GPU  9.727136e+00  4.446544e-03  4.571278e-04    10  2.137211e+00        1.288155e+09            6.431166e-07
+Cejka3839_<-1000-1000>_pivoting.mtx        double          3839          3839      14736045                       ICM_16 PP           GPU  8.119982e+00  7.779684e-03  9.580912e-04    10  2.560220e+00        1.288155e+09            6.431166e-07
+Cejka3839_<-1000-1000>_pivoting.mtx        double          3839          3839      14736045                       ICM_32 PP           GPU  7.365703e+00  5.188145e-03  7.043652e-04    10  2.822397e+00        1.288155e+09            6.431166e-07
+
+
+Čt čen 22 19:01:58 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka4156_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka4156_<-1000-1000>_pivoting.mtx        double          4156          4156      17270197                           CM PP           CPU  2.281988e+01  1.068492e-02  4.682286e-04    10           N/A        0.000000e+00            4.726483e-07
+Cejka4156_<-1000-1000>_pivoting.mtx        double          4156          4156      17270197                        ICM_8 PP           GPU  1.291178e+01  1.078223e-02  8.350694e-04    10  1.767369e+00        7.326117e+09            1.778180e-07
+Cejka4156_<-1000-1000>_pivoting.mtx        double          4156          4156      17270197                       ICM_16 PP           GPU  1.081389e+01  3.336416e-03  3.085305e-04    10  2.110237e+00        7.326117e+09            1.778180e-07
+Cejka4156_<-1000-1000>_pivoting.mtx        double          4156          4156      17270197                       ICM_32 PP           GPU  9.395148e+00  1.544415e-02  1.643844e-03    10  2.428901e+00        7.326117e+09            1.778180e-07
+
+
+Čt čen 22 19:13:54 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka5069_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka5069_<-1000-1000>_pivoting.mtx        double          5069          5069      25692197                           CM PP           CPU  5.196920e+01  3.548842e-02  6.828741e-04    10           N/A        0.000000e+00            6.012647e-08
+Cejka5069_<-1000-1000>_pivoting.mtx        double          5069          5069      25692197                        ICM_8 PP           GPU  2.840887e+01  8.304822e-03  2.923321e-04    10  1.829330e+00        6.343071e+09            1.925057e-06
+Cejka5069_<-1000-1000>_pivoting.mtx        double          5069          5069      25692197                       ICM_16 PP           GPU  2.256552e+01  8.725989e-03  3.866957e-04    10  2.303036e+00        6.343071e+09            1.925057e-06
+Cejka5069_<-1000-1000>_pivoting.mtx        double          5069          5069      25692197                       ICM_32 PP           GPU  1.862303e+01  2.511582e-03  1.348643e-04    10  2.790588e+00        6.343071e+09            1.925057e-06
+
+
+Čt čen 22 19:37:27 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka558_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka558_<-1000-1000>_pivoting.mtx        double           558           558        311090                           CM PP           CPU  4.314733e-02  5.293191e-05  1.226771e-03    10           N/A        0.000000e+00            3.001787e-09
+Cejka558_<-1000-1000>_pivoting.mtx        double           558           558        311090                        ICM_8 PP           GPU  1.495020e-01  7.570571e-03  5.063860e-02    10  2.886071e-01        4.278390e+07            9.611540e-09
+Cejka558_<-1000-1000>_pivoting.mtx        double           558           558        311090                       ICM_16 PP           GPU  1.456093e-01  2.275454e-03  1.562712e-02    10  2.963227e-01        4.278390e+07            9.611540e-09
+Cejka558_<-1000-1000>_pivoting.mtx        double           558           558        311090                       ICM_32 PP           GPU  1.536443e-01  1.022433e-03  6.654548e-03    10  2.808261e-01        4.278390e+07            9.611540e-09
+
+
+Čt čen 22 19:37:34 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka6075_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka6075_<-1000-1000>_pivoting.mtx        double          6075          6075      36902629                           CM PP           CPU  9.055185e+01  4.298461e-02  4.746961e-04    10           N/A        0.000000e+00            3.574819e-07
+Cejka6075_<-1000-1000>_pivoting.mtx        double          6075          6075      36902629                        ICM_8 PP           GPU  5.493532e+01  1.766349e-02  3.215325e-04    10  1.648336e+00        1.891388e+09            1.421967e-06
+Cejka6075_<-1000-1000>_pivoting.mtx        double          6075          6075      36902629                       ICM_16 PP           GPU  4.271492e+01  6.201271e-03  1.451781e-04    10  2.119912e+00        1.891388e+09            1.421967e-06
+Cejka6075_<-1000-1000>_pivoting.mtx        double          6075          6075      36902629                       ICM_32 PP           GPU  3.452011e+01  4.250823e-03  1.231405e-04    10  2.623162e+00        1.891388e+09            1.421967e-06
+
+
+Čt čen 22 20:20:19 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka6192_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka6192_<-1000-1000>_pivoting.mtx        double          6192          6192      38337786                           CM PP           CPU  8.474306e+01  2.883650e-01  3.402816e-03    10           N/A        0.000000e+00            4.059120e-08
+Cejka6192_<-1000-1000>_pivoting.mtx        double          6192          6192      38337786                        ICM_8 PP           GPU  5.886523e+01  8.308563e-03  1.411455e-04    10  1.439612e+00        2.201205e+09            1.419467e-06
+Cejka6192_<-1000-1000>_pivoting.mtx        double          6192          6192      38337786                       ICM_16 PP           GPU  4.622633e+01  3.420852e-03  7.400223e-05    10  1.833220e+00        2.201205e+09            1.419467e-06
+Cejka6192_<-1000-1000>_pivoting.mtx        double          6192          6192      38337786                       ICM_32 PP           GPU  3.979890e+01  1.931938e-03  4.854249e-05    10  2.129281e+00        2.201205e+09            1.419467e-06
+
+
+Čt čen 22 21:07:02 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka6574_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka6574_<-1000-1000>_pivoting.mtx        double          6574          6574      43214237                           CM PP           CPU  1.020215e+02  8.058077e-02  7.898411e-04    10           N/A        0.000000e+00            5.920651e-08
+Cejka6574_<-1000-1000>_pivoting.mtx        double          6574          6574      43214237                        ICM_8 PP           GPU  7.709488e+01  1.562885e-02  2.027223e-04    10  1.323324e+00        1.508644e+09            1.424105e-06
+Cejka6574_<-1000-1000>_pivoting.mtx        double          6574          6574      43214237                       ICM_16 PP           GPU  6.198672e+01  5.482046e-03  8.843904e-05    10  1.645861e+00        1.508644e+09            1.424105e-06
+Cejka6574_<-1000-1000>_pivoting.mtx        double          6574          6574      43214237                       ICM_32 PP           GPU  4.863334e+01  4.193021e-03  8.621701e-05    10  2.097769e+00        1.508644e+09            1.424105e-06
+
+
+Čt čen 22 22:05:53 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka665_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka665_<-1000-1000>_pivoting.mtx        double           665           665        441886                           CM PP           CPU  7.578419e-02  8.438158e-05  1.113446e-03    10           N/A        0.000000e+00            2.935167e-09
+Cejka665_<-1000-1000>_pivoting.mtx        double           665           665        441886                        ICM_8 PP           GPU  1.658255e-01  1.571625e-03  9.477585e-03    10  4.570117e-01        4.289472e+07            2.739853e-09
+Cejka665_<-1000-1000>_pivoting.mtx        double           665           665        441886                       ICM_16 PP           GPU  1.645308e-01  1.916480e-03  1.164815e-02    10  4.606078e-01        4.289472e+07            2.739853e-09
+Cejka665_<-1000-1000>_pivoting.mtx        double           665           665        441886                       ICM_32 PP           GPU  1.736591e-01  1.291818e-03  7.438817e-03    10  4.363962e-01        4.289472e+07            2.739853e-09
+
+
+Čt čen 22 22:06:00 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka7510_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka7510_<-1000-1000>_pivoting.mtx        double          7510          7510      56396360                           CM PP           CPU  1.571550e+02  9.862475e-02  6.275636e-04    10           N/A        0.000000e+00            3.516852e-07
+Cejka7510_<-1000-1000>_pivoting.mtx        double          7510          7510      56396360                        ICM_8 PP           GPU  1.254701e+02  5.208313e-02  4.151040e-04    10  1.252530e+00        6.258599e+09            2.995481e-06
+Cejka7510_<-1000-1000>_pivoting.mtx        double          7510          7510      56396360                       ICM_16 PP           GPU  9.694255e+01  6.776330e-03  6.990047e-05    10  1.621115e+00        6.258599e+09            2.995481e-06
+Cejka7510_<-1000-1000>_pivoting.mtx        double          7510          7510      56396360                       ICM_32 PP           GPU  7.948385e+01  6.097542e-03  7.671422e-05    10  1.977194e+00        6.258599e+09            2.995481e-06
+
+
+Čt čen 22 23:39:06 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka7972_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka7972_<-1000-1000>_pivoting.mtx        double          7972          7972      63548773                           CM PP           CPU  1.714920e+02  1.570627e-01  9.158602e-04    10           N/A        0.000000e+00            3.456355e-07
+Cejka7972_<-1000-1000>_pivoting.mtx        double          7972          7972      63548773                        ICM_8 PP           GPU  1.578654e+02  3.583851e-02  2.270195e-04    10  1.086318e+00        2.321244e+09            2.801303e-06
+Cejka7972_<-1000-1000>_pivoting.mtx        double          7972          7972      63548773                       ICM_16 PP           GPU  1.221513e+02  9.625431e-03  7.879926e-05    10  1.403931e+00        2.321244e+09            2.801303e-06
+Cejka7972_<-1000-1000>_pivoting.mtx        double          7972          7972      63548773                       ICM_32 PP           GPU  9.424876e+01  6.749140e-03  7.160986e-05    10  1.819568e+00        2.321244e+09            2.801303e-06
+
+
+Pá čen 23 01:32:09 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka8385_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka8385_<-1000-1000>_pivoting.mtx        double          8385          8385      70304004                           CM PP           CPU  2.506601e+02  5.773909e-01  2.303481e-03    10           N/A        0.000000e+00            1.874068e-06
+Cejka8385_<-1000-1000>_pivoting.mtx        double          8385          8385      70304004                        ICM_8 PP           GPU  1.942971e+02  2.183390e-02  1.123738e-04    10  1.290087e+00        3.060410e+10            1.423371e-06
+Cejka8385_<-1000-1000>_pivoting.mtx        double          8385          8385      70304004                       ICM_16 PP           GPU  1.521556e+02  8.993588e-03  5.910783e-05    10  1.647393e+00        3.060410e+10            1.423371e-06
+Cejka8385_<-1000-1000>_pivoting.mtx        double          8385          8385      70304004                       ICM_32 PP           GPU  1.239475e+02  7.922749e-03  6.392020e-05    10  2.022309e+00        3.060410e+10            1.423371e-06
+
+
+Pá čen 23 03:51:16 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka9234_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' found. Loading results...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka9234_<-1000-1000>_pivoting.mtx        double          9234          9234      85262150                           CM PP           CPU  3.085080e+02  1.171043e+00  3.795827e-03    10           N/A        0.000000e+00            5.081988e-06
+Cejka9234_<-1000-1000>_pivoting.mtx        double          9234          9234      85262150                        ICM_8 PP           GPU  2.884313e+02  5.772187e-02  2.001235e-04    10  1.069607e+00        1.553112e+09            5.064900e-06
+Cejka9234_<-1000-1000>_pivoting.mtx        double          9234          9234      85262150                       ICM_16 PP           GPU  2.199472e+02  6.313617e-03  2.870514e-05    10  1.402646e+00        1.553112e+09            5.064900e-06
+Cejka9234_<-1000-1000>_pivoting.mtx        double          9234          9234      85262150                       ICM_32 PP           GPU  1.664615e+02  9.584996e-03  5.758085e-05    10  1.853329e+00        1.553112e+09            5.064900e-06
+
+
+===== [ FINISH ] Benchmark (precision = double)
+Elapsed: 38hrs 31min 40sec
+
+
+========== [ FINISH ] Decomposers benchmark

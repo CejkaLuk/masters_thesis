@@ -1,0 +1,251 @@
+========== [ START ] Decomposers Benchmark
+
+===== Parameters
+BENCHMARK TYPE               = decomposers
+BENCHMARK TYPE UPPER CASE    = Decomposers
+COMPUTE DIRECTORY            = /data/temporary/cejkaluk/2023-07-05_09-07-37
+=====
+
+---> Removing compiled benchmark files in /data/temporary/cejkaluk/2023-07-05_09-07-37/.local/bin and in build, and headers in /data/temporary/cejkaluk/2023-07-05_09-07-37/.local/include...
+---> Compiling Decomposers Benchmark...
+Configuring Decomposition for Release build ...
+-- The C compiler identification is GNU 12.2.0
+-- The CXX compiler identification is GNU 12.2.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /mnt/appl/software/GCCcore/12.2.0/bin/gcc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /mnt/appl/software/GCCcore/12.2.0/bin/g++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Looking for C++ include filesystem
+-- Looking for C++ include filesystem - found
+-- Performing Test CXX_FILESYSTEM_NO_LINK_NEEDED
+-- Performing Test CXX_FILESYSTEM_NO_LINK_NEEDED - Success
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+-- Check if compiler accepts -pthread
+-- Check if compiler accepts -pthread - yes
+-- Found Threads: TRUE  
+-- Looking for a CUDA compiler
+-- Looking for a CUDA compiler - /mnt/appl/software/CUDA/12.0.0/bin/nvcc
+-- Looking for a CUDA host compiler - /mnt/appl/software/GCCcore/12.2.0/bin/g++
+-- Found CUDAToolkit: /mnt/appl/software/CUDA/12.0.0/include (found version "12.0.76") 
+-- The CUDA compiler identification is NVIDIA 12.0.76
+-- Detecting CUDA compiler ABI info
+-- Detecting CUDA compiler ABI info - done
+-- Check for working CUDA compiler: /mnt/appl/software/CUDA/12.0.0/bin/nvcc - skipped
+-- Detecting CUDA compile features
+-- Detecting CUDA compile features - done
+-- Build options:
+   DECOMP_USE_CUDA = yes
+   CMAKE_CUDA_ARCHITECTURES = native
+   DECOMP_USE_SYSTEM_GTEST= no
+   DECOMP_BUILD_BENCHMARKS = yes
+   DECOMP_BUILD_TESTS = no
+   DECOMPO_BUILD_COVERAGE = no
+   DECOMP_OFFLINE_BUILD = no
+-- Compiler options:
+   CMAKE_C_FLAGS = 
+   CMAKE_C_FLAGS_DEBUG = -g
+   CMAKE_C_FLAGS_RELEASE = -O3 -DNDEBUG
+   CMAKE_CXX_FLAGS =  -Wall -Werror=vla -Wextra-semi -Wno-unknown-pragmas -Wno-maybe-uninitialized
+   CMAKE_CXX_FLAGS_DEBUG = -g
+   CMAKE_CXX_FLAGS_RELEASE = -O3 -DNDEBUG
+   CMAKE_CUDA_FLAGS =  -Wall
+   CMAKE_CUDA_FLAGS_DEBUG = -g
+   CMAKE_CUDA_FLAGS_RELEASE = -O3 -DNDEBUG
+   CMAKE_SHARED_LIBRARY_LINK_C_FLAGS = -rdynamic
+   CMAKE_SHARED_LIBRARY_LINK_C_FLAGS_DEBUG = 
+   CMAKE_SHARED_LIBRARY_LINK_C_FLAGS_RELEASE = 
+   CMAKE_EXE_LINKER_FLAGS = 
+   CMAKE_EXE_LINKER_FLAGS_DEBUG = 
+   CMAKE_EXE_LINKER_FLAGS_RELEASE = 
+   CMAKE_SHARED_LINKER_FLAGS = 
+   CMAKE_SHARED_LINKER_FLAGS_DEBUG = 
+   CMAKE_SHARED_LINKER_FLAGS_RELEASE = 
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /tmp/cejkaluk/2023-07-05_09-07-37/decomposition/build/Release
+Building Decomposition in Release configuration using 64 parallel jobs ...
+[ 16%] Building CUDA object src/Benchmarks/Decomposers/CMakeFiles/decomposers-benchmark.dir/decomposers-benchmark.cu.o
+[ 33%] Building CUDA object src/Benchmarks/Solvers/CMakeFiles/solvers-benchmark.dir/solvers-benchmark.cu.o
+[ 50%] Linking CUDA device code CMakeFiles/solvers-benchmark.dir/cmake_device_link.o
+[ 66%] Linking CUDA executable ../../../bin/solvers-benchmark
+[ 66%] Built target solvers-benchmark
+[01m[K/tmp/cejkaluk/2023-07-05_09-07-37/decomposition/src/Decomposition/LU/Decomposers/IterativeCroutMethod.hpp:[m[K In static member function ‘[01m[Kstatic void Decomposition::LU::Decomposers::IterativeCroutMethod<BLOCK_SIZE>::decompose(Matrix&, Matrix&, Vector&) [with Matrix = TNL::Matrices::DenseMatrix<float, TNL::Devices::Cuda, int, TNL::Algorithms::Segments::RowMajorOrder, TNL::Allocators::Cuda<float> >; Vector = TNL::Containers::Vector<int, TNL::Devices::Host, int, std::allocator<int> >; int BLOCK_SIZE = 8][m[K’:
+[01m[K/tmp/cejkaluk/2023-07-05_09-07-37/decomposition/src/Decomposition/LU/Decomposers/IterativeCroutMethod.hpp:790:39:[m[K [01;35m[Kwarning: [m[Kargument 1 value ‘[01m[K18446744073709551608[m[K’ exceeds maximum object size 9223372036854775807 [[01;35m[K-Walloc-size-larger-than=[m[K]
+  790 |       auto* streams = (cudaStrea[01;35m[Km_t*) malloc( nonDiagSecs_perRow * sizeof( cudaSt[m[Kream_t ) );
+      |                                 [01;35m[K~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/usr/include/stdlib.h:539:14:[m[K [01;36m[Knote: [m[Kin a call to allocation function ‘[01m[Kvoid* malloc(size_t)[m[K’ declared here
+  539 | extern void *[01;36m[Kmalloc[m[K (size_t __size) __THROW __attribute_malloc__ __wur;
+      |              [01;36m[K^~~~~~[m[K
+[01m[K/tmp/cejkaluk/2023-07-05_09-07-37/decomposition/src/Decomposition/LU/Decomposers/IterativeCroutMethod.hpp:[m[K In static member function ‘[01m[Kstatic void Decomposition::LU::Decomposers::IterativeCroutMethod<BLOCK_SIZE>::decompose(Matrix&, Matrix&, Vector&) [with Matrix = TNL::Matrices::DenseMatrix<float, TNL::Devices::Cuda, int, TNL::Algorithms::Segments::RowMajorOrder, TNL::Allocators::Cuda<float> >; Vector = TNL::Containers::Vector<int, TNL::Devices::Host, int, std::allocator<int> >; int BLOCK_SIZE = 16][m[K’:
+[01m[K/tmp/cejkaluk/2023-07-05_09-07-37/decomposition/src/Decomposition/LU/Decomposers/IterativeCroutMethod.hpp:790:39:[m[K [01;35m[Kwarning: [m[Kargument 1 value ‘[01m[K18446744073709551608[m[K’ exceeds maximum object size 9223372036854775807 [[01;35m[K-Walloc-size-larger-than=[m[K]
+  790 |       auto* streams = (cudaStrea[01;35m[Km_t*) malloc( nonDiagSecs_perRow * sizeof( cudaSt[m[Kream_t ) );
+      |                                 [01;35m[K~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/usr/include/stdlib.h:539:14:[m[K [01;36m[Knote: [m[Kin a call to allocation function ‘[01m[Kvoid* malloc(size_t)[m[K’ declared here
+  539 | extern void *[01;36m[Kmalloc[m[K (size_t __size) __THROW __attribute_malloc__ __wur;
+      |              [01;36m[K^~~~~~[m[K
+[01m[K/tmp/cejkaluk/2023-07-05_09-07-37/decomposition/src/Decomposition/LU/Decomposers/IterativeCroutMethod.hpp:[m[K In static member function ‘[01m[Kstatic void Decomposition::LU::Decomposers::IterativeCroutMethod<BLOCK_SIZE>::decompose(Matrix&, Matrix&, Vector&) [with Matrix = TNL::Matrices::DenseMatrix<float, TNL::Devices::Cuda, int, TNL::Algorithms::Segments::RowMajorOrder, TNL::Allocators::Cuda<float> >; Vector = TNL::Containers::Vector<int, TNL::Devices::Host, int, std::allocator<int> >; int BLOCK_SIZE = 32][m[K’:
+[01m[K/tmp/cejkaluk/2023-07-05_09-07-37/decomposition/src/Decomposition/LU/Decomposers/IterativeCroutMethod.hpp:790:39:[m[K [01;35m[Kwarning: [m[Kargument 1 value ‘[01m[K18446744073709551608[m[K’ exceeds maximum object size 9223372036854775807 [[01;35m[K-Walloc-size-larger-than=[m[K]
+  790 |       auto* streams = (cudaStrea[01;35m[Km_t*) malloc( nonDiagSecs_perRow * sizeof( cudaSt[m[Kream_t ) );
+      |                                 [01;35m[K~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/usr/include/stdlib.h:539:14:[m[K [01;36m[Knote: [m[Kin a call to allocation function ‘[01m[Kvoid* malloc(size_t)[m[K’ declared here
+  539 | extern void *[01;36m[Kmalloc[m[K (size_t __size) __THROW __attribute_malloc__ __wur;
+      |              [01;36m[K^~~~~~[m[K
+[01m[K/tmp/cejkaluk/2023-07-05_09-07-37/decomposition/src/Decomposition/LU/Decomposers/IterativeCroutMethod.hpp:[m[K In static member function ‘[01m[Kstatic void Decomposition::LU::Decomposers::IterativeCroutMethod<BLOCK_SIZE>::decompose(Matrix&, Matrix&, Vector&) [with Matrix = TNL::Matrices::DenseMatrix<double, TNL::Devices::Cuda, int, TNL::Algorithms::Segments::RowMajorOrder, TNL::Allocators::Cuda<double> >; Vector = TNL::Containers::Vector<int, TNL::Devices::Host, int, std::allocator<int> >; int BLOCK_SIZE = 8][m[K’:
+[01m[K/tmp/cejkaluk/2023-07-05_09-07-37/decomposition/src/Decomposition/LU/Decomposers/IterativeCroutMethod.hpp:790:39:[m[K [01;35m[Kwarning: [m[Kargument 1 value ‘[01m[K18446744073709551608[m[K’ exceeds maximum object size 9223372036854775807 [[01;35m[K-Walloc-size-larger-than=[m[K]
+  790 |       auto* streams = (cudaStrea[01;35m[Km_t*) malloc( nonDiagSecs_perRow * sizeof( cudaSt[m[Kream_t ) );
+      |                                 [01;35m[K~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/usr/include/stdlib.h:539:14:[m[K [01;36m[Knote: [m[Kin a call to allocation function ‘[01m[Kvoid* malloc(size_t)[m[K’ declared here
+  539 | extern void *[01;36m[Kmalloc[m[K (size_t __size) __THROW __attribute_malloc__ __wur;
+      |              [01;36m[K^~~~~~[m[K
+[01m[K/tmp/cejkaluk/2023-07-05_09-07-37/decomposition/src/Decomposition/LU/Decomposers/IterativeCroutMethod.hpp:[m[K In static member function ‘[01m[Kstatic void Decomposition::LU::Decomposers::IterativeCroutMethod<BLOCK_SIZE>::decompose(Matrix&, Matrix&, Vector&) [with Matrix = TNL::Matrices::DenseMatrix<double, TNL::Devices::Cuda, int, TNL::Algorithms::Segments::RowMajorOrder, TNL::Allocators::Cuda<double> >; Vector = TNL::Containers::Vector<int, TNL::Devices::Host, int, std::allocator<int> >; int BLOCK_SIZE = 16][m[K’:
+[01m[K/tmp/cejkaluk/2023-07-05_09-07-37/decomposition/src/Decomposition/LU/Decomposers/IterativeCroutMethod.hpp:790:39:[m[K [01;35m[Kwarning: [m[Kargument 1 value ‘[01m[K18446744073709551608[m[K’ exceeds maximum object size 9223372036854775807 [[01;35m[K-Walloc-size-larger-than=[m[K]
+  790 |       auto* streams = (cudaStrea[01;35m[Km_t*) malloc( nonDiagSecs_perRow * sizeof( cudaSt[m[Kream_t ) );
+      |                                 [01;35m[K~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/usr/include/stdlib.h:539:14:[m[K [01;36m[Knote: [m[Kin a call to allocation function ‘[01m[Kvoid* malloc(size_t)[m[K’ declared here
+  539 | extern void *[01;36m[Kmalloc[m[K (size_t __size) __THROW __attribute_malloc__ __wur;
+      |              [01;36m[K^~~~~~[m[K
+[01m[K/tmp/cejkaluk/2023-07-05_09-07-37/decomposition/src/Decomposition/LU/Decomposers/IterativeCroutMethod.hpp:[m[K In static member function ‘[01m[Kstatic void Decomposition::LU::Decomposers::IterativeCroutMethod<BLOCK_SIZE>::decompose(Matrix&, Matrix&, Vector&) [with Matrix = TNL::Matrices::DenseMatrix<double, TNL::Devices::Cuda, int, TNL::Algorithms::Segments::RowMajorOrder, TNL::Allocators::Cuda<double> >; Vector = TNL::Containers::Vector<int, TNL::Devices::Host, int, std::allocator<int> >; int BLOCK_SIZE = 32][m[K’:
+[01m[K/tmp/cejkaluk/2023-07-05_09-07-37/decomposition/src/Decomposition/LU/Decomposers/IterativeCroutMethod.hpp:790:39:[m[K [01;35m[Kwarning: [m[Kargument 1 value ‘[01m[K18446744073709551608[m[K’ exceeds maximum object size 9223372036854775807 [[01;35m[K-Walloc-size-larger-than=[m[K]
+  790 |       auto* streams = (cudaStrea[01;35m[Km_t*) malloc( nonDiagSecs_perRow * sizeof( cudaSt[m[Kream_t ) );
+      |                                 [01;35m[K~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/usr/include/stdlib.h:539:14:[m[K [01;36m[Knote: [m[Kin a call to allocation function ‘[01m[Kvoid* malloc(size_t)[m[K’ declared here
+  539 | extern void *[01;36m[Kmalloc[m[K (size_t __size) __THROW __attribute_malloc__ __wur;
+      |              [01;36m[K^~~~~~[m[K
+[ 83%] Linking CUDA device code CMakeFiles/decomposers-benchmark.dir/cmake_device_link.o
+[100%] Linking CUDA executable ../../../bin/decomposers-benchmark
+[100%] Built target decomposers-benchmark
+-- Install configuration: "Release"
+-- Installing: /tmp/cejkaluk/2023-07-05_09-07-37/.local/lib64/cmake/DECOMP/DECOMPTargets.cmake
+-- Installing: /tmp/cejkaluk/2023-07-05_09-07-37/.local/lib64/cmake/DECOMP/DECOMPConfig.cmake
+-- Installing: /tmp/cejkaluk/2023-07-05_09-07-37/.local/lib64/cmake/DECOMP/Modules/FindFilesystem.cmake
+-- Removing existing include directory: /tmp/cejkaluk/2023-07-05_09-07-37/.local/include/Decomposition/
+-- Installing include directory: /tmp/cejkaluk/2023-07-05_09-07-37/.local/include/Decomposition/
+-- Installing: /tmp/cejkaluk/2023-07-05_09-07-37/.local/bin/decomposers-benchmark
+-- Installing: /tmp/cejkaluk/2023-07-05_09-07-37/.local/bin/solvers-benchmark
+
+WARNING !!!
+
+Your system does not see Decomposition which was installed right now.
+You need to add it to your environment variables $PATH and $LD_LIBRARY_PATH.
+Add the following to your shell configuration file (e.g. .bashrc):
+
+export PATH="$PATH:/data/temporary/cejkaluk/2023-07-05_09-07-37/.local/bin"
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/data/temporary/cejkaluk/2023-07-05_09-07-37/.local/lib"
+
+Total Installation time (incl. unit tests - if run): 1 min 14 sec 264 ms
+
+
+===== [ START ] Benchmark (precision = double)
+
+St čec  5 09:09:54 CEST 2023
+-> Running benchmark for: ./mtx-matrices/poc-25_4_2-462967681.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+-!> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' NOT FOUND. Running benchmark for 'CM PP'...
+========== Iterative & Pivoting Metrics ==========
+Iterations per section = 
+Row: 0 ->     0:28      1:24      2:23      3:22      4:22      5:23      6:22      7:22  
+Row: 1 ->     0:23      1:33      2:28      3:27      4:27      5:27      6:26      7:26  
+Row: 2 ->     0:22      1:27      2:33      3:28      4:27      5:28      6:27      7:27  
+Row: 3 ->     0:22      1:27      2:27      3:35      4:29      5:28      6:28      7:28  
+Row: 4 ->     0:21      1:27      2:28      3:27      4:35      5:28      6:27      7:27  
+Row: 5 ->     0:21      1:26      2:27      3:28      4:28      5:37      6:28      7:28  
+Row: 6 ->     0:23      1:26      2:28      3:28      4:27      5:28      6:42      7:31  
+Row: 7 ->     0:21      1:25      2:27      3:27      4:27      5:28      6:32      7:46  
+Total iterations = 1755
+Pivots per section = [ 0, 0, 0, 0, 0, 0, 0, 3 ]
+Total pivots = 3
+==================================================
+========== Iterative & Pivoting Metrics ==========
+Iterations per section = 
+Row: 0 ->     0:28      1:24      2:23      3:22      4:22      5:23      6:22      7:22  
+Row: 1 ->     0:23      1:33      2:28      3:27      4:27      5:27      6:26      7:26  
+Row: 2 ->     0:22      1:27      2:33      3:28      4:27      5:28      6:27      7:27  
+Row: 3 ->     0:22      1:27      2:27      3:35      4:29      5:28      6:28      7:28  
+Row: 4 ->     0:21      1:27      2:28      3:27      4:35      5:28      6:27      7:27  
+Row: 5 ->     0:21      1:26      2:27      3:28      4:28      5:37      6:28      7:28  
+Row: 6 ->     0:23      1:26      2:28      3:28      4:27      5:28      6:42      7:31  
+Row: 7 ->     0:21      1:25      2:27      3:27      4:27      5:28      6:32      7:46  
+Total iterations = 1755
+Pivots per section = [ 0, 0, 0, 0, 0, 0, 0, 3 ]
+Total pivots = 3
+==================================================
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff
+        poc-25_4_2-462967681.mtx        double          1964          1964       3247365                       ICM_32 PP           GPU  1.361163e-01           nan           nan     1           N/A        3.500754e+05
+
+
+St čec  5 09:10:03 CEST 2023
+-> Running benchmark for: ./mtx-matrices/poc-50_4_2-464363378.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-!> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' NOT FOUND. Running benchmark for 'CM PP'...
+========== Iterative & Pivoting Metrics ==========
+Iterations per section = 
+Row: 0 ->     0:38      1:30      2:29      3:30      4:29      5:29      6:28      7:29      8:29      9:29  
+Row: 1 ->     0:30      1:42      2:35      3:34      4:34      5:34      6:33      7:34      8:33      9:33  
+Row: 2 ->     0:28      1:34      2:43      3:34      4:33      5:35      6:33      7:33      8:34      9:33  
+Row: 3 ->     0:28      1:34      2:34      3:44      4:35      5:34      6:34      7:34      8:34      9:34  
+Row: 4 ->     0:28      1:33      2:33      3:34      4:44      5:35      6:36      7:35      8:35      9:35  
+Row: 5 ->     0:27      1:34      2:33      3:34      4:35      5:44      6:37      7:34      8:35      9:34  
+Row: 6 ->     0:29      1:33      2:33      3:37      4:34      5:35      6:35      7:29      8:30      9:32  
+Row: 7 ->     0:28      1:33      2:35      3:34      4:34      5:35      6:30      7:55      8:40      9:40  
+Row: 8 ->     0:27      1:33      2:33      3:33      4:34      5:34      6:31      7:40      8:55      9:42  
+Row: 9 ->     0:28      1:32      2:33      3:34      4:35      5:36      6:32      7:41      8:41      9:67  
+Total iterations = 3454
+Pivots per section = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 3 ]
+Total pivots = 3
+==================================================
+========== Iterative & Pivoting Metrics ==========
+Iterations per section = 
+Row: 0 ->     0:38      1:30      2:29      3:30      4:29      5:29      6:28      7:29      8:29      9:29  
+Row: 1 ->     0:30      1:42      2:35      3:34      4:34      5:34      6:33      7:34      8:33      9:33  
+Row: 2 ->     0:28      1:34      2:43      3:34      4:33      5:35      6:33      7:33      8:34      9:33  
+Row: 3 ->     0:28      1:34      2:34      3:44      4:35      5:34      6:34      7:34      8:34      9:34  
+Row: 4 ->     0:28      1:33      2:33      3:34      4:44      5:35      6:36      7:35      8:35      9:35  
+Row: 5 ->     0:27      1:34      2:33      3:34      4:35      5:44      6:37      7:34      8:35      9:34  
+Row: 6 ->     0:29      1:33      2:33      3:37      4:34      5:35      6:35      7:29      8:30      9:32  
+Row: 7 ->     0:28      1:33      2:35      3:34      4:34      5:35      6:30      7:55      8:40      9:40  
+Row: 8 ->     0:27      1:33      2:33      3:33      4:34      5:34      6:31      7:40      8:55      9:42  
+Row: 9 ->     0:28      1:32      2:33      3:34      4:35      5:36      6:32      7:41      8:41      9:67  
+Total iterations = 3454
+Pivots per section = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 3 ]
+Total pivots = 3
+==================================================
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff
+        poc-50_4_2-464363378.mtx        double          7664          7664      54052216                       ICM_32 PP           GPU  4.239695e+00           nan           nan     1           N/A        5.907981e+06
+
+
+St čec  5 09:12:23 CEST 2023
+-> Running benchmark for: ./mtx-matrices/poc-5_4_2-462783752.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-!> Benchmark results for 'CM PP' on machine 'rci-amd-epyc-7543-32c' with precision 'double' NOT FOUND. Running benchmark for 'CM PP'...
+========== Iterative & Pivoting Metrics ==========
+Iterations per section = 
+Row: 0 ->     0:33  
+Total iterations = 33
+Pivots per section = [ 0 ]
+Total pivots = 0
+==================================================
+========== Iterative & Pivoting Metrics ==========
+Iterations per section = 
+Row: 0 ->     0:33  
+Total iterations = 33
+Pivots per section = [ 0 ]
+Total pivots = 0
+==================================================
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff
+         poc-5_4_2-462783752.mtx        double           104           104          3885                       ICM_32 PP           GPU  1.678286e-03           nan           nan     1           N/A        4.246606e+02
+
+
+===== [ FINISH ] Benchmark (precision = double)
+Elapsed: 0hrs 2min 30sec
+
+
+========== [ FINISH ] Decomposers benchmark

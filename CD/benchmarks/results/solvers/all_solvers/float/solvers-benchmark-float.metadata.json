@@ -1,0 +1,22 @@
+{
+	"CPU cache sizes (L1d, L1i, L2, L3) (kiB)": "32, 32, 512, 32768",
+	"CPU cores": "32",
+	"CPU max frequency (MHz)": "3737.890000",
+	"CPU model name": " AMD EPYC 7543 32-Core Processor",
+	"CPU threads per core": "2",
+	"GPU CUDA cores": "6912",
+	"GPU architecture": "8.0",
+	"GPU clock rate (MHz)": "1410.000000",
+	"GPU global memory (GB)": "42.338615",
+	"GPU memory ECC enabled": "1",
+	"GPU memory clock rate (MHz)": "1215.000000",
+	"GPU name": "NVIDIA A100-SXM4-40GB",
+	"OpenMP enabled": "no",
+	"OpenMP threads": "0",
+	"architecture": "AMD64",
+	"compiler": "Nvidia NVCC (12.0.76)",
+	"host name": "g03",
+	"start time": "Tue Jun 20 2023, 10:43:19",
+	"system": "Linux",
+	"system release": "4.18.0-425.13.1.el8_7.x86_64"
+}

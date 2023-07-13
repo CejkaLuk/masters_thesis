@@ -71,6 +71,8 @@ giveninits=true]{biblatex}								% Bibliography: ISO 690 format, cite shows num
 \DeclareFieldFormat*{citetitle}{\mkbibemph{#1}}				% \citetitle{bibid} in text produces the title in emphasis for all sources. Without this, for example, the 'thesis' citation entry is non-emphasized with quotes while online sources are only emphasized (looks bad)
 \setcounter{biburllcpenalty}{7000}						  	% Insert breakpoints after lowercase letters in URLs in the bibliography
 \setcounter{biburlucpenalty}{8000}						  	% Insert breakpoints after uppercase letters in URLs in the bibliography
+\usepackage{quoting}										% Quotes with custom vspaces around them
+\quotingsetup{vskip=0pt}									% Defines global settings for quotes
 
 % Tables:
 \usepackage{tabularx}			 % Advanced table options
@@ -156,10 +158,9 @@ giveninits=true]{biblatex}								% Bibliography: ISO 690 format, cite shows num
 \newcommand{\minp}[1]{\min\parens*{#1}}
 
 %%% Custom commands:
-\newcommand{\ti}{\textit} 								  									   % Shortcut for cursive font
-\newcommand{\tb}{\textbf} 								  									   % Shortcut for bold fond
 \DeclareRobustCommand{\code}[1]{{\begingroup\sethlcolor{gray-light}\hl{\texttt{#1}}\endgroup}} % Shortcut for code font in text
 \soulregister{\code}{1}																		   % Codeify inline text character by character
+\newcommand{\namerefItalics}[1]{\textit{\nameref{#1}}}										   % Nameref with italics font
 
 %% Status of writing:
 \newcommand{\TODO}{\textcolor{red}{TODO}}   		   % To-Do command

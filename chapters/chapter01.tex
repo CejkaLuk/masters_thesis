@@ -1,16 +1,31 @@
 \chapter{Theory}
 
-This chapter will introduce the theory behind the core parts of this project. First, Nvidia's Graphics Processing Units (GPUs) and their use in General-Purpose Computing (GPGPU) will be briefly described. Then, CUDA, the API for communicating with Nvidia GPUs, will be presented. The final part introduces the method implemented in this project: Iterative Crout's Method with partial pivoting (ICMPP).
+This chapter will introduce the theory behind the core parts of this project.
+First, Nvidia's Graphics Processing Units (GPUs) and their use in General-Purpose Computing (GPGPU) will be briefly described.
+Then, CUDA, the API for communicating with Nvidia GPUs, will be presented.
+The final part introduces the method implemented in this project: Iterative Crout's Method with partial pivoting (ICMPP).
 
 \section{GPUs}\label{Section:theory->GPUs}
-In essence, a Graphics Processing Unit (GPU) is a device designed to accelerate the graphical output of a computer system. Simply put, a GPU comprises many smaller processing units. While these units are not as fast as the cores of a CPU, they excel at processing many similar tasks in parallel. An example of such a task is displaying an image on a monitor. In simple terms, to display the image, each pixel must be computed and rendered. If the image is 1,200 by 1,200 pixels, then, the processing entity must compute and render 1,440,000 individual points. Given the many processing units that the GPU has, it is capable of performing this operation efficiently.
+In essence, a Graphics Processing Unit (GPU) is a device designed to accelerate the graphical output of a computer system.
+Simply put, a GPU comprises many smaller processing units.
+While these units are not as fast as the cores of a CPU, they excel at processing many similar tasks in parallel.
+An example of such a task is displaying an image on a monitor.
+In simple terms, to display the image, each pixel must be computed and rendered.
+If the image is 1,200 by 1,200 pixels, then, the processing entity must compute and render 1,440,000 individual points.
+Given the many processing units that the GPU has, it is capable of performing this operation efficiently.
 
-While the common understanding of a GPU is that it is an image-processing device, how it processes images can be leveraged for non-graphical computation-heavy tasks. This is referred to as General-Purpose Computing on Graphics Processing Units (GPGPU).
+While the common understanding of a GPU is that it is an image-processing device, how it processes images can be leveraged for non-graphical computation-heavy tasks.
+This is referred to as General-Purpose Computing on Graphics Processing Units (GPGPU).
 
 \subsection{General-Purpose Computing on Graphics Processing Units (GPGPU)}\label{Subsection:theory->GPUs->GPGPU}
-General-Purpose Computing on Graphics Processing Units (GPGPU) has become an integral part of High-Performance Computing (HPC) in the last two decades \cite{Cejka2020, Cejka2022}. One of the key parts of GPGPU is to tailor tasks for efficient execution on GPUs. To use a GPU efficiently, it is necessary to parallelize the workload. A common example of a parallelizable task is the multiplication of two matrices. Without parallelism and assuming the naive matrix-multiplication algorithm, this task requires the processing entity to perform the pseudocode shown in Listing~\ref{Listing:theory->GPUs->GPGPUs->multiplication-of-matrices}.
+General-Purpose Computing on Graphics Processing Units (GPGPU) has become an integral part of High-Performance Computing (HPC) in the last two decades \cite{Cejka2020, Cejka2022}.
+One of the key parts of GPGPU is to tailor tasks for efficient execution on GPUs.
+To use a GPU efficiently, it is necessary to parallelize the workload.
+A common example of a parallelizable task is the multiplication of two matrices.
+Without parallelism and assuming the naive matrix-multiplication algorithm, this task requires the processing entity to perform the pseudocode shown in Listing~\ref{Listing:theory->GPUs->GPGPUs->multiplication-of-matrices}.
 
-\begin{lstlisting}[caption={Pseudocode for the multiplication of two matrices. Let $\mathbf{A}$ be a $m\times n$ matrix, $\mathbf{B}$ a $n\times p$ matrix, and $\mathbf{C}$ a $m\times p$ matrix.},label={Listing:theory->GPUs->GPGPUs->multiplication-of-matrices}]
+\begin{lstlisting}[caption={Pseudocode for the multiplication of two matrices.
+Let $\mathbf{A}$ be a $m\times n$ matrix, $\mathbf{B}$ a $n\times p$ matrix, and $\mathbf{C}$ a $m\times p$ matrix.},label={Listing:theory->GPUs->GPGPUs->multiplication-of-matrices}]
 multiplyMatrices(A, B, C):
 	for i from 0 to m - 1:
 		for j from 0 to p - 1:
@@ -18,21 +33,32 @@ multiplyMatrices(A, B, C):
 				C[i, j] += A[i, k] * B[k, j]
 \end{lstlisting}
 
-Since parallelism is not used, the computation is strictly sequential and would arguably benefit from the faster core clock speeds of a CPU \cite{Cejka2022}. However, since the computation of every element in $\mathbf{C}$ is independent of the other elements, it is possible to compute all elements of $\mathbf{C}$ simultaneously. In other words, every thread of the GPU can be tasked to compute one element of $\mathbf{C}$, i.e. each thread would only compute the innermost loop.\\
+Since parallelism is not used, the computation is strictly sequential and would arguably benefit from the faster core clock speeds of a CPU \cite{Cejka2022}.
+However, since the computation of every element in $\mathbf{C}$ is independent of the other elements, it is possible to compute all elements of $\mathbf{C}$ simultaneously.
+In other words, every thread of the GPU can be tasked to compute one element of $\mathbf{C}$, i.e. each thread would only compute the innermost loop.\\
 Note that the parallelization of some tasks is not as straightforward, for example, Crout Method with partial pivoting (detailed in Section~\ref{Subsection:theory->ICMPP->LUP->CMPP}).
 
-Similarly to the above-mentioned example of displaying the image on a monitor, the GPU - and its many processing units - greatly benefits from the parallelized workload largely due to its architecture. To illustrate this, Figure~\ref{Figure:theory->GPUs->GPGPU->CPU-nvidia-GPU-architecture-comparison} shows a general architecture comparison of a CPU and a GPU.
+Similarly to the above-mentioned example of displaying the image on a monitor, the GPU - and its many processing units - greatly benefits from the parallelized workload largely due to its architecture.
+To illustrate this, Figure~\ref{Figure:theory->GPUs->GPGPU->CPU-nvidia-GPU-architecture-comparison} shows a general architecture comparison of a CPU and a GPU.
 
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=14cm, keepaspectratio]{images/ch01/nvidia_CPU_GPU_comparison.png}
-	\caption{Architecture comparison of a CPU and a GPU. Taken from \citetitle{NVIDIADecember2022} \cite{NVIDIADecember2022}.}
+	\caption{Architecture comparison of a CPU and a GPU.
+		Taken from \citetitle{NVIDIADecember2022} \cite{NVIDIADecember2022}.
+	}
 	\label{Figure:theory->GPUs->GPGPU->CPU-nvidia-GPU-architecture-comparison}
 \end{figure}
 
-In Figure~\ref{Figure:theory->GPUs->GPGPU->CPU-nvidia-GPU-architecture-comparison} it can be seen that the control units and caches of the CPU are proportionately sized to illustrate that GPUs do not focus on fine-grained cache control and prediction logic as much as CPUs. The reasoning behind this is that CPUs in general attempt to use the aforementioned focus points to hide memory latency. On the other hand, GPUs do not attempt to hide memory latency with controllers using costly caching. Instead, as mentioned in \citetitle{NVIDIADec2022} \cite{NVIDIADec2022}, it is considered best practice for the developer to hide memory latency using CUDA-specific functionalities \cite{Sanglard2May2020}.
+In Figure~\ref{Figure:theory->GPUs->GPGPU->CPU-nvidia-GPU-architecture-comparison} it can be seen that the control units and caches of the CPU are proportionately sized to illustrate that GPUs do not focus on fine-grained cache control and prediction logic as much as CPUs.
+The reasoning behind this is that CPUs in general attempt to use the aforementioned focus points to hide memory latency.
+On the other hand, GPUs do not attempt to hide memory latency with controllers using costly caching.
+Instead, as mentioned in \citetitle{NVIDIADec2022} \cite{NVIDIADec2022}, it is considered best practice for the developer to hide memory latency using CUDA-specific functionalities \cite{Sanglard2May2020}.
 
-In Nvidia GPUs, the control units are referred to as Stream Multiprocessors (SMs) and they are responsible for scheduling tasks to processing units. Therefore, it can be argued that the computational power of an Nvidia GPU depends on - among other factors - the number of SMs it has and their capabilities. The reasoning behind this is that the more SMs a GPU has, the more concurrent computations it is capable of performing. To exemplify this, see Table~\ref{Table:theory->GPUs->GPGPU->nvidia-gpu-details-comparison} for a selection of the latest Nvidia Datacenter cards and their relevant specifications.
+In Nvidia GPUs, the control units are referred to as Stream Multiprocessors (SMs) and they are responsible for scheduling tasks to processing units.
+Therefore, it can be argued that the computational power of an Nvidia GPU depends on - among other factors - the number of SMs it has and their capabilities.
+The reasoning behind this is that the more SMs a GPU has, the more concurrent computations it is capable of performing.
+To exemplify this, see Table~\ref{Table:theory->GPUs->GPGPU->nvidia-gpu-details-comparison} for a selection of the latest Nvidia Datacenter cards and their relevant specifications.
 
 \begin{table}[ht!]
 	\centering
@@ -84,7 +110,8 @@ In Nvidia GPUs, the control units are referred to as Stream Multiprocessors (SMs
 		\hline
 		L2 Cache Size & 6 MB & 40 MB & 50 MB \\
 		\hline
-		Max. Shared Memory Size / SM & 96 KB & 164 KB & 228 KB \\
+		Max.
+Shared Memory Size / SM & 96 KB & 164 KB & 228 KB \\
 		\hline
 		Register File Size / SM & 256 KB & 256 KB & 256 KB \\
 		\hline
@@ -98,11 +125,20 @@ In Nvidia GPUs, the control units are referred to as Stream Multiprocessors (SMs
 		Transistors & 21.1 billion & 54.2 billion & 80 billion \\
 		\hline
 	\end{tabular}
-	\caption{Comparison of GPUs: V100 (Volta architecture; released in December 2017), A100 (Ampere architecture; released in May 2020), H100 (Hopper architecture; released in September 2022). FP stands for Floating Point; TFLOPS signifies the number of trillion floating-point operations the processor can perform per second; TDP stands for Thermal Design Power which can be used as an indicator of power consumption under the maximum theoretical load \cite{GIGABYTE2023}. The specifications of each GPU in this table are the best possible version of the card available as of February 2023, i.e. SXM instead of PCIe and the version with the most VRAM available. Interesting aspects are highlighted in green. The data was obtained from various sources for the V100 \cite{NvidiaAugust2017}, the A100 \cite{soj8qSRbfefUdi8Y, rfiOEXAGDlcAOxF3}, and the H100 \cite{NVIDIA2022}.}
+	\caption{Comparison of GPUs: V100 (Volta architecture; released in December 2017), A100 (Ampere architecture; released in May 2020), H100 (Hopper architecture; released in September 2022).
+		FP stands for Floating Point; TFLOPS signifies the number of trillion floating-point operations the processor can perform per second; TDP stands for Thermal Design Power which can be used as an indicator of power consumption under the maximum theoretical load \cite{GIGABYTE2023}.
+		The specifications of each GPU in this table are the best possible version of the card available as of February 2023, i.e.
+		SXM instead of PCIe and the version with the most VRAM available.
+		Interesting aspects are highlighted in green.
+		The data was obtained from various sources for the V100 \cite{NvidiaAugust2017}, the A100 \cite{soj8qSRbfefUdi8Y, rfiOEXAGDlcAOxF3}, and the H100 \cite{NVIDIA2022}.
+	}
 	\label{Table:theory->GPUs->GPGPU->nvidia-gpu-details-comparison}
 \end{table}
 
-The industry-standard values used to compare GPUs are TFLOPS and memory bandwidth as both are crucial for any computation. From Table~\ref{Table:theory->GPUs->GPGPU->nvidia-gpu-details-comparison} it can be seen that the H100 is capable of performing up to 3.4 times as many FP operations as its predecessor, the A100. Similarly, the H100 outperforms the A100 by a factor of 1.6 when it comes to memory bandwidth. Unfortunately, even though the H100 was unveiled in April 2022 and released in September 2022 there is a global shortage as of March 2023\footnote{Update: 'Huge' GPU supply shortage due to AI needs, analyst Dylan Patel says URL: \url{https://www.fierceelectronics.com/electronics/ask-nvidia-ceo-gtc-gpu-shortage-looming}}.
+The industry-standard values used to compare GPUs are TFLOPS and memory bandwidth as both are crucial for any computation.
+From Table~\ref{Table:theory->GPUs->GPGPU->nvidia-gpu-details-comparison} it can be seen that the H100 is capable of performing up to 3.4 times as many FP operations as its predecessor, the A100.
+Similarly, the H100 outperforms the A100 by a factor of 1.6 when it comes to memory bandwidth.
+Unfortunately, even though the H100 was unveiled in April 2022 and released in September 2022 there is a global shortage as of March 2023\footnote{Update: 'Huge' GPU supply shortage due to AI needs, analyst Dylan Patel says URL: \url{https://www.fierceelectronics.com/electronics/ask-nvidia-ceo-gtc-gpu-shortage-looming}}.
 
 To fully utilize the computational power of its GPUs, Nvidia provides developers with its API, CUDA.
 
@@ -110,71 +146,126 @@ To fully utilize the computational power of its GPUs, Nvidia provides developers
 
 \section{Compute Unified Device Architecture (CUDA)}\label{Section:theory->CUDA}
 
-Compute Unified Device Architecture (CUDA) was introduced by Nvidia in 2006 as a programming model; however, it is also often referred to as a parallel computing platform \cite{Oh10September2012}. Its primary objective is to provide developers with low-level access to GPU hardware, including, but not limited to, the ability to fine-tune the allocation of processing units and memory. This enables developers to fully utilize a GPU's potential and customize its use for specific applications. CUDA supports the following programming languages: C, C++, and Fortran. Additionally, wrappers by third parties allow it to be used in other languages, such as Python, Perl, Java, Ruby, MATLAB, and Julia \cite{OsGyRFLMngy0j8Pv}.
+Compute Unified Device Architecture (CUDA) was introduced by Nvidia in 2006 as a programming model; however, it is also often referred to as a parallel computing platform \cite{Oh10September2012}.
+Its primary objective is to provide developers with low-level access to GPU hardware, including, but not limited to, the ability to fine-tune the allocation of processing units and memory.
+This enables developers to fully utilize a GPU's potential and customize its use for specific applications.
+CUDA supports the following programming languages: C, C++, and Fortran.
+Additionally, wrappers by third parties allow it to be used in other languages, such as Python, Perl, Java, Ruby, MATLAB, and Julia \cite{OsGyRFLMngy0j8Pv}.
 
-First, a selection of fundamental CUDA-related terms used in this project will be presented. Then, CUDA's thread management system will be briefly described. After that, the CUDA memory management system will be introduced. The last but one part will describe the concurrent execution of code on the GPU, and finally, a parallel computing concept used in this project will be presented.\\
+First, a selection of fundamental CUDA-related terms used in this project will be presented.
+Then, CUDA's thread management system will be briefly described.
+After that, the CUDA memory management system will be introduced.
+The last but one part will describe the concurrent execution of code on the GPU, and finally, a parallel computing concept used in this project will be presented.\\
 Along with the explanation of the topic, each section can contain examples of C++ CUDA extensions as C++ was used for the development of this project.
 
 \subsection{Fundamental Terminology}
 For a better understanding of CUDA-related concepts, it is necessary to introduce fundamental terminology \cite{Ruetsch2008, Cejka2022}:
 \begin{itemize}
-	\item \textit{Host} - CPU and its memory. The host provides the GPU with instructions to execute, for example, transferring data, executing code, synchronizing the GPU, etc.
-	\item \textit{Device} - GPU and its memory. The device executes instructions issued by the host.
-	\item \textit{Kernel} - C++ function that is called from the host and executed on the device based on a configuration. In C++, the definition of a kernel is prefixed using the \code{\_\_global\_\_} keyword.
+	\item \textit{Host} - CPU and its memory.
+The host provides the GPU with instructions to execute, for example, transferring data, executing code, synchronizing the GPU, etc.
+	\item \textit{Device} - GPU and its memory.
+The device executes instructions issued by the host.
+	\item \textit{Kernel} - C++ function that is called from the host and executed on the device based on a configuration.
+In C++, the definition of a kernel is prefixed using the \code{\_\_global\_\_} keyword.
 \end{itemize}
 
 
 \subsection{Thread Management}\label{Subsection:theory->CUDA->thread-management}
-This section aims to briefly introduce the thread management system present in CUDA - for a detailed explanation see \citetitle{Cejka2020} \cite{Cejka2020} and \citetitle{Cejka2022} \cite{Cejka2022}. To fully leverage the performance Nvidia GPUs can provide, it is paramount to manage their execution units well. For this purpose, CUDA provides many functionalities and structures \cite{NVIDIADecember2022}.
+This section aims to briefly introduce the thread management system present in CUDA - for a detailed explanation see \citetitle{Cejka2020} \cite{Cejka2020} and \citetitle{Cejka2022} \cite{Cejka2022}.
+To fully leverage the performance Nvidia GPUs can provide, it is paramount to manage their execution units well.
+For this purpose, CUDA provides many functionalities and structures \cite{NVIDIADecember2022}.
 
-\paragraph{CUDA thread} According to \citetitle{NVIDIADecember2022} \cite{NVIDIADecember2022}, a CUDA thread is "\textit{an executed sequence of operations}". It represents the most fundamental level of abstraction for carrying out computations or memory operations. It is lightweight in design which allows the GPU to switch between threads seamlessly. Note that in the context of this project, a CUDA thread may also be referred to simply as a \textit{thread}. In CUDA, threads are organized into hierarchical groups, with the \textit{warp} being the most fundamental group.
+\paragraph{CUDA thread} According to \citetitle{NVIDIADecember2022} \cite{NVIDIADecember2022}, a CUDA thread is "\textit{an executed sequence of operations}".
+It represents the most fundamental level of abstraction for carrying out computations or memory operations.
+It is lightweight in design which allows the GPU to switch between threads seamlessly.
+Note that in the context of this project, a CUDA thread may also be referred to simply as a \textit{thread}.
+In CUDA, threads are organized into hierarchical groups, with the \textit{warp} being the most fundamental group.
 
-\paragraph{Warp} CUDA uses the Single-Instruction Multiple-Thread (SIMT) architecture. As the name suggests, in SIMT, threads execute the same instruction in parallel with the added possibility of each thread using different data \cite{xtprZzsTAPjyCsGX}. At the most elementary level of the thread-group hierarchy, threads execute in lockstep as a group of 32 called a \textit{warp}. Note that a warp can only comprise consecutive threads. For a clearer understanding, the execution of instructions by an 8-thread warp is shown in Figure~\ref{Figure:theory->CUDA->thread-management->thread-parallelism}.
+\paragraph{Warp} CUDA uses the Single-Instruction Multiple-Thread (SIMT) architecture.
+As the name suggests, in SIMT, threads execute the same instruction in parallel with the added possibility of each thread using different data \cite{xtprZzsTAPjyCsGX}.
+At the most elementary level of the thread-group hierarchy, threads execute in lockstep as a group of 32 called a \textit{warp}.
+Note that a warp can only comprise consecutive threads.
+For a clearer understanding, the execution of instructions by an 8-thread warp is shown in Figure~\ref{Figure:theory->CUDA->thread-management->thread-parallelism}.
 
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=9.5cm, keepaspectratio, clip]{images/ch01/CUDA_thread_parallelism.jpg}
-	\caption{Execution of code by an 8-thread warp. The unique ID of each thread is stored in the variable \code{threadID}. In this example, \code{threadID} is used to read and write different data. Taken from \citetitle{Ruetsch2008} \cite{Ruetsch2008} and \citetitle{Cejka2022} \cite{Cejka2022}.}
+	\caption{Execution of code by an 8-thread warp.
+		The unique ID of each thread is stored in the variable \code{threadID}.
+		In this example, \code{threadID} is used to read and write different data.
+		Taken from \citetitle{Ruetsch2008} \cite{Ruetsch2008} and \citetitle{Cejka2022} \cite{Cejka2022}.
+	}
 	\label{Figure:theory->CUDA->thread-management->thread-parallelism}
 \end{figure}
 
-While threads in a warp execute in lockstep, they can diverge and execute different instructions. This behavior is referred to as \textit{thread divergence} and it is discouraged as the execution will be serialized and thus suboptimal - see Figure~\ref{Figure:theory->CUDA->thread-management->thread-divergence} for a visualization of thread divergence. Interestingly, until Nvidia's Volta generation was introduced in December 2017, thread divergence could lead to a deadlock in specific cases where sharing data between threads of a warp was required \cite{NVIDIADecember2022, Grote2020}.
+While threads in a warp execute in lockstep, they can diverge and execute different instructions.
+This behavior is referred to as \textit{thread divergence} and it is discouraged as the execution will be serialized and thus suboptimal - see Figure~\ref{Figure:theory->CUDA->thread-management->thread-divergence} for a visualization of thread divergence.
+Interestingly, until Nvidia's Volta generation was introduced in December 2017, thread divergence could lead to a deadlock in specific cases where sharing data between threads of a warp was required \cite{NVIDIADecember2022, Grote2020}.
 
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=14cm, keepaspectratio]{images/ch01/CUDA_warp_divergence_execution_path.jpg}
-	\caption{Pseudocode showcasing thread divergence in an 8-thread warp. The \code{threadIdx.x} variable contains each thread's ID in the 1st dimension. In this example, while threads \code{0} to \code{3} execute statements \code{A} and \code{B}, threads \code{4} to \code{7} are idle. Then, threads \code{4} to \code{7} execute statements \code{X} and \code{Y} while threads \code{0} to \code{3} are idle. Finally, all threads resume lockstep execution with statement \code{Z}. Taken from Nvidia's developer blog post: \citetitle{Durant10May2017} \cite{Durant10May2017}.}
+	\caption{Pseudocode showcasing thread divergence in an 8-thread warp.
+		The \code{threadIdx.x} variable contains each thread's ID in the 1st dimension.
+		In this example, while threads \code{0} to \code{3} execute statements \code{A} and \code{B}, threads \code{4} to \code{7} are idle.
+		Then, threads \code{4} to \code{7} execute statements \code{X} and \code{Y} while threads \code{0} to \code{3} are idle.
+		Finally, all threads resume lockstep execution with statement \code{Z}.
+		Taken from Nvidia's developer blog post: \citetitle{Durant10May2017} \cite{Durant10May2017}.
+	}
 	\label{Figure:theory->CUDA->thread-management->thread-divergence}
 \end{figure}
 
 While CUDA provides special functions for intra-warp thread management \cite{Grover15January2018}, their use is not common compared to the use of thread groups higher in the hierarchy, called \textit{blocks}.
 
-\paragraph{Block} To execute a group of threads they must first be grouped into a \textit{block}. A single block can comprise up to 1024 threads (as of CUDA compute capability 3.5) that are organized in either 1D, 2D, or 3D \cite{NVIDIADecember2022}. Every thread of a particular block has a unique ID per dimension, i.e. \code{x} for 1D, \code{x}, \code{y} for 2D, and \code{x}, \code{y}, \code{z} for 3D. Combined with the fact that the threads of a warp are consecutive, choosing the dimension and size of a thread block can play a crucial role in achieving optimal performance. To illustrate this, an example showing threads of a block divided into warps can be seen in Figure~\ref{Figure:theory->CUDA->thread-management->grouping-threads-in-block-into-warps}.
+\paragraph{Block} To execute a group of threads they must first be grouped into a \textit{block}.
+A single block can comprise up to 1024 threads (as of CUDA compute capability 3.5) that are organized in either 1D, 2D, or 3D \cite{NVIDIADecember2022}.
+Every thread of a particular block has a unique ID per dimension, i.e. \code{x} for 1D, \code{x}, \code{y} for 2D, and \code{x}, \code{y}, \code{z} for 3D.
+Combined with the fact that the threads of a warp are consecutive, choosing the dimension and size of a thread block can play a crucial role in achieving optimal performance.
+To illustrate this, an example showing threads of a block divided into warps can be seen in Figure~\ref{Figure:theory->CUDA->thread-management->grouping-threads-in-block-into-warps}.
 
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=\textwidth, keepaspectratio]{images/ch01/CUDA_threads_in_warp_and_block.png}
-	\caption{Division of threads into warps in a block of 40 by 2 threads. Each green rectangle in the left image represents a row of threads. In the right image, each color represents a unique warp. Taken from \citetitle{ThomasCollignon2018} \cite{ThomasCollignon2018}.}
+	\caption{Division of threads into warps in a block of 40 by 2 threads.
+		Each green rectangle in the left image represents a row of threads.
+		In the right image, each color represents a unique warp.
+		Taken from \citetitle{ThomasCollignon2018} \cite{ThomasCollignon2018}.
+	}
 	\label{Figure:theory->CUDA->thread-management->grouping-threads-in-block-into-warps}
 \end{figure}
 
-As can be seen in Figure~\ref{Figure:theory->CUDA->thread-management->grouping-threads-in-block-into-warps}, since threads are consecutive in their 1st dimension, the 1st row of the block comprises 32 threads that belong to warp \code{0} (blue rectangle) and 8 threads from warp \code{1} (upper-right red square). The 2nd row comprises 24 threads belonging to warp \code{1} (lower-right red rectangle) and 16 threads from warp \code{2} (left-most green rectangle). While a warp can only consist of 32 consecutive threads, in warp \code{2}, only 16 will be utilized for execution, while the remaining 16 will remain inactive.
+As can be seen in Figure~\ref{Figure:theory->CUDA->thread-management->grouping-threads-in-block-into-warps}, since threads are consecutive in their 1st dimension, the 1st row of the block comprises 32 threads that belong to warp \code{0} (blue rectangle) and 8 threads from warp \code{1} (upper-right red square).
+The 2nd row comprises 24 threads belonging to warp \code{1} (lower-right red rectangle) and 16 threads from warp \code{2} (left-most green rectangle).
+While a warp can only consist of 32 consecutive threads, in warp \code{2}, only 16 will be utilized for execution, while the remaining 16 will remain inactive.
 
-\paragraph{Grid} The final group of threads in the hierarchy, the \textit{grid}, comprises thread blocks. Similarly to how threads are structured within a thread block, blocks can be structured within grids. Grids can consist of up to 3 dimensions of blocks; each block has a unique ID per dimension. Additionally, the limit of thread blocks per grid is bound to each dimension: the maximum number of blocks per dimension is 65,536. For a visualization of a 2D grid comprising 2D thread blocks see Figure~\ref{Figure:theory->CUDA->thread-management->thread-management-system-overview}.
+\paragraph{Grid} The final group of threads in the hierarchy, the \textit{grid}, comprises thread blocks.
+Similarly to how threads are structured within a thread block, blocks can be structured within grids.
+Grids can consist of up to 3 dimensions of blocks; each block has a unique ID per dimension.
+Additionally, the limit of thread blocks per grid is bound to each dimension: the maximum number of blocks per dimension is 65,536.
+For a visualization of a 2D grid comprising 2D thread blocks see Figure~\ref{Figure:theory->CUDA->thread-management->thread-management-system-overview}.
 
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=12cm, keepaspectratio]{images/ch01/CUDA_thread_management_system_overview.png}
-	\caption{Visualization of a 2-by-3 grid comprising 3-by-4 thread blocks. The numbers in the brackets are the IDs of each entity in each dimension. Taken from \citetitle{NVIDIADecember2022} \cite{NVIDIADecember2022}.}
+	\caption{Visualization of a 2-by-3 grid comprising 3-by-4 thread blocks.
+		The numbers in the brackets are the IDs of each entity in each dimension.
+		Taken from \citetitle{NVIDIADecember2022} \cite{NVIDIADecember2022}.
+	}
 	\label{Figure:theory->CUDA->thread-management->thread-management-system-overview}
 \end{figure}
 
-As shown in Figures \ref{Figure:theory->CUDA->thread-management->thread-parallelism} and \ref{Figure:theory->CUDA->thread-management->thread-divergence}, within a kernel, each thread has access to a collection of predefined variables unique to it. The following is a selection of such commonly-used variables:
+As shown in Figures \ref{Figure:theory->CUDA->thread-management->thread-parallelism} and \ref{Figure:theory->CUDA->thread-management->thread-divergence}, within a kernel, each thread has access to a collection of predefined variables unique to it.
+The following is a selection of such commonly-used variables:
 
 \begin{itemize}
-	\item \code{threadIdx} - A 3-component vector containing the IDs of a thread in each dimension of a thread block. Specifically, \code{threadIdx.x} contains the thread's ID in the 1st dimension (\code{x}), \code{threadIdx.y} in the 2nd dimension (\code{y}), and \code{threadIdx.z} in the 3rd dimension (\code{z}). For example, in the 3-by-4 thread block shown in Figure~\ref{Figure:theory->CUDA->thread-management->thread-management-system-overview}, the values of \code{threadIdx} for the bottom-right-most thread are \code{\{3, 2, 1\}}, i.e., \code{threadIdx.x = 3}, \code{threadIdx.x = 2}, \code{threadIdx.z = 1}.
-	\item \code{blockIdx} - A 3-component vector containing the IDs of a block in each dimension of a grid. Similarly to \code{threadIdx}, each vector component contains the block's ID in a specific dimension, i.e., \code{blockIdx.x} contains the ID of the block in the 1st dimension (\code{x}), etc. For example, for the bottom-right-most thread block shown in Figure~\ref{Figure:theory->CUDA->thread-management->thread-management-system-overview}, \code{blockIdx} would be \code{\{2, 1, 1\}}, i.e., \code{blockIdx.x = 2}, \code{blockIdx.y = 1}, \code{blockIdx.z = 1}.
-	\item \code{blockDim} - A 3-component vector containing the sizes of a block's dimensions. For example, for the thread block shown in Figure~\ref{Figure:theory->CUDA->thread-management->thread-management-system-overview}, \code{blockDim} would be \code{\{3, 4, 1\}}, i.e., \code{blockDim.x = 3}, \code{blockDim.y = 4}, \code{blockDim.z = 1}.
+	\item \code{threadIdx} - A 3-component vector containing the IDs of a thread in each dimension of a thread block.
+Specifically, \code{threadIdx.x} contains the thread's ID in the 1st dimension (\code{x}), \code{threadIdx.y} in the 2nd dimension (\code{y}), and \code{threadIdx.z} in the 3rd dimension (\code{z}).
+For example, in the 3-by-4 thread block shown in Figure~\ref{Figure:theory->CUDA->thread-management->thread-management-system-overview}, the values of \code{threadIdx} for the bottom-right-most thread are \code{\{3, 2, 1\}}, i.e., \code{threadIdx.x = 3}, \code{threadIdx.x = 2}, \code{threadIdx.z = 1}.
+	\item \code{blockIdx} - A 3-component vector containing the IDs of a block in each dimension of a grid.
+Similarly to \code{threadIdx}, each vector component contains the block's ID in a specific dimension, i.e., \code{blockIdx.x} contains the ID of the block in the 1st dimension (\code{x}), etc.
+For example, for the bottom-right-most thread block shown in Figure~\ref{Figure:theory->CUDA->thread-management->thread-management-system-overview}, \code{blockIdx} would be \code{\{2, 1, 1\}}, i.e., \code{blockIdx.x = 2}, \code{blockIdx.y = 1}, \code{blockIdx.z = 1}.
+	\item \code{blockDim} - A 3-component vector containing the sizes of a block's dimensions.
+For example, for the thread block shown in Figure~\ref{Figure:theory->CUDA->thread-management->thread-management-system-overview}, \code{blockDim} would be \code{\{3, 4, 1\}}, i.e., \code{blockDim.x = 3}, \code{blockDim.y = 4}, \code{blockDim.z = 1}.
 \end{itemize}
 
 For a summarized overview of predefined variables and functions available, see \citetitle{Gates2023} \cite{Gates2023} or see \citetitle{NVIDIADecember2022} \cite{NVIDIADecember2022} for an extensive overview.
@@ -182,12 +273,15 @@ For a summarized overview of predefined variables and functions available, see \
 The variables listed earlier are often used to compute the global ID of a thread in a dimension of a grid:
 $$\code{globalID = blockIdx.x * blockDim.x + threadIdx.x}$$
 
-In a standard setup, the grid is the upper-most thread grouping in CUDA's thread management hierarchy. As visualized in Figure~\ref{Figure:theory->CUDA->thread-management->thread-structures-executed-by-hardware}, when a kernel is executed on the device, it is executed on all threads of a grid.
+In a standard setup, the grid is the upper-most thread grouping in CUDA's thread management hierarchy.
+As visualized in Figure~\ref{Figure:theory->CUDA->thread-management->thread-structures-executed-by-hardware}, when a kernel is executed on the device, it is executed on all threads of a grid.
 
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=12cm, keepaspectratio]{images/ch01/CUDA_structures_executed_by_hardware.png}
-	\caption{Visualization illustrating the execution of CUDA thread structures by different hardware components in an Nvidia GPU. Taken from \citetitle{Gupta26June2020} \cite{Gupta26June2020}.}
+	\caption{Visualization illustrating the execution of CUDA thread structures by different hardware components in an Nvidia GPU.
+		Taken from \citetitle{Gupta26June2020} \cite{Gupta26June2020}.
+	}
 	\label{Figure:theory->CUDA->thread-management->thread-structures-executed-by-hardware}
 \end{figure}
 
@@ -201,7 +295,9 @@ To execute a kernel on the device, it is necessary to provide the kernel with an
 
 An example of a kernel call with a basic execution configuration is presented in Listing~\ref{Listing:theory->CUDA->thread-management->kernel-configuration-example}.
 
-\begin{lstlisting}[caption={Excerpt of C++ code portraying the creation of a grid configuration and the launching of a kernel. The example implemented aims to increment every value of the \code{N}-by-\code{N} matrix \code{mtx} by 1 using the device. \code{dim3} is an integer vector type based on \code{uint3} that is used to specify dimensions - unspecified components are implicitly set to 1 \cite{NVIDIADecember2022}. Taken from \citetitle{NVIDIADecember2022} \cite{NVIDIADecember2022}.},label={Listing:theory->CUDA->thread-management->kernel-configuration-example}]
+\begin{lstlisting}[caption={Excerpt of C++ code portraying the creation of a grid configuration and the launching of a kernel.
+The example implemented aims to increment every value of the \code{N}-by-\code{N} matrix \code{mtx} by 1 using the device. \code{dim3} is an integer vector type based on \code{uint3} that is used to specify dimensions - unspecified components are implicitly set to 1 \cite{NVIDIADecember2022}.
+Taken from \citetitle{NVIDIADecember2022} \cite{NVIDIADecember2022}.},label={Listing:theory->CUDA->thread-management->kernel-configuration-example}]
 // Kernel definition
 __global__ void AddOneToMatrix( float mtx[N][N] )
 {
@@ -230,22 +326,33 @@ int main()
 }
 \end{lstlisting}
 
-In Listing~\ref{Listing:theory->CUDA->thread-management->kernel-configuration-example}, the code in the \code{main()} function is executed on the host while the code in the \code{AddOneToMatrix(...)} function is executed on the device. From the host's point of view, kernel calls are asynchronous. In other words, the host will call for the kernel to be executed on the device and then it will move on to the next line of execution without delay. This holds even if the host calls two kernels in succession. In such a case, from the device's point of view, the two kernels will be executed in the order they were called.
+In Listing~\ref{Listing:theory->CUDA->thread-management->kernel-configuration-example}, the code in the \code{main()} function is executed on the host while the code in the \code{AddOneToMatrix(...)} function is executed on the device.
+From the host's point of view, kernel calls are asynchronous.
+In other words, the host will call for the kernel to be executed on the device and then it will move on to the next line of execution without delay.
+This holds even if the host calls two kernels in succession.
+In such a case, from the device's point of view, the two kernels will be executed in the order they were called.
 
 \subsection{Memory Management}\label{Subsection:theory->CUDA->memory-management}
 This section will briefly introduce the memory management system present in CUDA - for a comprehensive overview see \citetitle{Cejka2020} \cite{Cejka2020} and \citetitle{Cejka2022} \cite{Cejka2022}.
 
 Similarly to the layout in Section~\ref{Subsection:theory->CUDA->thread-management}, the memory management system of CUDA will be briefly described starting with the most fundamental type of memory and advancing to the highest level.
 
-\paragraph{Registers and local memory} While executing a kernel each thread has access to a memory space that is unique to it, i.e., other threads cannot access it. The lifetime of this memory is bound to the context of the kernel it is allocated with. This space encompasses two separate memories: \textit{registers} and \textit{local memory}.
+\paragraph{Registers and local memory} While executing a kernel each thread has access to a memory space that is unique to it, i.e., other threads cannot access it.
+The lifetime of this memory is bound to the context of the kernel it is allocated with.
+This space encompasses two separate memories: \textit{registers} and \textit{local memory}.
 
-\textit{Registers} are fast 32-bit on-chip memories (low latency and high bandwidth) that are often used for storing variables unique to each thread. The number of registers available to a thread in the context of a kernel is limited to 255 (since CUDA compute capability 3.2) \cite{NVIDIADecember2022}. If a variable or structure allocated in the context of a kernel exceeds the registers available to a thread, then the compiler stores them in \textit{local memory} - this behavior is referred to as \textit{register spilling}.
+\textit{Registers} are fast 32-bit on-chip memories (low latency and high bandwidth) that are often used for storing variables unique to each thread.
+The number of registers available to a thread in the context of a kernel is limited to 255 (since CUDA compute capability 3.2) \cite{NVIDIADecember2022}.
+If a variable or structure allocated in the context of a kernel exceeds the registers available to a thread, then the compiler stores them in \textit{local memory} - this behavior is referred to as \textit{register spilling}.
 
-\textit{Local memory} resides in off-chip device memory (referred to as \textit{global memory}; high latency and low bandwidth) which is slower to access than registers. Local memory for each thread is limited to 512 KB \cite{NVIDIADecember2022}.
+\textit{Local memory} resides in off-chip device memory (referred to as \textit{global memory}; high latency and low bandwidth) which is slower to access than registers.
+Local memory for each thread is limited to 512 KB \cite{NVIDIADecember2022}.
 
 While using registers to store frequently-accessed indexing variables can help improve performance, it should be done with care to avoid the performance loss associated with register spilling.
 
-\paragraph{Shared memory} In the context of a kernel, all threads of a block have access to a block-unique memory space referred to as \textit{shared memory}. Similarly to \textit{registers}, shared memory is located on-chip and is therefore high-speed. The maximum size of shared memory per block varies depending on the CUDA compute capability version as shown in Table ~\ref{Table:theory->CUDA->memory-management->max-shared-memory-per-block-based-on-compute-capability}.
+\paragraph{Shared memory} In the context of a kernel, all threads of a block have access to a block-unique memory space referred to as \textit{shared memory}.
+Similarly to \textit{registers}, shared memory is located on-chip and is therefore high-speed.
+The maximum size of shared memory per block varies depending on the CUDA compute capability version as shown in Table ~\ref{Table:theory->CUDA->memory-management->max-shared-memory-per-block-based-on-compute-capability}.
 
 \begin{table}[ht!]
 	\centering
@@ -257,19 +364,27 @@ While using registers to store frequently-accessed indexing variables can help i
 		Max. shared memory per block [KB] & 96		  & 64  & 163 & 99  & 163 & 99  & 227 \\
 		\hline
 	\end{tabular}
-	\caption{Maximum shared memory per thread block depending on the CUDA compute capability version. Note that to use more than 48 KB dynamic shared memory must be used. Taken from \citetitle{NVIDIADecember2022} \cite{NVIDIADecember2022}.}
+	\caption{Maximum shared memory per thread block depending on the CUDA compute capability version.
+		Note that to use more than 48 KB dynamic shared memory must be used.
+		Taken from \citetitle{NVIDIADecember2022} \cite{NVIDIADecember2022}.
+	}
 	\label{Table:theory->CUDA->memory-management->max-shared-memory-per-block-based-on-compute-capability}
 \end{table}
 
-Shared memory can be allocated statically, dynamically, or both. The amount of statically allocated memory is known at compile time while the amount of dynamically allocated memory is known at run time \cite{Harris28January2013}. Note that the total amount of shared memory allocated for a thread block is equal to the sum of statically and dynamically allocated shared memory.
+Shared memory can be allocated statically, dynamically, or both.
+The amount of statically allocated memory is known at compile time while the amount of dynamically allocated memory is known at run time \cite{Harris28January2013}.
+Note that the total amount of shared memory allocated for a thread block is equal to the sum of statically and dynamically allocated shared memory.
 
-Since \textit{statically} allocated shared memory is known at compile time, it must be declared with a size known at compile time. It is often declared inside a kernel using the \code{\_\_shared\_\_} modifier.
+Since \textit{statically} allocated shared memory is known at compile time, it must be declared with a size known at compile time.
+It is often declared inside a kernel using the \code{\_\_shared\_\_} modifier.
 
 On the other hand, the size of \textit{dynamically} allocated memory must be supplied as one of the kernel launch parameters as mentioned in Section~\ref{Subsection:theory->CUDA->thread-management}.
 
 Listing~\ref{Listing:theory->CUDA->memory-management->statically-allocated-shared-memory-example} shows an excerpt of C++ code where the syntax for static and dynamic memory allocation is presented - for the full code see \citetitle{Harris28January2013} by \citename{Harris28January2013}{author} \cite{Harris28January2013}.
 
-\begin{lstlisting}[caption={Excerpt of C++ code showcasing the syntax of static and dynamic shared memory allocation. Note when an array in shared memory is declared using \code{extern}, then the size of the array is determined at run time \cite{NVIDIADecember2022}. Taken from \citetitle{Harris28January2013} by \citename{Harris28January2013}{author} \cite{Harris28January2013}.},label={Listing:theory->CUDA->memory-management->statically-allocated-shared-memory-example}]
+\begin{lstlisting}[caption={Excerpt of C++ code showcasing the syntax of static and dynamic shared memory allocation.
+Note when an array in shared memory is declared using \code{extern}, then the size of the array is determined at run time \cite{NVIDIADecember2022}.
+Taken from \citetitle{Harris28January2013} by \citename{Harris28January2013}{author} \cite{Harris28January2013}.},label={Listing:theory->CUDA->memory-management->statically-allocated-shared-memory-example}]
 __global__ void kernel( ... )
 {
 	...
@@ -296,36 +411,54 @@ int main()
 
 For more information regarding shared memory see Section~1.2.3 in \citetitle{Cejka2022} \cite{Cejka2022} or \citetitle{NVIDIADecember2022} \cite{NVIDIADecember2022}.
 
-\paragraph{Global memory} The largest memory space present in CUDA is \textit{global memory}. It is occasionally referred to as \textit{device memory} as it resides in an Nvidia GPU's DRAM (Dynamic Random Access Memory). While global memory resides in a device's memory it can be accessed by both the host and the device, thus, creating a communication medium between the two. The amount of global memory available depends on the GPU used, for example, the Nvidia A100 GPU is available with either 40 GB or 80 GB (shown in Table~\ref{Table:theory->GPUs->GPGPU->nvidia-gpu-details-comparison}). Although it is the largest memory space found on the device, it is high-latency and low-bandwidth compared to, e.g., shared memory.
+\paragraph{Global memory} The largest memory space present in CUDA is \textit{global memory}.
+It is occasionally referred to as \textit{device memory} as it resides in an Nvidia GPU's DRAM (Dynamic Random Access Memory).
+While global memory resides in a device's memory it can be accessed by both the host and the device, thus, creating a communication medium between the two.
+The amount of global memory available depends on the GPU used, for example, the Nvidia A100 GPU is available with either 40 GB or 80 GB (shown in Table~\ref{Table:theory->GPUs->GPGPU->nvidia-gpu-details-comparison}).
+Although it is the largest memory space found on the device, it is high-latency and low-bandwidth compared to, e.g., shared memory.
 
-To clarify, since global memory is accessible by the device, it can be accessed by any thread of any grid. See Figure~\ref{Figure:theory->CUDA->memory-management->memory-spaces} for a visualization of CUDA thread structures and the memory spaces accessible to them.
+To clarify, since global memory is accessible by the device, it can be accessed by any thread of any grid.
+See Figure~\ref{Figure:theory->CUDA->memory-management->memory-spaces} for a visualization of CUDA thread structures and the memory spaces accessible to them.
 
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=12cm, keepaspectratio]{images/ch01/CUDA_memory_types_detailed.png}
-	\caption{CUDA memory structuring with accesses available to each thread structure. Taken from \citetitle{Hsiao17December2019} by \citename{Hsiao17December2019}{author} \cite{Hsiao17December2019}.}
+	\caption{CUDA memory structuring with accesses available to each thread structure.
+		Taken from \citetitle{Hsiao17December2019} by \citename{Hsiao17December2019}{author} \cite{Hsiao17December2019}.
+	}
 	\label{Figure:theory->CUDA->memory-management->memory-spaces}
 \end{figure}
 
-Furthermore, unlike the aforementioned memory spaces, the lifetime of global memory is bound to the CUDA application, i.e., data can be present in global memory when the application starts and removed when the application terminates. Moreover, global memory requires explicit allocation, copying, and deallocation of data - see \citetitle{Cejka2022} \cite{Cejka2022} and \citetitle{NVIDIADecember2022} \cite{NVIDIADecember2022} for the specific functions.
+Furthermore, unlike the aforementioned memory spaces, the lifetime of global memory is bound to the CUDA application, i.e., data can be present in global memory when the application starts and removed when the application terminates.
+Moreover, global memory requires explicit allocation, copying, and deallocation of data - see \citetitle{Cejka2022} \cite{Cejka2022} and \citetitle{NVIDIADecember2022} \cite{NVIDIADecember2022} for the specific functions.
 
 For completeness, Figure~\ref{Figure:theory->CUDA->memory-management->nvidia-gpu-architecture-and-cuda-structures} shows the architecture of an Nvidia GPU along with an overview of the CUDA programming model.
 
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=\textwidth, keepaspectratio]{images/ch01/nvidia_gpu_architecture_and_cuda_structures.png}
-	\caption{Simplified overview of an Nvidia GPU's architecture and the CUDA programming model. Taken from \citetitle{Hernandez2015} \cite{Hernandez2015}.}
+	\caption{Simplified overview of an Nvidia GPU's architecture and the CUDA programming model.
+		Taken from \citetitle{Hernandez2015} \cite{Hernandez2015}.
+	}
 	\label{Figure:theory->CUDA->memory-management->nvidia-gpu-architecture-and-cuda-structures}
 \end{figure}
 
-While there is only one kernel present in Figure~\ref{Figure:theory->CUDA->memory-management->nvidia-gpu-architecture-and-cuda-structures}, it is noteworthy that if another kernel was launched concurrently (explained later in Section~\ref{Subsection:theory->CUDA->concurrent-kernel-execution}) the threads allocated to it would also have access to global memory. In other words, global memory is the same for all kernels in a CUDA application.
+While there is only one kernel present in Figure~\ref{Figure:theory->CUDA->memory-management->nvidia-gpu-architecture-and-cuda-structures}, it is noteworthy that if another kernel was launched concurrently (explained later in Section~\ref{Subsection:theory->CUDA->concurrent-kernel-execution}) the threads allocated to it would also have access to global memory.
+In other words, global memory is the same for all kernels in a CUDA application.
 
 \subsection{Concurrent Kernel Execution}\label{Subsection:theory->CUDA->concurrent-kernel-execution}
-Concurrent kernel execution describes a scenario where two or more kernels from the same CUDA application are running simultaneously. Note that kernels can be executed concurrently only on certain devices with compute capability 2.x or higher. To check whether a device is capable of concurrent kernel execution the \code{deviceQuery} executable provided with the CUDA Toolkit can be used \cite{NVIDIADecember2022}.
+Concurrent kernel execution describes a scenario where two or more kernels from the same CUDA application are running simultaneously.
+Note that kernels can be executed concurrently only on certain devices with compute capability 2.x or higher.
+To check whether a device is capable of concurrent kernel execution the \code{deviceQuery} executable provided with the CUDA Toolkit can be used \cite{NVIDIADecember2022}.
 
-\paragraph{Streams} As mentioned in Section~\ref{Subsection:theory->CUDA->thread-management}, tasks on the device are executed serially, i.e., in the order the host launched them. This series of tasks is referred to as the \textit{default stream} since it is present implicitly. To execute kernels concurrently, it is necessary to use multiple \textit{streams}. Nvidia defines a stream as "\textit{a sequence of commands that execute in order.}" \cite{NVIDIADecember2022}. 
+\paragraph{Streams} As mentioned in Section~\ref{Subsection:theory->CUDA->thread-management}, tasks on the device are executed serially, i.e., in the order the host launched them.
+This series of tasks is referred to as the \textit{default stream} since it is present implicitly.
+To execute kernels concurrently, it is necessary to use multiple \textit{streams}.
+Nvidia defines a stream as "\textit{a sequence of commands that execute in order.}" \cite{NVIDIADecember2022}.
 
-Additionally, in Section~\ref{Subsection:theory->CUDA->thread-management} it was mentioned that a kernel is launched on a grid made up of thread blocks. This holds even when multiple kernels are launched simultaneously, i.e., each kernel is launched on a separate grid. When a grid is executing a kernel it is referred to as a resident grid.
+Additionally, in Section~\ref{Subsection:theory->CUDA->thread-management} it was mentioned that a kernel is launched on a grid made up of thread blocks.
+This holds even when multiple kernels are launched simultaneously, i.e., each kernel is launched on a separate grid.
+When a grid is executing a kernel it is referred to as a resident grid.
 
 Note that the use of concurrent kernel execution is associated with certain limitations \cite{Cejka2022, NVIDIADecember2022}:
 
@@ -348,26 +481,38 @@ The first limitation is dependent on the compute capability version as presented
 		Max. resident grids per device & 128 & 16  & 128       \\
 		\hline
 	\end{tabular}
-	\caption{Maximum number of resident grids on one device for CUDA compute capability 7.0 and higher. Taken from \citetitle{NVIDIADecember2022} \cite{NVIDIADecember2022}.}
+	\caption{Maximum number of resident grids on one device for CUDA compute capability 7.0 and higher.
+		Taken from \citetitle{NVIDIADecember2022} \cite{NVIDIADecember2022}.
+	}
 	\label{Table:theory->CUDA->concurrent-kernel-execution->maximum-resident-grids-per-device}
 \end{table}
 
-The second limitation prevents the concurrent execution of kernels from two distinct CUDA applications on the same device. In particular, if kernels are issued from distinct processes, they cannot run concurrently unless CUDA MPS\footnote{CUDA MPS documentation webpage URL: \url{https://docs.nvidia.com/deploy/mps/index.html}} is used \cite{Crovella16December2016, Crovella17August2017}.
+The second limitation prevents the concurrent execution of kernels from two distinct CUDA applications on the same device.
+In particular, if kernels are issued from distinct processes, they cannot run concurrently unless CUDA MPS\footnote{CUDA MPS documentation webpage URL: \url{https://docs.nvidia.com/deploy/mps/index.html}} is used \cite{Crovella16December2016, Crovella17August2017}.
 
-The third limitation states that a device can only run kernels concurrently if its resource limits are not overstepped. However, this does not mean that the kernels will not be run. On the contrary, if two or more kernels are launched using unique streams and the device's resources cannot satisfy the sum of resources required by the kernels, then one of the kernels will be executed first while the other kernels are put aside until resources are available for them. In this context, resources are either local memory or the number of threads the device is capable of running at a point in time.
+The third limitation states that a device can only run kernels concurrently if its resource limits are not overstepped.
+However, this does not mean that the kernels will not be run.
+On the contrary, if two or more kernels are launched using unique streams and the device's resources cannot satisfy the sum of resources required by the kernels, then one of the kernels will be executed first while the other kernels are put aside until resources are available for them.
+In this context, resources are either local memory or the number of threads the device is capable of running at a point in time.
 
-The fourth limitation is often issued as a disclaimer from Nvidia that warns against the interactivity of streams. Specifically, since all streams are independent of each other and have access to the same global memory, one stream can alter the data used by another stream resulting in inconsistent and possibly erroneous behavior.
+The fourth limitation is often issued as a disclaimer from Nvidia that warns against the interactivity of streams.
+Specifically, since all streams are independent of each other and have access to the same global memory, one stream can alter the data used by another stream resulting in inconsistent and possibly erroneous behavior.
 
-To prevent the unpredictable execution order of stream-unique kernels, explicit synchronization can be used. Functions providing explicit synchronization are, for example:
+To prevent the unpredictable execution order of stream-unique kernels, explicit synchronization can be used.
+Functions providing explicit synchronization are, for example:
 
 \begin{itemize}
 	\item \code{cudaDeviceSynchronize()} - This function creates a checkpoint where the host waits until all preceding commands in all streams of all host threads have been completed \cite{NVIDIADecember2022}.
 	\item \code{cudaStreamSynchronize( stream )} - This function serves a similar purpose to \code{cudaDeviceSynchronize()} with the exception that the host only waits until the preceding commands of a specific stream have completed.
 \end{itemize}
 
-To use a stream, other than the default stream, it is first necessary to construct it by instantiating and creating a stream object using \code{cudaStream\_t} and \code{cudaStreamCreate()}. Then, the stream must be supplied to a kernel's execution configuration to launch the kernel using it. Once the stream is no longer needed it must be destroyed using \code{cudaStreamDestroy()}. C++ pseudocode detailing the creation, usage, and destruction of streams is shown in Listing~\ref{Listing:theory->CUDA->concurrent-kernel-execution->creation-usage-destruction-of-streams}.
+To use a stream, other than the default stream, it is first necessary to construct it by instantiating and creating a stream object using \code{cudaStream\_t} and \code{cudaStreamCreate()}.
+Then, the stream must be supplied to a kernel's execution configuration to launch the kernel using it.
+Once the stream is no longer needed it must be destroyed using \code{cudaStreamDestroy()}.
+C++ pseudocode detailing the creation, usage, and destruction of streams is shown in Listing~\ref{Listing:theory->CUDA->concurrent-kernel-execution->creation-usage-destruction-of-streams}.
 
-\begin{lstlisting}[caption={C++ pseudocode showcasing the creation, usage, and destruction of two streams. Taken from \citetitle{NVIDIADecember2022} \cite{NVIDIADecember2022}.},label={Listing:theory->CUDA->concurrent-kernel-execution->creation-usage-destruction-of-streams}]
+\begin{lstlisting}[caption={C++ pseudocode showcasing the creation, usage, and destruction of two streams.
+Taken from \citetitle{NVIDIADecember2022} \cite{NVIDIADecember2022}.},label={Listing:theory->CUDA->concurrent-kernel-execution->creation-usage-destruction-of-streams}]
 	// Declare array of 2 stream objects
 	cudaStream_t streams[ 2 ];
 	
@@ -388,27 +533,39 @@ To use a stream, other than the default stream, it is first necessary to constru
 	}
 \end{lstlisting}
 
-Assuming that the total local memory required by both kernels called in Listing~\ref{Listing:theory->CUDA->concurrent-kernel-execution->creation-usage-destruction-of-streams} can be provided by a device at a point in time, they will be executed in parallel. For a visualization of concurrent kernel execution see Figure~\ref{Figure:theory->CUDA->concurrent-kernel-execution->concurrent-kernel-execution-visualization}.
+Assuming that the total local memory required by both kernels called in Listing~\ref{Listing:theory->CUDA->concurrent-kernel-execution->creation-usage-destruction-of-streams} can be provided by a device at a point in time, they will be executed in parallel.
+For a visualization of concurrent kernel execution see Figure~\ref{Figure:theory->CUDA->concurrent-kernel-execution->concurrent-kernel-execution-visualization}.
 
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=11cm, keepaspectratio]{images/ch01/CUDA_concurrent_kernel_execution.png}
-	\caption{Visualization of concurrent kernel execution. Taken from \citetitle{Xu2015} \cite{Xu2015}.}
+	\caption{Visualization of concurrent kernel execution.
+		Taken from \citetitle{Xu2015} \cite{Xu2015}.
+	}
 	\label{Figure:theory->CUDA->concurrent-kernel-execution->concurrent-kernel-execution-visualization}
 \end{figure}
 
 \subsection{Parallel Reduction}\label{Subsection:theory->CUDA->parallel-reduction}
-This section aims to present a parallel computation concept relevant to the project. As stated earlier in Section~\ref{Subsection:theory->GPUs->GPGPU}, the parallelization of some tasks is not straightforward. An example of such a task is finding the maximum value in an array.
+This section aims to present a parallel computation concept relevant to the project.
+As stated earlier in Section~\ref{Subsection:theory->GPUs->GPGPU}, the parallelization of some tasks is not straightforward.
+An example of such a task is finding the maximum value in an array.
 
-The naive procedure for finding the maximum value is to iterate through the array, compare each encountered element to a temporary variable, and save the larger of the two compared values into the variable. However, this procedure is strictly sequential and thus inefficient when performed on the device in its current form. In this case, \textit{parallel reduction} can be used to parallelize the problem.
+The naive procedure for finding the maximum value is to iterate through the array, compare each encountered element to a temporary variable, and save the larger of the two compared values into the variable.
+However, this procedure is strictly sequential and thus inefficient when performed on the device in its current form.
+In this case, \textit{parallel reduction} can be used to parallelize the problem.
 
-Parallel reduction is a means of reducing the values of an array into a single value using an associative binary operator \cite{Kirk2013}. The operators often used in parallel reduction are, for example, $\min$, $\max$, $\argmin$, $\argmax$, $\mathrm{sum}$, etc. To clearly explain parallel reduction, the $\max$ operator will be assumed.
+Parallel reduction is a means of reducing the values of an array into a single value using an associative binary operator \cite{Kirk2013}.
+The operators often used in parallel reduction are, for example, $\min$, $\max$, $\argmin$, $\argmax$, $\mathrm{sum}$, etc.
+To clearly explain parallel reduction, the $\max$ operator will be assumed.
 
 In the context of CUDA, finding the maximum value of an array stored in global memory is a two-step procedure:
 
 \begin{enumerate}
-	\item A kernel is launched in which each thread block copies a subarray into shared memory and finds its maximum value. The block then saves the maximum value into another array stored in global memory. This process is repeated for the array comprising of per-block maximum values until the number of elements required for comparison is smaller than the maximum number of threads a block can have.
-	\item The kernel is launched again on a grid comprising a single thread block. This allows loading the entire array into the block's shared memory which means that the maximum value produced will be the largest in the initial array.
+	\item A kernel is launched in which each thread block copies a subarray into shared memory and finds its maximum value.
+The block then saves the maximum value into another array stored in global memory.
+This process is repeated for the array comprising of per-block maximum values until the number of elements required for comparison is smaller than the maximum number of threads a block can have.
+	\item The kernel is launched again on a grid comprising a single thread block.
+This allows loading the entire array into the block's shared memory which means that the maximum value produced will be the largest in the initial array.
 \end{enumerate}
 
 To clearly explain parallel reduction, an example detailing the kernel will be described, i.e., finding the maximum value of an array stored in shared memory.
@@ -523,13 +680,25 @@ In short, parallel reduction performs iterations of simultaneous pair-comparison
 		\node [left=0.5cm] at (iterFiveArr0.west) (maxValLable) {Max. val.};
 		\draw[-latex, red] (maxValLable) to (iterFiveArr0);
 	\end{tikzpicture}
-	\caption{Visualization of finding the maximum value in a 16-element array stored in shared memory using parallel reduction. The gray squares contain values of the array. Each row of gray squares shows the array contents in a given iteration. The light green circles represent threads; the number inside each circle is the thread ID. The maximum value found is in the red-bordered square. This figure was created based on the example in \citetitle{Harris2023} by \citename{Harris2023}{author} \cite{Harris2023}.}
+	\caption{Visualization of finding the maximum value in a 16-element array stored in shared memory using parallel reduction.
+		The gray squares contain values of the array.
+		Each row of gray squares shows the array contents in a given iteration.
+		The light green circles represent threads; the number inside each circle is the thread ID.
+		The maximum value found is in the red-bordered square.
+		This figure was created based on the example in \citetitle{Harris2023} by \citename{Harris2023}{author} \cite{Harris2023}.
+	}
 	\label{Figure:theory->CUDA->parallel-reduction->maximum-value-in-array-using-parallel-reduction-with-interleaved-addressing}
 \end{figure}
 
-As can be seen in Figure~\ref{Figure:theory->CUDA->parallel-reduction->maximum-value-in-array-using-parallel-reduction-with-interleaved-addressing}, in every iteration, each thread compares two values and then saves the larger of the two into the array. Starting with the 2nd iteration, to reduce the workload, the number of values used is halved in every iteration. Specifically, only the values saved by threads in the previous iteration are evaluated. Thus, starting with the 2nd iteration, the number of threads used in each iteration is halved as they are no longer needed.
+As can be seen in Figure~\ref{Figure:theory->CUDA->parallel-reduction->maximum-value-in-array-using-parallel-reduction-with-interleaved-addressing}, in every iteration, each thread compares two values and then saves the larger of the two into the array.
+Starting with the 2nd iteration, to reduce the workload, the number of values used is halved in every iteration.
+Specifically, only the values saved by threads in the previous iteration are evaluated.
+Thus, starting with the 2nd iteration, the number of threads used in each iteration is halved as they are no longer needed.
 
-Note that the memory-accessing procedure of parallel reduction presented in Figure~\ref{Figure:theory->CUDA->parallel-reduction->maximum-value-in-array-using-parallel-reduction-with-interleaved-addressing} is referred to as \textit{interleaved addressing}. The reason for this is that the values are stored in shared memory which makes this usage of threads cause shared memory bank conflicts. Simply put, a shared memory bank conflict signifies that threads were not used optimally when accessing shared memory - for a detailed description of shared memory bank conflicts see \citetitle{Cejka2022} \cite{Cejka2022}. Parallel reduction with an alternative memory-accessing procedure known as \textit{sequential addressing} is shown in Figure~\ref{Figure:theory->CUDA->parallel-reduction->maximum-value-in-array-using-parallel-reduction-with-seqential-addressing}.
+Note that the memory-accessing procedure of parallel reduction presented in Figure~\ref{Figure:theory->CUDA->parallel-reduction->maximum-value-in-array-using-parallel-reduction-with-interleaved-addressing} is referred to as \textit{interleaved addressing}.
+The reason for this is that the values are stored in shared memory which makes this usage of threads cause shared memory bank conflicts.
+Simply put, a shared memory bank conflict signifies that threads were not used optimally when accessing shared memory - for a detailed description of shared memory bank conflicts see \citetitle{Cejka2022} \cite{Cejka2022}.
+Parallel reduction with an alternative memory-accessing procedure known as \textit{sequential addressing} is shown in Figure~\ref{Figure:theory->CUDA->parallel-reduction->maximum-value-in-array-using-parallel-reduction-with-seqential-addressing}.
 
 \begin{figure}
 	\centering
@@ -639,7 +808,13 @@ Note that the memory-accessing procedure of parallel reduction presented in Figu
 		\node [left=0.5cm] at (iterFiveArr0.west) (maxValLable) {Max. val.};
 		\draw[-latex, red] (maxValLable) to (iterFiveArr0);
 	\end{tikzpicture}
-	\caption{Visualization of finding the maximum value in a 16-element array stored in shared memory using parallel reduction with \textit{sequential addressing}. The gray squares contain values of the array. Each row of gray squares shows the array contents in a given iteration. The light green circles represent threads; the number inside each circle is the thread ID. The maximum value found is in the red-bordered square. This figure was created based on the example in \citetitle{Harris2023} by \citename{Harris2023}{author} \cite{Harris2023}.}
+	\caption{Visualization of finding the maximum value in a 16-element array stored in shared memory using parallel reduction with \textit{sequential addressing}.
+		The gray squares contain values of the array.
+		Each row of gray squares shows the array contents in a given iteration.
+		The light green circles represent threads; the number inside each circle is the thread ID.
+		The maximum value found is in the red-bordered square.
+		This figure was created based on the example in \citetitle{Harris2023} by \citename{Harris2023}{author} \cite{Harris2023}.
+	}
 	\label{Figure:theory->CUDA->parallel-reduction->maximum-value-in-array-using-parallel-reduction-with-seqential-addressing}
 \end{figure}
 
@@ -648,21 +823,31 @@ For parallel reduction in CUDA, sequential addressing has been shown to be 2x fa
 
 
 \section{Iterative Crout's Method with Partial Pivoting (ICMPP)}\label{Section:theory->ICMPP}
-The core aspect of HPC is solving advanced computation problems across various fields. The specific types of problems HPC is used to solve are, for example, developing new drugs, deciphering the functioning of the human brain, developing driverless cars, etc. \cite{HY9P0YzuUCw5E5cs}. Solving complex tasks can involve using a wide range of programs that often rely on dependencies to perform fundamental tasks, e.g., solving a system of linear equations, efficiently.
+The core aspect of HPC is solving advanced computation problems across various fields.
+The specific types of problems HPC is used to solve are, for example, developing new drugs, deciphering the functioning of the human brain, developing driverless cars, etc. \cite{HY9P0YzuUCw5E5cs}.
+Solving complex tasks can involve using a wide range of programs that often rely on dependencies to perform fundamental tasks, e.g., solving a system of linear equations, efficiently.
 
-The roots of linear equation solving can be traced back to ancient Chinese mathematics books from around 100 BC \cite{Hart2011}. Since then, it has become a fundamental component of numerical linear algebra. Owing to its early discovery and wide range of uses, many different methods have been developed - Gaussian elimination being arguably the most well-known. However, this project focuses on the use of Lower-Upper decomposition with partial pivoting (LUP) and substitution to solve linear equations. Specifically, the LUP method selected was the iterative variant of Prescott Durand Crout's matrix decomposition method, referred to - in the context of this project - as the \textit{Iterative Crout Method} (ICM). Note that in the context of this project, ICM does not include pivoting; a modification of ICM that includes pivoting will be referred to as \textit{Iterative Crout's Method with partial pivoting} (ICMPP).
+The roots of linear equation solving can be traced back to ancient Chinese mathematics books from around 100 BC \cite{Hart2011}.
+Since then, it has become a fundamental component of numerical linear algebra.
+Owing to its early discovery and wide range of uses, many different methods have been developed - Gaussian elimination being arguably the most well-known.
+However, this project focuses on the use of Lower-Upper decomposition with partial pivoting (LUP) and substitution to solve linear equations.
+Specifically, the LUP method selected was the iterative variant of Prescott Durand Crout's matrix decomposition method, referred to - in the context of this project - as the \textit{Iterative Crout Method} (ICM).
+Note that in the context of this project, ICM does not include pivoting; a modification of ICM that includes pivoting will be referred to as \textit{Iterative Crout's Method with partial pivoting} (ICMPP).
 
-First, LUP and its use when solving a system of linear equations will be briefly described. Then, Crout's Method with partial pivoting (CMPP) will be introduced and, finally, ICMPP will be described.
+First, LUP and its use when solving a system of linear equations will be briefly described.
+Then, Crout's Method with partial pivoting (CMPP) will be introduced and, finally, ICMPP will be described.
 
 \subsection{LU Decomposition with Partial Pivoting (LUP)}\label{Subsection:theory->ICMPP->LUP}
-It can be argued that LUP is simply Lower-Upper decomposition (LU) with the added feature of partial pivoting. To clearly explain LUP, LU will first be introduced.\\
+It can be argued that LUP is simply Lower-Upper decomposition (LU) with the added feature of partial pivoting.
+To clearly explain LUP, LU will first be introduced.\\
 LU is a procedure that factors an input matrix into the product of a lower-triangular matrix and an upper-triangular matrix
 
 \begin{equation}
 	\mathbf{A} = \mathbf{LU} \,,
 \end{equation}
 
-where $\mathbf{A},\mathbf{L},\mathbf{U} \in \mathbb{R}^{n\times n} \left( n \in \mathbb{N} \right)$. Specifically, the lower-triangular matrix $\mathbf{L}$ has the form
+where $\mathbf{A},\mathbf{L},\mathbf{U} \in \mathbb{R}^{n\times n} \left( n \in \mathbb{N} \right)$.
+Specifically, the lower-triangular matrix $\mathbf{L}$ has the form
 
 \begin{equation}
 	\mathbf{L} = {
@@ -690,16 +875,20 @@ and the upper-triangular matrix $\mathbf{U}$ has the form
 	} \,.
 \end{equation}
 
-However, the above-introduced version of LU is susceptible to failure if $\mathbf{A}$ is not strongly regular. This limitation can be overcome by properly ordering the rows and columns of $\mathbf{A}$ - referred to as \textit{LU decomposition with full pivoting}. Furthermore, the factorization is numerically stable in practice even if only rows are permuted \cite{Trefethen1997} - referred to as \textit{LU decomposition with partial pivoting} (LUP).
+However, the above-introduced version of LU is susceptible to failure if $\mathbf{A}$ is not strongly regular.
+This limitation can be overcome by properly ordering the rows and columns of $\mathbf{A}$ - referred to as \textit{LU decomposition with full pivoting}.
+Furthermore, the factorization is numerically stable in practice even if only rows are permuted \cite{Trefethen1997} - referred to as \textit{LU decomposition with partial pivoting} (LUP).
 
-The decomposition performed by LUP is identical to that of LU with the exception of a permutation matrix being added to keep track of row permutations. In matrix form, LUP is written as
+The decomposition performed by LUP is identical to that of LU with the exception of a permutation matrix being added to keep track of row permutations.
+In matrix form, LUP is written as
 
 \begin{equation}
 	\mathbf{PA} = \mathbf{LU} \,,
 	\label{Equation:theory->ICMPP->LUP->permuted-decomposition}
 \end{equation}
 
-where $\mathbf{P} \in \left\{0,1\right\}^{n \times n} \left( n \in \mathbb{N} \right)$ is a permutation matrix, i.e., each row and column of $\mathbf{P}$ has only one entry equal to 1 and all other entries are equal to 0. Alternatively, LUP can also be written as
+where $\mathbf{P} \in \left\{0,1\right\}^{n \times n} \left( n \in \mathbb{N} \right)$ is a permutation matrix, i.e., each row and column of $\mathbf{P}$ has only one entry equal to 1 and all other entries are equal to 0.
+Alternatively, LUP can also be written as
 
 \begin{equation}
 	\mathbf{A} = \mathbf{LUP} \,,
@@ -707,7 +896,8 @@ where $\mathbf{P} \in \left\{0,1\right\}^{n \times n} \left( n \in \mathbb{N} \r
 
 according to \citetitle{Okunev1997} \cite{Okunev1997}.
 
-Next, the usage of LUP when solving a system of linear equations will be described. A system of $n \in \mathbb{N}$ linear equations and $n$ unknowns can be written in matrix form as
+Next, the usage of LUP when solving a system of linear equations will be described.
+A system of $n \in \mathbb{N}$ linear equations and $n$ unknowns can be written in matrix form as
 \begin{equation}
 	\mathbf{Ax} = \mathbf{b} \,,
 	\label{Equation:theory->ICMPP->LUP->system-linear-equations-1rhs}
@@ -741,21 +931,27 @@ Solving a system of linear equations using LUP is a two-step process \cite{Cejka
 	\item \label{Item:theory->ICMPP->LUP->solving-system-linear-equations->substitution}
 		\textit{Substitution} - the system presented in Equation~\ref{Equation:theory->ICMPP->LUP->system-linear-equations-1rhs-with-LU} is then solved in two steps:
 		\begin{enumerate}
-			\item Forward substitution - solve $\mathbf{Ly} = \mathbf{Pb}$ where only vector $\mathbf{y} \in \mathbb{R}^n$ is not known. Note that, in practice, vector $\mathbf{b}$ is permuted before this system is solved.
+			\item Forward substitution - solve $\mathbf{Ly} = \mathbf{Pb}$ where only vector $\mathbf{y} \in \mathbb{R}^n$ is not known.
+Note that, in practice, vector $\mathbf{b}$ is permuted before this system is solved.
 			\item Backward substitution - solve $\mathbf{Ux} = \mathbf{y}$ where only vector $\mathbf{x} \in \mathbb{R}^n$ is not known.
 		\end{enumerate}
 \end{enumerate}
 
 Once $\mathbf{x}$ contains the solution, it can be directly applied to the system presented in Equation~\ref{Equation:theory->ICMPP->LUP->system-linear-equations-1rhs}, i.e., there is no need for additional permuting.
 
-Note that $\mathbf{b}$ is only required in Step~\ref{Item:theory->ICMPP->LUP->solving-system-linear-equations->substitution}, i.e., it is not used to decompose $\mathbf{A}$. As mentioned in \citetitle{Cejka2022} \cite{Cejka2022} and in \citetitle{Lindfield2019} \cite{Lindfield2019}, this presents an advantage for LUP over Gaussian elimination in cases where right-hand sides are not provided at once. For example, when solving linear time-dependent partial differential equations, each time step presents a system whose right-hand side is determined by the solution of the system belonging to the previous time step. In such cases, Gaussian elimination would need to be performed in its entirety for every new right-hand side, whereas LUP would be used to decompose $\mathbf{A}$ once, and then the output of the decomposition would be reused for every new right-hand side.
+Note that $\mathbf{b}$ is only required in Step~\ref{Item:theory->ICMPP->LUP->solving-system-linear-equations->substitution}, i.e., it is not used to decompose $\mathbf{A}$.
+As mentioned in \citetitle{Cejka2022} \cite{Cejka2022} and in \citetitle{Lindfield2019} \cite{Lindfield2019}, this presents an advantage for LUP over Gaussian elimination in cases where right-hand sides are not provided at once.
+For example, when solving linear time-dependent partial differential equations, each time step presents a system whose right-hand side is determined by the solution of the system belonging to the previous time step.
+In such cases, Gaussian elimination would need to be performed in its entirety for every new right-hand side, whereas LUP would be used to decompose $\mathbf{A}$ once, and then the output of the decomposition would be reused for every new right-hand side.
 
 While there are many different approaches to LUP, this project focuses on \textit{Crout's Method with partial pivoting} (CMPP) and \textit{Iterative Crout's Method with partial pivoting} (ICMPP).
 
 
 
 \subsection{Crout's Method with Partial Pivoting (CMPP)}\label{Subsection:theory->ICMPP->LUP->CMPP}
-This section aims to introduce an LUP algorithm known as \textit{Crout's Method with partial pivoting} (CMPP). CMPP's base form, Crout's Method (CM), is also referred to as \textit{Crout's matrix decomposition} or \textit{Crout's factorization} and was developed by Prescott Durand Crout \cite{Press2007} in the 20th century. In the context of this project, CM refers to the method without partial pivoting and whereas CMPP refers to the method with partial pivoting.
+This section aims to introduce an LUP algorithm known as \textit{Crout's Method with partial pivoting} (CMPP).
+CMPP's base form, Crout's Method (CM), is also referred to as \textit{Crout's matrix decomposition} or \textit{Crout's factorization} and was developed by Prescott Durand Crout \cite{Press2007} in the 20th century.
+In the context of this project, CM refers to the method without partial pivoting and whereas CMPP refers to the method with partial pivoting.
 
 When it comes to LUP algorithms, a distinctive feature of CM is that it generates a unit upper-triangular matrix $\mathbf{U} \in \mathbb{R}^{n \times n} \left(n \in \mathbb{N}\right)$, i.e., one where all the elements on its main diagonal are equal to 1:
 \begin{equation}
@@ -854,11 +1050,22 @@ See Figure~\ref{Figure:theory->ICMPP->LUP->CMPP->algorithm-advance-visualisation
 		\node[text_label, below=3mm of nj] 													 {Iteration $j$};
 		\node[text_label, right=33mm of nj, align=center] 									 {Subsequent\\Iterations};
 	\end{tikzpicture}
-	\caption{Visualization of the advance of CMPP's algorithm. First, elements $l_{j,j}$ to $l_{n,j}$ in column $j$ of $\mathbb{L}$ are computed. Then, row $j$ is pivoted. Its row is swapped with the row containing the largest absolute value of an element in column $j$, starting from $l_{j,j}$ and ending at $l_{n,j}$, both inclusive. Finally, elements $u_{j,j+1}$ to $u_{j,n}$ in row $i$ of $\mathbb{U}$ are computed. Adapted from \citetitle{rqjYYJkSwERYYbSy} by \citename{rqjYYJkSwERYYbSy}{author} \cite{rqjYYJkSwERYYbSy}.}
+	\caption{Visualization of the advance of CMPP's algorithm.
+		First, elements $l_{j,j}$ to $l_{n,j}$ in column $j$ of $\mathbb{L}$ are computed.
+		Then, row $j$ is pivoted.
+		Its row is swapped with the row containing the largest absolute value of an element in column $j$, starting from $l_{j,j}$ and ending at $l_{n,j}$, both inclusive.
+		Finally, elements $u_{j,j+1}$ to $u_{j,n}$ in row $i$ of $\mathbb{U}$ are computed.
+		Adapted from \citetitle{rqjYYJkSwERYYbSy} by \citename{rqjYYJkSwERYYbSy}{author} \cite{rqjYYJkSwERYYbSy}.
+	}
 	\label{Figure:theory->ICMPP->LUP->CMPP->algorithm-advance-visualisation}
 \end{figure}
 
-\begin{lstlisting}[caption={C++ pseudocode for CMPP's algorithm that decomposes with partial pivoting an \code{n}-by-\code{n} matrix \code{A}. The two-dimensional arrays \code{A[ n ][ n ]}, \code{L[ n ][ n ]}, and \code{U[ n ][ n ]} represent matrices $\mathbf{A}$, $\mathbf{L}$, and $\mathbf{U}$, respectively. Instead of using a two-dimensional array to represent matrix $\mathbb{P}$ a one-dimensional array \code{piv} is used. It stores the index of the row that each row was pivoted with, e.g., \code{piv[ 0 ] = 8} signifies that row \code{0} was swapped with row \code{8}. Note that, on input, \code{L} and \code{U} are assumed to be populated with 0s. Derived from \citetitle{Forsythe1960} \cite{Forsythe1960} and \citetitle{Press2007} \cite{Press2007}.},label={Listing:theory->ICMPP->LUP->CMPP->pseudocode},escapechar=@]
+\begin{lstlisting}[caption={C++ pseudocode for CMPP's algorithm that decomposes with partial pivoting an \code{n}-by-\code{n} matrix \code{A}.
+The two-dimensional arrays \code{A[ n ][ n ]}, \code{L[ n ][ n ]}, and \code{U[ n ][ n ]} represent matrices $\mathbf{A}$, $\mathbf{L}$, and $\mathbf{U}$, respectively.
+Instead of using a two-dimensional array to represent matrix $\mathbb{P}$ a one-dimensional array \code{piv} is used.
+It stores the index of the row that each row was pivoted with, e.g., \code{piv[ 0 ] = 8} signifies that row \code{0} was swapped with row \code{8}.
+Note that, on input, \code{L} and \code{U} are assumed to be populated with 0s.
+Derived from \citetitle{Forsythe1960} \cite{Forsythe1960} and \citetitle{Press2007} \cite{Press2007}.},label={Listing:theory->ICMPP->LUP->CMPP->pseudocode},escapechar=@]
 void swapRows( M, row1, row2, n )
 {
 	for( Index j = 0; j < n; ++j ) {
@@ -937,7 +1144,10 @@ void cmpp( A, L, U, piv, n )
 }
 \end{lstlisting}
 
-From Formulas~\ref{Equation:theory->ICMPP->LUP->CMPP->lij} and \ref{Equation:theory->ICMPP->LUP->CMPP->uij}, and the pseudocode presented in Listing~\ref{Listing:theory->ICMPP->LUP->CMPP->pseudocode}, it can be seen that the main part of computing an element in either $\mathbf{L}$ or $\mathbf{U}$ (where $\mathbf{L}, \mathbf{U} \in \mathbb{R}^{n \times n} \left(n \in \mathbb{N}\right)$) is the sum. For each element, the sum is computed using some elements above and to the left of it. Specifically, elements starting from 1 to $\minp{i,j}$ (excluding the latter) in row $i$ and column $j$ are multiplied and summed. This dependency of elements is visualized in Figure~\ref{Figure:theory->ICMPP->LUP->CMPP->sum-in-element-computation-dependance}.
+From Formulas~\ref{Equation:theory->ICMPP->LUP->CMPP->lij} and \ref{Equation:theory->ICMPP->LUP->CMPP->uij}, and the pseudocode presented in Listing~\ref{Listing:theory->ICMPP->LUP->CMPP->pseudocode}, it can be seen that the main part of computing an element in either $\mathbf{L}$ or $\mathbf{U}$ (where $\mathbf{L}, \mathbf{U} \in \mathbb{R}^{n \times n} \left(n \in \mathbb{N}\right)$) is the sum.
+For each element, the sum is computed using some elements above and to the left of it.
+Specifically, elements starting from 1 to $\minp{i,j}$ (excluding the latter) in row $i$ and column $j$ are multiplied and summed.
+This dependency of elements is visualized in Figure~\ref{Figure:theory->ICMPP->LUP->CMPP->sum-in-element-computation-dependance}.
 
 \begin{figure}[ht!]
 	\centering
@@ -951,18 +1161,31 @@ From Formulas~\ref{Equation:theory->ICMPP->LUP->CMPP->lij} and \ref{Equation:the
 		\includegraphics[width=.8\textwidth, keepaspectratio]{images/ch01/CMPP_elements_used_compute_sum_U.png}
 		\label{Figure:theory->ICMPP->LUP->CMPP->sum-in-element-computation-dependance-U}
 	\end{subfigure}
-	\caption{Two examples of elements used (light gray square) to compute the sum in the formula of elements $l_{i,j}$ and $u_{i,j}$. The dark gray squares represent the elements being computed. The lower triangle of the matrix consists of the corresponding elements of the lower triangle from $\mathbf{L}$ while the upper triangle consists of the corresponding elements of the upper triangle from $\mathbf{U}$. To compute the sum, only elements with indices in the interval $\left[1, \minp{i, j}\right)$, i.e., excluding the right boundary, are used in the element's row and column. Taken from \citetitle{Cejka2022} \cite{Cejka2022} and \citetitle{Chow2015} \cite{Chow2015}.}
+	\caption{Two examples of elements used (light gray square) to compute the sum in the formula of elements $l_{i,j}$ and $u_{i,j}$.
+		The dark gray squares represent the elements being computed.
+		The lower triangle of the matrix consists of the corresponding elements of the lower triangle from $\mathbf{L}$ while the upper triangle consists of the corresponding elements of the upper triangle from $\mathbf{U}$.
+		To compute the sum, only elements with indices in the interval $\left[1, \minp{i, j}\right)$, i.e., excluding the right boundary, are used in the element's row and column.
+		Taken from \citetitle{Cejka2022} \cite{Cejka2022} and \citetitle{Chow2015} \cite{Chow2015}.
+		}
 	\label{Figure:theory->ICMPP->LUP->CMPP->sum-in-element-computation-dependance}
 \end{figure}
 
-In summary, an element in row $i$ and column $j$ is dependent on elements with indices $\left[1, \minp{i, j}\right)$ from its row and elements with indices $\left[1, \minp{i, j}\right)$ from its column. This means that CMPP's algorithm is inherently sequential, which seemingly limits its potential for parallelization.
+In summary, an element in row $i$ and column $j$ is dependent on elements with indices $\left[1, \minp{i, j}\right)$ from its row and elements with indices $\left[1, \minp{i, j}\right)$ from its column.
+This means that CMPP's algorithm is inherently sequential, which seemingly limits its potential for parallelization.
 
-Thus far, the variation of CMPP discussed will either produce an exact solution in a finite amount of steps or, if the matrix is singular, it will fail. In terms of numerical methods such a method is referred to as \textit{direct}.
+Thus far, the variation of CMPP discussed will either produce an exact solution in a finite amount of steps or, if the matrix is singular, it will fail.
+In terms of numerical methods such a method is referred to as \textit{direct}.
 
-An alternative group of methods to direct methods is known as iterative methods. Unlike direct methods, iterative methods converge to a solution, but there is no guarantee that the exact solution will be obtained. An example of an iterative variant of CMPP: \textit{Iterative Crout's Method with partial pivoting} (ICMPP) will be described in the next part.
+An alternative group of methods to direct methods is known as iterative methods.
+Unlike direct methods, iterative methods converge to a solution, but there is no guarantee that the exact solution will be obtained.
+An example of an iterative variant of CMPP: \textit{Iterative Crout's Method with partial pivoting} (ICMPP) will be described in the next part.
 
 \subsection{Iterative Crout's Method with Partial Pivoting (ICMPP)}\label{Subsection:theory->ICMPP->LUP->ICMPP}
-Seeing as the potential for parallelization is seemingly limited for CMPP's algorithm, an alternative approach can be used. One such alternative, put forward by \citename{Anzt2019}{author} in \citetitle{Anzt2019} \cite{Anzt2019}, involves using the formulas of CM in an iterative method. Although the method proposed by the authors generates incomplete factorization, i.e., some nonzero elements are omitted during factorization, its principle can be extracted to create an iterative decomposition method that produces a complete factorization. As detailed in \citetitle{Cejka2022} \cite{Cejka2022}, the complete-factorization approach converges to a sufficiently approximate solution of $\mathbf{A} = \mathbf{LU}$. This approach, labeled as \textit{Iterative Crout's Method} (ICM), has been modified to include partial pivoting, thus creating \textit{Iterative Crout's Method with partial pivoting} (ICMPP).
+Seeing as the potential for parallelization is seemingly limited for CMPP's algorithm, an alternative approach can be used.
+One such alternative, put forward by \citename{Anzt2019}{author} in \citetitle{Anzt2019} \cite{Anzt2019}, involves using the formulas of CM in an iterative method.
+Although the method proposed by the authors generates incomplete factorization, i.e., some nonzero elements are omitted during factorization, its principle can be extracted to create an iterative decomposition method that produces a complete factorization.
+As detailed in \citetitle{Cejka2022} \cite{Cejka2022}, the complete-factorization approach converges to a sufficiently approximate solution of $\mathbf{A} = \mathbf{LU}$.
+This approach, labeled as \textit{Iterative Crout's Method} (ICM), has been modified to include partial pivoting, thus creating \textit{Iterative Crout's Method with partial pivoting} (ICMPP).
 
 The decomposition of matrix $\mathbf{A} \in \mathbb{R}^{n \times n}$ into the product of matrices $\mathbf{L}, \mathbf{U} \in \mathbb{R}^{n \times n}$, and a permutation matrix $\mathbf{P} \in \left\{0,1\right\}^{n \times n}$ using ICMPP consists of the following steps \cite{Cejka2022}:
 
@@ -981,7 +1204,9 @@ The decomposition of matrix $\mathbf{A} \in \mathbb{R}^{n \times n}$ into the pr
 			l_{i,j}^{t} &= a_{ij} - \sum_{k=1}^{j-1}l_{i,k}^{t-1}u_{k,j}^{t-1} &\quad i \geq j \nonumber\,.
 		\end{align}
 	\item \label{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->converge-lower-sections}
-		Take the first $j \in \widehat{n}; n \in \mathbb{N}$ that satisfies the condition $\left|l^{t-1}_{j, j} - l^{t}_{j, j}\right| < \epsilon$ (where $\epsilon$ denotes a tolerance, e.g., 0.001) and \textit{iteratively converge} all elements in $\mathbf{L}^{t}$ below row $j$ from column 1 to column $j$ (including both boundaries), i.e., $l^{t}_{b, c}$ where $j < b \leq n$ and $1 \leq c \leq j$. If no such $j$ satisfies the condition, proceed to Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Ut}. In this context, \textit{iteratively converge} signifies to continue computing the mentioned elements using Formula~\ref{Equation:theory->ICMPP->LUP->CMPP->lij} until they all satisfy the condition $\left|l^{t-1}_{b, c} - l^{t}_{b, c}\right| < \epsilon$.
+		Take the first $j \in \widehat{n}; n \in \mathbb{N}$ that satisfies the condition $\left|l^{t-1}_{j, j} - l^{t}_{j, j}\right| < \epsilon$ (where $\epsilon$ denotes a tolerance, e.g., 0.001) and \textit{iteratively converge} all elements in $\mathbf{L}^{t}$ below row $j$ from column 1 to column $j$ (including both boundaries), i.e., $l^{t}_{b, c}$ where $j < b \leq n$ and $1 \leq c \leq j$.
+If no such $j$ satisfies the condition, proceed to Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Ut}.
+In this context, \textit{iteratively converge} signifies to continue computing the mentioned elements using Formula~\ref{Equation:theory->ICMPP->LUP->CMPP->lij} until they all satisfy the condition $\left|l^{t-1}_{b, c} - l^{t}_{b, c}\right| < \epsilon$.
 	\item \label{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row}
 		Pivot row $j$ (same as Step~\ref{Item:theory->ICMPP->LUP->CMPP->algorithm-steps->pivot-row-j} in the CMPP algorithm description on page~\pageref{Item:theory->ICMPP->LUP->CMPP->algorithm-steps->pivot-row-j}):
 		\begin{enumerate}
@@ -1008,13 +1233,21 @@ The decomposition of matrix $\mathbf{A} \in \mathbb{R}^{n \times n}$ into the pr
 While the instructions in Steps~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt} to \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->evaluate-convergence-rule} must be performed consecutively, the operations in each step can be executed in parallel:
 
 \begin{itemize}
-	\item Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt} - The element $l^{t}_{i,j} \left(i, j \in \widehat{n}; n \in \mathbb{N}\right)$ is dependent only on elements from matrices $\mathbf{A}$, $\mathbf{L}^{t-1}$, and $\mathbf{U}^{t-1}$. Since the values in the first matrix are constant - excluding the swapping of rows - and the last two matrices were set in the previous iteration, no elements from $\mathbf{L}^{t}$ are dependent on each other. Thus, all elements $l^{t}_{i,j}$ can be computed simultaneously.
+	\item Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt} - The element $l^{t}_{i,j} \left(i, j \in \widehat{n}; n \in \mathbb{N}\right)$ is dependent only on elements from matrices $\mathbf{A}$, $\mathbf{L}^{t-1}$, and $\mathbf{U}^{t-1}$.
+Since the values in the first matrix are constant - excluding the swapping of rows - and the last two matrices were set in the previous iteration, no elements from $\mathbf{L}^{t}$ are dependent on each other.
+Thus, all elements $l^{t}_{i,j}$ can be computed simultaneously.
 	\item Step \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->converge-lower-sections} - The absolute-value condition can be checked in parallel, and, similarly to Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt}, the iterative convergence is computed according to the same formula.
-	\item Step \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row} - The $\max$ operation mentioned in Section~\ref{Subsection:theory->CUDA->parallel-reduction} can be adapted to suit the needs of $\argmax$ used in Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row->argmax}. While the swapping of elements in two rows can be performed in parallel, Steps~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row->swap-rows} and \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row->singular-matrix-check} must be executed consecutively.
-	\item Step \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Ut} - The element $u^{t}_{i,j} \left(i, j \in \widehat{n}; n \in \mathbb{N}\right)$ is dependent only on elements from matrices $\mathbf{A}$, $\mathbf{L}^{t}$, and $\mathbf{U}^{t-1}$. Matrices $\mathbf{A}$ and $\mathbf{U}^{t-1}$ were covered in the description of parallelization of Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt} and matrix $\mathbf{L}^{t}$ was finalized in Steps~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt} to \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row}. Thus, since no elements from $\mathbf{U}^{t}$ are dependent on each other, they can be computed simultaneously.
+	\item Step \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row} - The $\max$ operation mentioned in Section~\ref{Subsection:theory->CUDA->parallel-reduction} can be adapted to suit the needs of $\argmax$ used in Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row->argmax}.
+While the swapping of elements in two rows can be performed in parallel, Steps~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row->swap-rows} and \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row->singular-matrix-check} must be executed consecutively.
+	\item Step \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Ut} - The element $u^{t}_{i,j} \left(i, j \in \widehat{n}; n \in \mathbb{N}\right)$ is dependent only on elements from matrices $\mathbf{A}$, $\mathbf{L}^{t}$, and $\mathbf{U}^{t-1}$.
+Matrices $\mathbf{A}$ and $\mathbf{U}^{t-1}$ were covered in the description of parallelization of Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt} and matrix $\mathbf{L}^{t}$ was finalized in Steps~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt} to \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row}.
+Thus, since no elements from $\mathbf{U}^{t}$ are dependent on each other, they can be computed simultaneously.
 	\item Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->evaluate-convergence-rule} - Since the evaluation of the convergence rule has no dependencies, it is entirely parallelizable.
 \end{itemize}
 
-Note that due to the nature of iterative methods, it is not possible to accurately predict the number of iterations needed to converge to an approximate solution. Thus, the performance of ICMPP may heavily depend on the nonzero element structure of matrix $\mathbf{A}$.
+Note that due to the nature of iterative methods, it is not possible to accurately predict the number of iterations needed to converge to an approximate solution.
+Thus, the performance of ICMPP may heavily depend on the nonzero element structure of matrix $\mathbf{A}$.
 
-To summarize, in Sections~\ref{Section:theory->GPUs} and \ref{Section:theory->CUDA} a high-performance parallel computing system was introduced in the form of Nvidia GPUs manageable by CUDA. Then, at the end of Section~\ref{Section:theory->ICMPP}, a parallelizable algorithm was presented. The combination of the aforementioned parts will be the main focus of the following chapters.
+To summarize, in Sections~\ref{Section:theory->GPUs} and \ref{Section:theory->CUDA} a high-performance parallel computing system was introduced in the form of Nvidia GPUs manageable by CUDA.
+Then, at the end of Section~\ref{Section:theory->ICMPP}, a parallelizable algorithm was presented.
+The combination of the aforementioned parts will be the main focus of the following chapters.

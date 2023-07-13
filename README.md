@@ -3,4 +3,5 @@ This repository tracks the writing of my master's thesis during the 3rd year of 
 
 The development of the Decomposition project is located in a private GitLab repository.
 
-Abstract - **TODO**
+### Abstract
+> This diploma thesis focuses on the implementation of an iterative parallel LU decomposition algorithm with Pivoting (LUP) for Nvidia Graphics Processing Units (GPUs). The primary objectives of this thesis are to apply the implementation as a preconditioner in an existing library and analyze its performance. For this purpose, a project was developed, encompassing procedures for solving systems of equations using LUP, along with unit tests and a benchmarking framework. Furthermore, the project was integrated into a multilevel BDDC solver library. The benchmarks conducted compared the implementation of the algorithm to established GPU libraries in terms of performance and accuracy on a state-of-the-art High-Performance Computing (HPC) cluster. Based on a comprehensive analysis of the benchmark results, recommendations were made regarding the suitability of the implementations for general use and specific problems.

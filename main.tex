@@ -161,6 +161,14 @@ giveninits=true]{biblatex}								% Bibliography: ISO 690 format, cite shows num
 \DeclareRobustCommand{\code}[1]{{\begingroup\sethlcolor{gray-light}\hl{\texttt{#1}}\endgroup}} % Shortcut for code font in text
 \soulregister{\code}{1}																		   % Codeify inline text character by character
 \newcommand{\namerefItalics}[1]{\textit{\nameref{#1}}}										   % Nameref with italics font
+\newenvironment{tight_enumerate}{															   % Define new enumerate with smaller spaces between items
+	\begin{enumerate}
+		\setlength{\itemsep}{0pt}
+	}{\end{enumerate}}
+\newenvironment{tight_itemize}{															  	   % Define new itemize with smaller spaces between items
+	\begin{itemize}
+		\setlength{\itemsep}{0pt}
+	}{\end{itemize}}
 
 %% Status of writing:
 \newcommand{\TODO}{\textcolor{red}{TODO}}   		   % To-Do command

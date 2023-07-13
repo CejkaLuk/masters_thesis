@@ -28,14 +28,14 @@ See \citetitle{ixA8ZYptYohwlgwt} \cite{ixA8ZYptYohwlgwt} for examples and tutori
 \paragraph{Array} One of the most basic data structures is the \code{TNL::Containers::Array} class or \code{Array} for short \cite{ixA8ZYptYohwlgwt}.
 An array type is declared using the following template parameters:
 
-\begin{itemize}
+\begin{tight_itemize}
 	\item \code{Value} - The array data type, e.g., \code{double}.
 	\item \code{Device} - The device where an array operation is to be performed - either on the CPU or on the GPU, denoted using \code{TNL::Devices::Host} or \code{TNL::Devices::Cuda}, respectively.
 	\item \code{Index} - The indexing data type, e.g., \code{int}.
 	\item \code{Allocator} - The allocator type used for the allocation and deallocation of data.
 This parameter dictates the memory space the data is allocated in, e.g., on the host (CPU memory space), or the device (CUDA memory space).
 By default, the allocator corresponding to \code{Device} is set.
-\end{itemize}
+\end{tight_itemize}
 
 At its core, \code{Array} contains a pointer to the data and the size of the array.
 Additionally, methods providing different functionalities are present, for example, \code{resize()} or \code{forAllElements()}, where the latter executes a given lambda expression\footnote{C++ lambda expressions on cppreference: \url{https://en.cppreference.com/w/cpp/language/lambda}} for each element of the array; the lambda is executed by the same device whose memory space contains the data.
@@ -49,7 +49,7 @@ While its parent class possesses functionalities largely centered around memory 
 \paragraph{Dense Matrix} The data structure implementing a dense matrix, i.e., a matrix storing all its values (zeros and nonzeros inclusive), is the \code{TNL::Matrices::DenseMatrix} class \cite{ixA8ZYptYohwlgwt}.
 The class type is declared using the following template parameters:
 
-\begin{itemize}
+\begin{tight_itemize}
 	\item \code{Real} - The type of the matrix's elements, e.g., \code{double}.
 	\item \code{Device} - The device where the matrix is allocated.
 It can be either on the CPU or on the GPU denoted using \code{TNL::Devices::Host} or \code{TNL::Devices::Cuda}, respectively.
@@ -57,7 +57,7 @@ It can be either on the CPU or on the GPU denoted using \code{TNL::Devices::Host
 	\item \code{Organization} - The ordering of matrix elements in the matrix's data vector.
 It can be either row-major or column-major order, denoted by \code{RowMajorOrder} or \code{ColumnMajorOrder}, respectively, found in the \code{TNL::Algorithms::Segments::ElementsOrganization} namespace.
 	\item \code{RealAllocator} - The allocator for the matrix's elements.
-\end{itemize}
+\end{tight_itemize}
 
 Analogous to \code{Vector}, \code{DenseMatrix} contains a variety of functionalities ranging from different constructors and data accessors to matrix operations and per-element methods.
 
@@ -94,13 +94,13 @@ For this function, the \code{reduction} operation can be, e.g., \code{TNL::MaxWi
 Moreover, both reduction functions provide customization through additional parameters.
 For example, the \code{reduceWithArgument( begin, end, fetch, reduction, identity )} function takes the following parameters:
 
-\begin{itemize}
+\begin{tight_itemize}
 	\item \code{begin} - the index where the reduction begins;
 	\item \code{end} - the index before which the reduction ends;
 	\item \code{fetch} - the lambda function to fetch the input data;
 	\item \code{reduction} - the lambda function to perform the reduction operation; and
 	\item \code{identity} - the identity element.
-\end{itemize}
+\end{tight_itemize}
 
 
 
@@ -128,10 +128,10 @@ In other words, unlike CM, the main diagonal consisting of ones is found in $\ma
 The function is data-agnostic, i.e., both single and double precision can be used.
 For completeness, note that the function's name follows cuSOLVER's naming conventions \code{cusolverDn<t><operation>} \cite{5D33zKi5iStCty0r}, where:
 
-\begin{itemize}
+\begin{tight_itemize}
 	\item \code{t} represents the data type, for example, \code{S}, \code{D}, \code{C}, \code{Z}, or \code{X}, i.e., \code{float}, \code{double}, \code{cuComplex}, \code{cuDoubleComplex}, or the generic type, respectively; and
 	\item \code{operation} represents the factorization operation, for example, \code{potrf} (Cholesky factorization), \code{getrf} (LU with partial pivoting), \code{geqrf} (QR factorization), or \code{sytrf} (Bunch-Kaufman factorization).
-\end{itemize}
+\end{tight_itemize}
 
 While the \code{cusolverDnXgetrf()} function takes many parameters, only a select few will be shown in Listing~\ref{Listing:implementation->libraries-used->CUDA-libraries->cuSOLVER->cusolverDnXgetrf-parameters}.
 
@@ -216,10 +216,10 @@ The \code{cublasDiagType\_t} datatype can be either \code{CUBLAS\_DIAG\_NON\_UNI
 The former represents the case when the main diagonal of the matrix does not consist of ones, whereas the latter represents the case when it does.\\
 For clarity, to solve $\mathbf{LY}=\mathbf{PB}$ using \code{cublas<t>trsm()}, the function must be called with the following parameters:
 
-\begin{itemize}
+\begin{tight_itemize}
 	\item \code{CUBLAS\_FILL\_MODE\_LOWER} and \code{CUBLAS\_DIAG\_UNIT} when $\mathbf{L}$ is a \textit{unit} lower-triangular matrix; and
 	\item \code{CUBLAS\_FILL\_MODE\_LOWER} and \code{CUBLAS\_DIAG\_NON\_UNIT} when $\mathbf{L}$ is a lower-triangular matrix.
-\end{itemize}
+\end{tight_itemize}
 
 The parameters are set similarly for $\mathbf{U}$ when solving $\mathbf{UX}=\mathbf{Y}$, with the exception of using \code{CUBLAS\_FILL\_MODE\_UPPER} instead of \code{CUBLAS\_FILL\_MODE\_LOWER}.
 
@@ -254,11 +254,11 @@ However, the project is available on request or as an attachment to this thesis.
 
 The project is made up of the following parts:
 
-\begin{itemize}
+\begin{tight_itemize}
 	\item Unit tests - The tests are written using \textit{GoogleTest}, which is Google's C++ testing framework\footnote{GoogleTest GitHub repository URL: \url{https://github.com/google/googletest}}.
 	\item Implementations of algorithms - The project is primarily written in C++, except for CUDA-extended C++ which is used in the implementations of algorithms.
 	\item Benchmarks - The benchmarks are written in C++, with additional components such as benchmark-running scripts written in Bash\footnote{Bash website URL: \url{https://www.gnu.org/software/bash}}, and benchmark-result-visualizing scripts written in Python\footnote{Python website URL: https://www.python.org}.
-\end{itemize}
+\end{tight_itemize}
 
 As mentioned in \citetitle{Cejka2022} \cite{Cejka2022}, the Decomposition project was not developed as part of TNL.
 However, TNL's project structure and building processes were adopted and tailored to fit the requirements of this project.
@@ -285,7 +285,7 @@ Specifically, the unit tests needed to fulfill the following requirements:
 
 To satisfy the requirements posed above, the following concepts were used and implemented:
 
-\begin{itemize}
+\begin{tight_itemize}
 	\item Sample problems - A set of problems that can be used in any test.
 For example, matrix \code{A} along with its correct decomposition, or a system of linear equations in matrix form along with its solution.
 To satisfy the "lightweight" requirement, the dimensions of matrices in the problems were limited to a range from 2-by-2 to 38-by-38.
@@ -295,7 +295,7 @@ These template parameters are used to pass, for example, the type of matrix with
 Thus, certain tests have to expect results within a range.
 	\item Point-of-failure testing - Using GoogleTest, it is possible to thoroughly verify the points of failure in each implementation.
 This includes validating the type of exception thrown and examining the contents of the exception's message.
-\end{itemize}
+\end{tight_itemize}
 
 Furthermore, inspired by TNL and to ensure that the unit tests covered the desired functionalities, code coverage was incorporated into the project using a tool called \citetitle{Cox2023} \cite{Cox2023}.
 As of 9th June 2023, the line coverage was 90.6\% and the function coverage was 76.6\%.
@@ -551,10 +551,10 @@ This is achieved by dividing the matrix into square \textit{sections} of equal s
 The sections are then processed in a specific order.
 Adhering to:
 
-\begin{itemize}
+\begin{tight_itemize}
 	\item the dependency of elements depicted in Figure~\ref{Figure:theory->ICMPP->LUP->CMPP->sum-in-element-computation-dependance} of Section~\ref{Subsection:theory->ICMPP->LUP->CMPP}, and
 	\item the order of computation described in the ICMPP algorithm introduced in Section~\ref{Subsection:theory->ICMPP->LUP->ICMPP},
-\end{itemize}
+\end{tight_itemize}
 
 the sections of matrix \code{LU} are processed in the order shown in Figure~\ref{Figure:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->processing-by-sections}.
 
@@ -1210,9 +1210,9 @@ In particular, the performance was compared when solving the "Poisson equation o
 Furthermore, for the results of the performance comparison to be statistically significant, a benchmarking system was implemented.
 The system comprises:
 
-\begin{itemize}
+\begin{tight_itemize}
 	\item \code{prepare\_poisson\_on\_cube\_benchmark} - The Bash script that compiles BDDCML with different combinations of decomposers and solvers.
 	\item \code{run\_poisson\_on\_cube\_benchmark} - The Bash script that runs the \code{poisson\_on\_cube} executable in loops and sorts logs into directories.
 	\item \code{poisson\_on\_cube\_logs\_to\_csv.py} - The Python script that parses the logs for results, for example, total time taken by a procedure, total time of execution, the accuracy of the solution, etc.
 These results, obtained across several loops, are then averaged and saved into a CSV file and plotted using MATLAB.
-\end{itemize}
+\end{tight_itemize}

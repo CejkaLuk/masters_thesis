@@ -291,20 +291,19 @@ If it does require pivoting, then the next steps involve processing the lower se
 The second case assumes the opposite, i.e., that the diagonal element is not the bottom-right-most element of the diagonal section.
 In this case, either two or three iterations are performed:
 
-\begin{itemize}
-	\itemsep=0em % Decrease spaces between bullet points - it looks bad in the PDF
+\begin{tight_itemize}
 	\item \textit{Two} iterations are performed if the diagonal element does not require pivoting.
 In the first iteration, the diagonal element and the elements below it are computed.
 In the second iteration, the elements to the right of the diagonal element are computed.
 	\item \textit{Three} iterations are performed if the diagonal element requires pivoting.
 In such a case, the following occurs:
-	\begin{enumerate}
+	\begin{tight_enumerate}
 		\item In the first iteration, the diagonal element and the values below it are computed.
 		\item Then, the iteration is performed again to assure that the element still requires pivoting and that the values below it are processed, i.e., they can be used for pivoting.
 		\item The lower sections are then processed and the diagonal element is pivoted.
 		\item In the third iteration, the elements to the right of the diagonal element are computed.
-	\end{enumerate}
-\end{itemize}
+	\end{tight_enumerate}
+\end{tight_itemize}
 
 Additionally, if the diagonal section is the top-left section of the matrix, then the estimate is adjusted to $2s + p - 1$ since the first column of \code{LU} is the same as \code{A}.
 Therefore, in the first iteration, the values in the first column are already processed, which leads to the values to the right of the first diagonal element being finalized in the first iteration.
@@ -323,8 +322,7 @@ As shown in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-
 Continuing the context of the \textit{Cejka} dense matrices, the number of iterations required to process a \textit{lower section} is estimated to equal $s + p$, where $s$ represents the size of one dimension of a section and $p$ denotes the number of elements pivoted in the diagonal section above the lower section.
 Specifically, the number of iterations corresponds to the number of columns the section encompasses and the number of elements pivoted in the diagonal section above as described below:
 
-\begin{itemize}
-	\itemsep=0em % Decrease spaces between bullet points - it looks bad in the PDF
+\begin{tight_itemize}
 	\item \textit{Number of columns} - This is due to the chain of dependencies of each element.
 In other words, for a value in the lower section to be computed, it depends on the values to its left and the values in its column above the main diagonal.
 Since the latter are processed before the computation of the lower section beings, only the values to the left of the element remain to be processed.
@@ -334,7 +332,7 @@ In the second iteration, the values in the second column are processed as they d
 In summary, with each iteration, one column is processed.
 	\item \textit{Number of elements pivoted} - The addition of this value stems from the fact that before an element of a diagonal section is pivoted, the sections below the diagonal section are processed until, and including, the column containing the bad element.
 Thus, for every pivoted element, an extra iteration is performed to verify that the values up to and including the column are not changing, i.e., they are processed.
-\end{itemize}
+\end{tight_itemize}
 
 Note that even if the lower section is adjusted to fit the boundaries of the matrix, the number of iterations remains the same as the number of columns is not changed.
 For example, when considering the \textit{Cejka558} matrix, the sections below the top-left diagonal section were processed in 270 iterations, which aligns with the prediction mentioned earlier: $256 + 14$.
@@ -401,13 +399,15 @@ To provide context for the iterative metrics, the nonzero element pattern of \co
 		\centering
 		\includegraphics[width=\textwidth, keepaspectratio, clip]{images/ch03/input-matrices/decomposition-benchmarks/c-22_icmxpp_metrics.pdf}
 		\subcaption{Iterative and pivoting metrics of ICM\_\textit{x}PP collected during the decomposition of the \textit{c-22} matrix.
-Each square represents a 384-by-384 section of the matrix.
-The color in each square represents the number of iterations performed on that section.
-The left and top axes show the section ID in each dimension, while the bottom axis shows the number of pivots performed in a diagonal section.
-However, since no elements were pivoted, the values are all zero.}
+			Each square represents a 384-by-384 section of the matrix.
+		}
 		\label{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->matrix->c-22->icmxpp-metrics}
 	\end{subfigure}
-	\caption{Nonzero element pattern of the \textit{c-22} matrix along with the iterative and pivoting metrics of ICM\_\textit{x}PP.}
+	\caption{Nonzero element pattern of the \textit{c-22} matrix along with the iterative and pivoting metrics of ICM\_\textit{x}PP.
+		In the metrics plot, the color in each square represents the number of iterations performed on that section.
+		The left and top axes show the section ID in each dimension, while the bottom axis shows the number of pivots performed in a diagonal section.
+		However, since no elements were pivoted, the values are all zero.
+	}
 	\label{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->matrix->c-22}
 \end{figure}
 
@@ -584,12 +584,11 @@ The differences in the performance of the variants of PCM\_\textit{x}PP can be a
 This claim is based on the observation that the execution time of PCM\_32PP and PCM\_16PP consistently appears to be worse than that of PCM\_8PP for larger sparse matrices.
 The GPU used for the benchmarks, Nvidia A100, has the following limitations per SM \cite{rfiOEXAGDlcAOxF3}:
 
-\begin{enumerate}
-	\itemsep=0em % Decrease spaces between bullet points - it looks bad in the PDF
+\begin{tight_enumerate}
 	\item maximum threads per SM: 2048,
 	\item maximum warps per SM: 64, and
 	\item maximum thread blocks per SM: 32.
-\end{enumerate}
+\end{tight_enumerate}
 
 Therefore, the PCM\_32PP decomposer, which uses blocks of 1024 threads, can only schedule two of its blocks per SM before the threads-per-SM limit is reached.
 Moreover, a block of threads cannot be released from an SM until all of its warps have completed their work \cite{Cheng2014}.
@@ -1321,15 +1320,14 @@ This section presents benchmark results obtained by solving systems of linear eq
 The benchmark for solvers consists of each matrix being used as a coefficient matrix \code{A} in \code{AX = B}.
 Specifically, the benchmark comprises the following steps:
 
-\begin{enumerate}
-	\itemsep=0em % Decrease spaces between bullet points - it looks bad in the PDF
+\begin{tight_enumerate}
 	\item The matrix is decomposed either by CMPP or GEM depending on which of the two matrices, \code{L} or \code{U}, is expected by the solver to contain a unit diagonal.
 If the unit diagonal is expected in \code{U}, then CMPP is used, whereas if it is expected in \code{L}, then GEM is used.
 	\item To mitigate possible inaccuracies caused by the decomposer, matrices \code{L} and \code{U} are multiplied to create \code{A\_res} which is later used instead of \code{A} for the verification of results.
 	\item The matrix of 10 right-hand sides, \code{B}, is filled with ones.
 	\item The solver receives the decomposed matrices, \code{L} and \code{U}, the pivoting vector \code{piv}, the matrix of unknowns, $\mathbf{X}$, and the matrix of right-hand sides \code{B}.
 	\item The system is solved 10 times by the solver, and the collected metrics are subsequently averaged and logged.
-\end{enumerate}
+\end{tight_enumerate}
 
 The solvers compared in this benchmark are listed in Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->table-of-solvers}.
 
@@ -1765,37 +1763,34 @@ This decision was made based on two reasons: firstly, the solvers implemented by
 
 For each decomposer, the benchmark involved the following steps:
 
-\begin{enumerate}
-	\itemsep=0em % Decrease spaces between bullet points - it looks bad in the PDF
+\begin{tight_enumerate}
 	\item Perform a warm-up by running the \code{poisson\_on\_cube} executable with undemanding parameters.
 	\item For each value in the set $\left\{\, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50\,\right\}$, run the \code{poisson\_on\_cube} executable 10 times, providing the value as the first parameter (\code{poisson\_on\_cube value arg2 arg3}).
 Note that the decomposer is called multiple times within each run.
 	\item Collect and save the logs generated by each run, as they contain the metrics relevant to this benchmark.
-\end{enumerate}
+\end{tight_enumerate}
 
 The logs are then parsed to obtain the metrics which are subsequently averaged using the scripts mentioned in Section~\ref{Section:implementation->BDDCML}.
 While the \code{poisson\_on\_cube} executable accepts three parameters, only the value of the first parameter varied throughout the benchmark.
 The parameters of the executable are as follows:
 
-\begin{enumerate}
-	\itemsep=0em % Decrease spaces between bullet points - it looks bad in the PDF
+\begin{tight_enumerate}
 	\item \code{num\_el\_per\_sub\_edge} - The number of elements per sub-edge of the cube.
 In terms of BDDCML, it is denoted by $H/h$, where $H$ is the size of an edge and $h$ represents the size of the edge of an element \cite{6ZBqOb318XgFqC5W}. $H/h$ is also referred to as the \textit{subdomain size} \cite{6ZBqOb318XgFqC5W}.
 	\item \code{num\_sub\_per\_cube\_edge} - The number of sub-edges per cube edge.
 For this benchmark, the value was set to 4.
 	\item \code{nlevels} - The number of levels in the BDDC method.
 For this benchmark, the value was set to 2.
-\end{enumerate}
+\end{tight_enumerate}
 
 In brief, the "Poisson equation on a cube" problem in BDDCML is divided into three stages that are timed separately\label{Text:comparing-decomposers-and-solvers->bddcml-benchmark->poisson-on-cube-stages}:
 
-\begin{enumerate}
-	\itemsep=0em % Decrease spaces between bullet points - it looks bad in the PDF
+\begin{tight_enumerate}
 	\item \textit{loading} - This stage involves loading the data for the problem.
 	\item \textit{pc\_setup} - The \textit{Preconditioner Setup} stage includes the utilization of a decomposer as a preconditioner along with a solver.
 	\item \textit{Krylov method} - This stage involves employing matrix-vector multiplication alongside a solver to iteratively improve the solution.
 The number of iterations required for the Krylov method to reach the desired relative residual serves as an indicator of accuracy for the decomposer utilized in the \textit{pc\_setup} stage, as the matrices used in this stage are provided by the preconditioner.
-\end{enumerate}
+\end{tight_enumerate}
 
 In this section, only the last two stages will be mentioned as they utilize the procedures (decomposers and solvers) provided by the Decomposition project.
 Similar to Section~\ref{Section:comparing-decomposers-and-solvers->decomposition-project-benchmarks}, only the variants of decomposers and solvers that supported partial pivoting were employed.
@@ -2045,9 +2040,9 @@ Incidentally, the nonzero element pattern of both matrices was similar.
 	\label{Figure:comparing-decomposers-and-solvers->bddcml-benchmark->benchmark-results->speedup-comparison-of-decomposers-in-pc-setup-stage->speedup-comparison->ICM_32PP->LU-and-metrics-examples}
 \end{figure}
 
-The iterative and pivoting metrics of ICM\_32PP presented in Figures~\ref{Figure:comparing-decomposers-and-solvers->bddcml-benchmark->benchmark-results->speedup-comparison-of-decomposers-in-pc-setup-stage->speedup-comparison->ICM_32PP->25-4-2->metrics} and \ref{Figure:comparing-decomposers-and-solvers->bddcml-benchmark->benchmark-results->speedup-comparison-of-decomposers-in-pc-setup-stage->speedup-comparison->ICM_32PP->25-4-2->metrics} indicate that the performance can be attributed to three factors:
+The iterative and pivoting metrics of ICM\_32PP presented in Figures~\ref{Figure:comparing-decomposers-and-solvers->bddcml-benchmark->benchmark-results->speedup-comparison-of-decomposers-in-pc-setup-stage->speedup-comparison->ICM_32PP->25-4-2->metrics} and \ref{Figure:comparing-decomposers-and-solvers->bddcml-benchmark->benchmark-results->speedup-comparison-of-decomposers-in-pc-setup-stage->speedup-comparison->ICM_32PP->50-4-2->metrics} indicate that the performance can be attributed to three factors:
 
-\begin{enumerate}
+\begin{tight_enumerate}
 	\item Firstly, the initial estimate of \code{LU} (the input matrix) was suitable, as indicated by the lower number of iterations for sections with column and row IDs equal to 0.
 However, the low number of iterations can also be attributed to the patches of zeros, as mentioned in the following point.
 	\item Secondly, the matrices contained patches of zeros, which are known to reduce the number of iterations required to process sections.
@@ -2055,7 +2050,7 @@ For example, in Figure~\ref{Figure:comparing-decomposers-and-solvers->bddcml-ben
 While the patches are not visible in Figure~\ref{Figure:comparing-decomposers-and-solvers->bddcml-benchmark->benchmark-results->speedup-comparison-of-decomposers-in-pc-setup-stage->speedup-comparison->ICM_32PP->50-4-2->LU} due to the matrix dimensions, they are visible in Figure~\ref{Figure:comparing-decomposers-and-solvers->bddcml-benchmark->benchmark-results->speedup-comparison-of-decomposers-in-pc-setup-stage->speedup-comparison->ICM_32PP->25-4-2->LU}, where the nonzero element pattern is similar.
 	\item Thirdly, despite the matrices being dense, the individual sections did not require many iterations to be processed.
 For example, approximately 86\% of the elements in the input matrix for $H/h = 25$ were nonzero, while for $H/h = 50$, the percentage increased to 92\%.
-\end{enumerate}
+\end{tight_enumerate}
 
 The summary of the decomposition benchmarks in Section~\ref{Subsection:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->summary-of-results-of-decomposition-benchmarks} suggested that using a higher processing tolerance for ICM\_\textit{x}PP may be suitable when the decomposer is employed as a preconditioner that is not expected to be highly accurate.
 As mentioned earlier in Section~\ref{Text:comparing-decomposers-and-solvers->bddcml-benchmark->poisson-on-cube-stages}, the \textit{Krylov method} stage uses the \code{LU} matrices produced by the decomposer to iteratively improve the solution.

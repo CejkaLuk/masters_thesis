@@ -1,0 +1,1113 @@
+========== [ START ] Decomposers Benchmark
+
+===== Parameters
+BENCHMARK TYPE               = decomposers
+BENCHMARK TYPE UPPER CASE    = Decomposers
+COMPUTE DIRECTORY            = /data/temporary/cejkaluk/2023-06-18_08-50-32
+=====
+
+---> Removing compiled benchmark files in /data/temporary/cejkaluk/2023-06-18_08-50-32/.local/bin and in build, and headers in /data/temporary/cejkaluk/2023-06-18_08-50-32/.local/include...
+---> Compiling Decomposers Benchmark...
+Configuring Decomposition for Release build ...
+-- The C compiler identification is GNU 12.2.0
+-- The CXX compiler identification is GNU 12.2.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /mnt/appl/software/GCCcore/12.2.0/bin/gcc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /mnt/appl/software/GCCcore/12.2.0/bin/g++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Looking for C++ include filesystem
+-- Looking for C++ include filesystem - found
+-- Performing Test CXX_FILESYSTEM_NO_LINK_NEEDED
+-- Performing Test CXX_FILESYSTEM_NO_LINK_NEEDED - Success
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+-- Check if compiler accepts -pthread
+-- Check if compiler accepts -pthread - yes
+-- Found Threads: TRUE  
+-- Looking for a CUDA compiler
+-- Looking for a CUDA compiler - /mnt/appl/software/CUDA/12.0.0/bin/nvcc
+-- Looking for a CUDA host compiler - /mnt/appl/software/GCCcore/12.2.0/bin/g++
+-- Found CUDAToolkit: /mnt/appl/software/CUDA/12.0.0/include (found version "12.0.76") 
+-- The CUDA compiler identification is NVIDIA 12.0.76
+-- Detecting CUDA compiler ABI info
+-- Detecting CUDA compiler ABI info - done
+-- Check for working CUDA compiler: /mnt/appl/software/CUDA/12.0.0/bin/nvcc - skipped
+-- Detecting CUDA compile features
+-- Detecting CUDA compile features - done
+-- Build options:
+   DECOMP_USE_CUDA = yes
+   CMAKE_CUDA_ARCHITECTURES = native
+   DECOMP_USE_SYSTEM_GTEST= no
+   DECOMP_BUILD_BENCHMARKS = yes
+   DECOMP_BUILD_TESTS = no
+   DECOMPO_BUILD_COVERAGE = no
+   DECOMP_OFFLINE_BUILD = no
+-- Compiler options:
+   CMAKE_C_FLAGS = 
+   CMAKE_C_FLAGS_DEBUG = -g
+   CMAKE_C_FLAGS_RELEASE = -O3 -DNDEBUG
+   CMAKE_CXX_FLAGS =  -Wall -Werror=vla -Wextra-semi -Wno-unknown-pragmas -Wno-maybe-uninitialized
+   CMAKE_CXX_FLAGS_DEBUG = -g
+   CMAKE_CXX_FLAGS_RELEASE = -O3 -DNDEBUG
+   CMAKE_CUDA_FLAGS =  -Wall
+   CMAKE_CUDA_FLAGS_DEBUG = -g
+   CMAKE_CUDA_FLAGS_RELEASE = -O3 -DNDEBUG
+   CMAKE_SHARED_LIBRARY_LINK_C_FLAGS = -rdynamic
+   CMAKE_SHARED_LIBRARY_LINK_C_FLAGS_DEBUG = 
+   CMAKE_SHARED_LIBRARY_LINK_C_FLAGS_RELEASE = 
+   CMAKE_EXE_LINKER_FLAGS = 
+   CMAKE_EXE_LINKER_FLAGS_DEBUG = 
+   CMAKE_EXE_LINKER_FLAGS_RELEASE = 
+   CMAKE_SHARED_LINKER_FLAGS = 
+   CMAKE_SHARED_LINKER_FLAGS_DEBUG = 
+   CMAKE_SHARED_LINKER_FLAGS_RELEASE = 
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /tmp/cejkaluk/2023-06-18_08-50-32/decomposition/build/Release
+Building Decomposition in Release configuration using 64 parallel jobs ...
+[ 16%] Building CUDA object src/Benchmarks/Solvers/CMakeFiles/solvers-benchmark.dir/solvers-benchmark.cu.o
+[ 33%] Building CUDA object src/Benchmarks/Decomposers/CMakeFiles/decomposers-benchmark.dir/decomposers-benchmark.cu.o
+[ 50%] Linking CUDA device code CMakeFiles/decomposers-benchmark.dir/cmake_device_link.o
+[ 66%] Linking CUDA executable ../../../bin/decomposers-benchmark
+[ 66%] Built target decomposers-benchmark
+[ 83%] Linking CUDA device code CMakeFiles/solvers-benchmark.dir/cmake_device_link.o
+[100%] Linking CUDA executable ../../../bin/solvers-benchmark
+[100%] Built target solvers-benchmark
+-- Install configuration: "Release"
+-- Installing: /tmp/cejkaluk/2023-06-18_08-50-32/.local/lib64/cmake/DECOMP/DECOMPTargets.cmake
+-- Installing: /tmp/cejkaluk/2023-06-18_08-50-32/.local/lib64/cmake/DECOMP/DECOMPConfig.cmake
+-- Installing: /tmp/cejkaluk/2023-06-18_08-50-32/.local/lib64/cmake/DECOMP/Modules/FindFilesystem.cmake
+-- Removing existing include directory: /tmp/cejkaluk/2023-06-18_08-50-32/.local/include/Decomposition/
+-- Installing include directory: /tmp/cejkaluk/2023-06-18_08-50-32/.local/include/Decomposition/
+-- Installing: /tmp/cejkaluk/2023-06-18_08-50-32/.local/bin/decomposers-benchmark
+-- Installing: /tmp/cejkaluk/2023-06-18_08-50-32/.local/bin/solvers-benchmark
+
+WARNING !!!
+
+Your system does not see Decomposition which was installed right now.
+You need to add it to your environment variables $PATH and $LD_LIBRARY_PATH.
+Add the following to your shell configuration file (e.g. .bashrc):
+
+export PATH="$PATH:/data/temporary/cejkaluk/2023-06-18_08-50-32/.local/bin"
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/data/temporary/cejkaluk/2023-06-18_08-50-32/.local/lib"
+
+Total Installation time (incl. unit tests - if run): 0 min 49 sec 250 ms
+
+
+===== [ START ] Benchmark (precision = double)
+
+Ne čen 18 08:52:23 CEST 2023
+-> Running benchmark for: ./mtx-matrices/685_bus/685_bus.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                     685_bus.mtx        double           685           685          3249                       CM PP_all           CPU  8.620665e-02           nan           nan     1           N/A        0.000000e+00            5.684342e-14
+                     685_bus.mtx        double           685           685          3249                    PCM_8 PP_all           GPU  5.979448e-02           nan           nan     1  1.441716e+00        1.818989e-12            1.818989e-12
+
+
+Ne čen 18 08:52:24 CEST 2023
+-> Running benchmark for: ./mtx-matrices/b2_ss/b2_ss.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                       b2_ss.mtx        double          1089          1089          3895                       CM PP_all           CPU  3.534191e-01           nan           nan     1           N/A        0.000000e+00            1.818989e-12
+                       b2_ss.mtx        double          1089          1089          3895                    PCM_8 PP_all           GPU  1.468853e-01           nan           nan     1  2.406089e+00        1.470420e+06            1.818989e-12
+
+
+Ne čen 18 08:52:39 CEST 2023
+-> Running benchmark for: ./mtx-matrices/bayer06/bayer06.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                     bayer06.mtx        double          3008          3008         20715                       CM PP_all           CPU  1.540812e+01           nan           nan     1           N/A        0.000000e+00            5.960464e-08
+                     bayer06.mtx        double          3008          3008         20715                    PCM_8 PP_all           GPU  1.261400e+00           nan           nan     1  1.221509e+01        3.155946e+07            1.192093e-07
+
+
+Ne čen 18 08:58:17 CEST 2023
+-> Running benchmark for: ./mtx-matrices/bayer09/bayer09.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                     bayer09.mtx        double          3083          3083         11767                       CM PP_all           CPU  1.003304e+01           nan           nan     1           N/A        0.000000e+00            1.192093e-07
+                     bayer09.mtx        double          3083          3083         11767                    PCM_8 PP_all           GPU  1.380183e+00           nan           nan     1  7.269358e+00        9.094947e-12            1.192093e-07
+
+
+Ne čen 18 09:04:05 CEST 2023
+-> Running benchmark for: ./mtx-matrices/bcsstk01/bcsstk01.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    bcsstk01.mtx        double            48            48           400                       CM PP_all           CPU  2.306300e-05           nan           nan     1           N/A        0.000000e+00            1.192093e-07
+                    bcsstk01.mtx        double            48            48           400                    PCM_8 PP_all           GPU  2.215100e-03           nan           nan     1  1.041172e-02        1.877546e-06            1.585577e-07
+
+
+Ne čen 18 09:04:06 CEST 2023
+-> Running benchmark for: ./mtx-matrices/bcsstk02/bcsstk02.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    bcsstk02.mtx        double            66            66          4356                       CM PP_all           CPU  5.382000e-05           nan           nan     1           N/A        0.000000e+00            9.094947e-13
+                    bcsstk02.mtx        double            66            66          4356                    PCM_8 PP_all           GPU  2.368204e-03           nan           nan     1  2.272608e-02        4.547474e-12            1.818989e-12
+
+
+Ne čen 18 09:04:07 CEST 2023
+-> Running benchmark for: ./mtx-matrices/bcsstk03/bcsstk03.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    bcsstk03.mtx        double           112           112           640                       CM PP_all           CPU  2.674970e-04           nan           nan     1           N/A        0.000000e+00            7.629395e-06
+                    bcsstk03.mtx        double           112           112           640                    PCM_8 PP_all           GPU  4.919139e-03           nan           nan     1  5.437883e-02        2.241135e-05            7.629395e-06
+
+
+Ne čen 18 09:04:07 CEST 2023
+-> Running benchmark for: ./mtx-matrices/bp_0/bp_0.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                        bp_0.mtx        double           822           822          3276                       CM PP_all           CPU  1.508355e-01           nan           nan     1           N/A        0.000000e+00            1.776357e-15
+                        bp_0.mtx        double           822           822          3276                    PCM_8 PP_all           GPU  9.083796e-02           nan           nan     1  1.660490e+00        0.000000e+00            1.776357e-15
+
+
+Ne čen 18 09:04:15 CEST 2023
+-> Running benchmark for: ./mtx-matrices/bp_1400/bp_1400.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                     bp_1400.mtx        double           822           822          4790                       CM PP_all           CPU  1.460299e-01           nan           nan     1           N/A        0.000000e+00            1.421085e-14
+                     bp_1400.mtx        double           822           822          4790                    PCM_8 PP_all           GPU  9.191635e-02           nan           nan     1  1.588726e+00        6.278564e+01            2.842171e-14
+
+
+Ne čen 18 09:04:23 CEST 2023
+-> Running benchmark for: ./mtx-matrices/c-22/c-22.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                        c-22.mtx        double          3792          3792         28870                       CM PP_all           CPU  1.733469e+01           nan           nan     1           N/A        0.000000e+00            1.776357e-15
+                        c-22.mtx        double          3792          3792         28870                    PCM_8 PP_all           GPU  2.258245e+00           nan           nan     1  7.676177e+00        4.547474e-10            7.105427e-15
+
+
+Ne čen 18 09:11:57 CEST 2023
+-> Running benchmark for: ./mtx-matrices/circuit204/circuit204.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                  circuit204.mtx        double          1020          1020          5883                       CM PP_all           CPU  2.972124e-01           nan           nan     1           N/A        0.000000e+00            2.220446e-16
+                  circuit204.mtx        double          1020          1020          5883                    PCM_8 PP_all           GPU  1.255926e-01           nan           nan     1  2.366480e+00        3.279333e+03            2.393918e-16
+
+
+Ne čen 18 09:12:05 CEST 2023
+-> Running benchmark for: ./mtx-matrices/crout_python/crout_python.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                crout_python.mtx        double             4             4            15                       CM PP_all           CPU  8.710000e-07           nan           nan     1           N/A        0.000000e+00            0.000000e+00
+                crout_python.mtx        double             4             4            15                    PCM_8 PP_all           GPU  1.527050e-04           nan           nan     1  5.703808e-03        0.000000e+00            0.000000e+00
+
+
+Ne čen 18 09:12:06 CEST 2023
+-> Running benchmark for: ./mtx-matrices/exdata_1/exdata_1.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    exdata_1.mtx        double          6001          6001       2269500                       CM PP_all           CPU  9.827829e+01           nan           nan     1           N/A        0.000000e+00            5.960464e-08
+                    exdata_1.mtx        double          6001          6001       2269500                    PCM_8 PP_all           GPU  6.445448e+00           nan           nan     1  1.524771e+01        3.781170e-06            4.656613e-08
+
+
+Ne čen 18 09:35:19 CEST 2023
+-> Running benchmark for: ./mtx-matrices/fp/fp.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                          fp.mtx        double          7548          7548        834222                       CM PP_all           CPU  1.496336e+02           nan           nan     1           N/A        0.000000e+00            1.181277e-13
+                          fp.mtx        double          7548          7548        834222                    PCM_8 PP_all           GPU  1.011739e+01           nan           nan     1  1.478974e+01        3.174137e-10            4.547474e-13
+
+
+Ne čen 18 10:11:27 CEST 2023
+-> Running benchmark for: ./mtx-matrices/freeFlyingRobot_9/freeFlyingRobot_9.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+           freeFlyingRobot_9.mtx        double          4778          4778         39964                       CM PP_all           CPU  3.995929e+01           nan           nan     1           N/A        0.000000e+00            3.365130e-10
+           freeFlyingRobot_9.mtx        double          4778          4778         39964                    PCM_8 PP_all           GPU  3.826289e+00           nan           nan     1  1.044335e+01        5.206857e-11            3.365130e-10
+
+
+Ne čen 18 10:26:45 CEST 2023
+-> Running benchmark for: ./mtx-matrices/garon1/garon1.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                      garon1.mtx        double          3175          3175         84723                       CM PP_all           CPU  1.142270e+01           nan           nan     1           N/A        0.000000e+00            1.776357e-15
+                      garon1.mtx        double          3175          3175         84723                    PCM_8 PP_all           GPU  1.495924e+00           nan           nan     1  7.635884e+00        3.552714e-15            3.552714e-15
+
+
+Ne čen 18 10:27:55 CEST 2023
+-> Running benchmark for: ./mtx-matrices/heart1/heart1.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                      heart1.mtx        double          3557          3557       1385317                       CM PP_all           CPU  1.752241e+01           nan           nan     1           N/A        0.000000e+00            5.962875e-11
+                      heart1.mtx        double          3557          3557       1385317                    PCM_8 PP_all           GPU  2.013027e+00           nan           nan     1  8.704511e+00        6.674090e-07            2.328306e-10
+
+
+Ne čen 18 10:35:06 CEST 2023
+-> Running benchmark for: ./mtx-matrices/lns_131/lns_131.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                     lns_131.mtx        double           131           131           536                       CM PP_all           CPU  4.541040e-04           nan           nan     1           N/A        0.000000e+00            9.536743e-07
+                     lns_131.mtx        double           131           131           536                    PCM_8 PP_all           GPU  5.473401e-03           nan           nan     1  8.296560e-02        1.025487e-10            9.536743e-07
+
+
+Ne čen 18 10:35:07 CEST 2023
+-> Running benchmark for: ./mtx-matrices/msc10848/msc10848.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    msc10848.mtx        double         10848         10848       1229776                       CM PP_all           CPU  6.185127e+02           nan           nan     1           N/A        0.000000e+00            2.098083e-05
+                    msc10848.mtx        double         10848         10848       1229776                    PCM_8 PP_all           GPU  2.077994e+01           nan           nan     1  2.976490e+01        3.238954e-05            3.051758e-05
+
+
+Ne čen 18 11:43:11 CEST 2023
+-> Running benchmark for: ./mtx-matrices/nd3k/nd3k.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                        nd3k.mtx        double          9000          9000       3279690                       CM PP_all           CPU  2.663230e+02           nan           nan     1           N/A        0.000000e+00            1.421085e-14
+                        nd3k.mtx        double          9000          9000       3279690                    PCM_8 PP_all           GPU  1.402023e+01           nan           nan     1  1.899562e+01        1.493508e-10            1.857542e-14
+
+
+Ne čen 18 13:02:15 CEST 2023
+-> Running benchmark for: ./mtx-matrices/orani678/orani678.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    orani678.mtx        double          2529          2529         90158                       CM PP_all           CPU  4.571620e+00           nan           nan     1           N/A        0.000000e+00            4.440892e-16
+                    orani678.mtx        double          2529          2529         90158                    PCM_8 PP_all           GPU  6.816132e-01           nan           nan     1  6.707059e+00        7.105427e-15            3.330669e-16
+
+
+Ne čen 18 13:05:29 CEST 2023
+-> Running benchmark for: ./mtx-matrices/sinc15/sinc15.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                      sinc15.mtx        double         11532         11532        551184                       CM PP_all           CPU  5.810052e+02           nan           nan     1           N/A        0.000000e+00            2.235174e-08
+                      sinc15.mtx        double         11532         11532        551184                    PCM_8 PP_all           GPU  2.429132e+01           nan           nan     1  2.391822e+01        8.339705e+04            3.725290e-08
+
+
+Ne čen 18 17:59:39 CEST 2023
+-> Running benchmark for: ./mtx-matrices/sistek/poc-20_2_2.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                  poc-20_2_2.mtx        double          1274          1274       1304296                       CM PP_all           CPU  5.552318e-01           nan           nan     1           N/A        0.000000e+00            4.547474e-13
+                  poc-20_2_2.mtx        double          1274          1274       1304296                    PCM_8 PP_all           GPU  1.487812e-01           nan           nan     1  3.731867e+00        1.164153e-10            3.637979e-12
+
+
+Ne čen 18 17:59:45 CEST 2023
+-> Running benchmark for: ./mtx-matrices/sistek/poc-24_2_2.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                  poc-24_2_2.mtx        double          1814          1814       2749120                       CM PP_all           CPU  1.620872e+00           nan           nan     1           N/A        0.000000e+00            7.275958e-12
+                  poc-24_2_2.mtx        double          1814          1814       2749120                    PCM_8 PP_all           GPU  2.803679e-01           nan           nan     1  5.781233e+00        2.910383e-11            1.818989e-12
+
+
+Ne čen 18 18:00:01 CEST 2023
+-> Running benchmark for: ./mtx-matrices/sistek/poc-28_2_2.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                  poc-28_2_2.mtx        double          2450          2450       5153080                       CM PP_all           CPU  4.165969e+00           nan           nan     1           N/A        0.000000e+00            1.455192e-11
+                  poc-28_2_2.mtx        double          2450          2450       5153080                    PCM_8 PP_all           GPU  5.823209e-01           nan           nan     1  7.154078e+00        6.984919e-10            1.455192e-11
+
+
+Ne čen 18 18:00:38 CEST 2023
+-> Running benchmark for: ./mtx-matrices/sistek/poc-32_2_2.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                  poc-32_2_2.mtx        double          3182          3182       8868688                       CM PP_all           CPU  1.052221e+01           nan           nan     1           N/A        0.000000e+00            2.910383e-11
+                  poc-32_2_2.mtx        double          3182          3182       8868688                    PCM_8 PP_all           GPU  1.455655e+00           nan           nan     1  7.228503e+00        1.862645e-09            2.910383e-11
+
+
+Ne čen 18 18:01:58 CEST 2023
+-> Running benchmark for: ./mtx-matrices/sistek/poc-8_4_2-938719427.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+         poc-8_4_2-938719427.mtx        double           230           230         28960                       CM PP_all           CPU  2.581722e-03           nan           nan     1           N/A        0.000000e+00            3.552714e-15
+         poc-8_4_2-938719427.mtx        double           230           230         28960                    PCM_8 PP_all           GPU  1.239078e-02           nan           nan     1  2.083582e-01        3.637979e-12            1.421085e-14
+
+
+Ne čen 18 18:01:59 CEST 2023
+-> Running benchmark for: ./mtx-matrices/sistek/poc-8_4_2-938719741.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+         poc-8_4_2-938719741.mtx        double           298           298         54816                       CM PP_all           CPU  6.001913e-03           nan           nan     1           N/A        0.000000e+00            2.273737e-13
+         poc-8_4_2-938719741.mtx        double           298           298         54816                    PCM_8 PP_all           GPU  1.631874e-02           nan           nan     1  3.677927e-01        7.275958e-12            2.273737e-13
+
+
+Ne čen 18 18:02:00 CEST 2023
+-> Running benchmark for: ./mtx-matrices/sistek/poc-8_4_2-938719829.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+         poc-8_4_2-938719829.mtx        double           298           298         54816                       CM PP_all           CPU  6.305447e-03           nan           nan     1           N/A        0.000000e+00            2.273737e-13
+         poc-8_4_2-938719829.mtx        double           298           298         54816                    PCM_8 PP_all           GPU  1.674087e-02           nan           nan     1  3.766500e-01        7.275958e-12            2.273737e-13
+
+
+Ne čen 18 18:02:00 CEST 2023
+-> Running benchmark for: ./mtx-matrices/spaceShuttleEntry_3/spaceShuttleEntry_3.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+         spaceShuttleEntry_3.mtx        double          1834          1834         28757                       CM PP_all           CPU  1.676679e+00           nan           nan     1           N/A        0.000000e+00            5.684342e-14
+         spaceShuttleEntry_3.mtx        double          1834          1834         28757                    PCM_8 PP_all           GPU  2.898496e-01           nan           nan     1  5.784652e+00        2.419920e-11            2.273737e-13
+
+
+Ne čen 18 18:02:49 CEST 2023
+-> Running benchmark for: ./mtx-matrices/TSC_OPF_1047/TSC_OPF_1047.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                TSC_OPF_1047.mtx        double          8140          8140       2012833                       CM PP_all           CPU  1.893038e+02           nan           nan     1           N/A        0.000000e+00            3.637979e-12
+                TSC_OPF_1047.mtx        double          8140          8140       2012833                    PCM_8 PP_all           GPU  1.181797e+01           nan           nan     1  1.601830e+01        1.141962e-08            4.547474e-12
+
+
+Ne čen 18 19:14:23 CEST 2023
+-> Running benchmark for: ./mtx-matrices/TSOPF_FS_b162_c1/TSOPF_FS_b162_c1.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+            TSOPF_FS_b162_c1.mtx        double         10798         10798        608540                       CM PP_all           CPU  5.006081e+02           nan           nan     1           N/A        0.000000e+00            7.275958e-12
+            TSOPF_FS_b162_c1.mtx        double         10798         10798        608540                    PCM_8 PP_all           GPU  2.071088e+01           nan           nan     1  2.417126e+01        3.980646e+03            7.275958e-12
+
+
+Ne čen 18 21:43:07 CEST 2023
+-> Running benchmark for: ./mtx-matrices/west0067/west0067.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    west0067.mtx        double            67            67           294                       CM PP_all           CPU  5.776800e-05           nan           nan     1           N/A        0.000000e+00            2.220446e-16
+                    west0067.mtx        double            67            67           294                    PCM_8 PP_all           GPU  2.841256e-03           nan           nan     1  2.033185e-02        7.771561e-16            4.440892e-16
+
+
+Ne čen 18 21:43:08 CEST 2023
+-> Running benchmark for: ./mtx-matrices/west0156/west0156.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    west0156.mtx        double           156           156           362                       CM PP_all           CPU  7.487930e-04           nan           nan     1           N/A        0.000000e+00            1.421085e-14
+                    west0156.mtx        double           156           156           362                    PCM_8 PP_all           GPU  7.737244e-03           nan           nan     1  9.677774e-02        1.905555e+13            1.421085e-14
+
+
+Ne čen 18 21:43:08 CEST 2023
+-> Running benchmark for: ./mtx-matrices/west0381/west0381.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    west0381.mtx        double           381           381          2134                       CM PP_all           CPU  1.410382e-02           nan           nan     1           N/A        0.000000e+00            1.136868e-13
+                    west0381.mtx        double           381           381          2134                    PCM_8 PP_all           GPU  2.644259e-02           nan           nan     1  5.333750e-01        1.818989e-12            1.136868e-13
+
+
+Ne čen 18 21:43:10 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka10135_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka10135_<-1000-1000>_pivoting.mtx        double         10135         10135     102713214                       CM PP_all           CPU  5.046176e+02           nan           nan     1           N/A        0.000000e+00            2.182787e-11
+Cejka10135_<-1000-1000>_pivoting.mtx        double         10135         10135     102713214                    PCM_8 PP_all           GPU  1.899883e+01           nan           nan     1  2.656046e+01        4.022004e-07            2.708020e-10
+
+
+Po čen 19 01:09:58 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka1157_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka1157_<-1000-1000>_pivoting.mtx        double          1157          1157       1338040                       CM PP_all           CPU  4.138341e-01           nan           nan     1           N/A        0.000000e+00            9.549694e-12
+Cejka1157_<-1000-1000>_pivoting.mtx        double          1157          1157       1338040                    PCM_8 PP_all           GPU  1.529949e-01           nan           nan     1  2.704888e+00        4.492904e-09            3.444711e-11
+
+
+Po čen 19 01:10:18 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka2599_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka2599_<-1000-1000>_pivoting.mtx        double          2599          2599       6753502                       CM PP_all           CPU  5.033439e+00           nan           nan     1           N/A        0.000000e+00            1.080025e-11
+Cejka2599_<-1000-1000>_pivoting.mtx        double          2599          2599       6753502                    PCM_8 PP_all           GPU  7.703589e-01           nan           nan     1  6.533889e+00        3.507012e-08            7.457857e-11
+
+
+Po čen 19 01:13:55 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka3839_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka3839_<-1000-1000>_pivoting.mtx        double          3839          3839      14736045                       CM PP_all           CPU  2.235961e+01           nan           nan     1           N/A        0.000000e+00            1.091394e-11
+Cejka3839_<-1000-1000>_pivoting.mtx        double          3839          3839      14736045                    PCM_8 PP_all           GPU  2.421910e+00           nan           nan     1  9.232220e+00        9.364157e-08            1.024318e-10
+
+
+Po čen 19 01:25:28 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka4156_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka4156_<-1000-1000>_pivoting.mtx        double          4156          4156      17270197                       CM PP_all           CPU  2.352871e+01           nan           nan     1           N/A        0.000000e+00            2.069100e-11
+Cejka4156_<-1000-1000>_pivoting.mtx        double          4156          4156      17270197                    PCM_8 PP_all           GPU  2.838019e+00           nan           nan     1  8.290539e+00        6.180926e-08            1.111857e-10
+
+
+Po čen 19 01:39:47 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka5069_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka5069_<-1000-1000>_pivoting.mtx        double          5069          5069      25692197                       CM PP_all           CPU  5.712426e+01           nan           nan     1           N/A        0.000000e+00            1.978151e-11
+Cejka5069_<-1000-1000>_pivoting.mtx        double          5069          5069      25692197                    PCM_8 PP_all           GPU  4.561810e+00           nan           nan     1  1.252228e+01        1.757726e-07            1.355147e-10
+
+
+Po čen 19 02:05:56 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka558_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka558_<-1000-1000>_pivoting.mtx        double           558           558        311090                       CM PP_all           CPU  4.360187e-02           nan           nan     1           N/A        0.000000e+00            5.002221e-12
+Cejka558_<-1000-1000>_pivoting.mtx        double           558           558        311090                    PCM_8 PP_all           GPU  4.239407e-02           nan           nan     1  1.028490e+00        1.458830e-09            1.682565e-11
+
+
+Po čen 19 02:06:00 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka6075_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka6075_<-1000-1000>_pivoting.mtx        double          6075          6075      36902629                       CM PP_all           CPU  1.024034e+02           nan           nan     1           N/A        0.000000e+00            2.171419e-11
+Cejka6075_<-1000-1000>_pivoting.mtx        double          6075          6075      36902629                    PCM_8 PP_all           GPU  6.594755e+00           nan           nan     1  1.552800e+01        3.581517e-07            2.023626e-10
+
+
+Po čen 19 02:51:17 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka6192_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka6192_<-1000-1000>_pivoting.mtx        double          6192          6192      38337786                       CM PP_all           CPU  9.026889e+01           nan           nan     1           N/A        0.000000e+00            2.114575e-11
+Cejka6192_<-1000-1000>_pivoting.mtx        double          6192          6192      38337786                    PCM_8 PP_all           GPU  6.538725e+00           nan           nan     1  1.380527e+01        1.263288e-07            1.755325e-10
+
+
+Po čen 19 03:38:40 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka6574_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka6574_<-1000-1000>_pivoting.mtx        double          6574          6574      43214237                       CM PP_all           CPU  1.087912e+02           nan           nan     1           N/A        0.000000e+00            2.160050e-11
+Cejka6574_<-1000-1000>_pivoting.mtx        double          6574          6574      43214237                    PCM_8 PP_all           GPU  7.476219e+00           nan           nan     1  1.455163e+01        3.214373e-07            1.673470e-10
+
+
+Po čen 19 04:34:51 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka665_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka665_<-1000-1000>_pivoting.mtx        double           665           665        441886                       CM PP_all           CPU  7.624833e-02           nan           nan     1           N/A        0.000000e+00            4.774847e-12
+Cejka665_<-1000-1000>_pivoting.mtx        double           665           665        441886                    PCM_8 PP_all           GPU  6.295997e-02           nan           nan     1  1.211060e+00        2.011802e-09            2.182787e-11
+
+
+Po čen 19 04:34:57 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka7510_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka7510_<-1000-1000>_pivoting.mtx        double          7510          7510      56396360                       CM PP_all           CPU  1.652624e+02           nan           nan     1           N/A        0.000000e+00            2.160050e-11
+Cejka7510_<-1000-1000>_pivoting.mtx        double          7510          7510      56396360                    PCM_8 PP_all           GPU  9.823723e+00           nan           nan     1  1.682279e+01        1.923036e-07            1.956550e-10
+
+
+Po čen 19 05:58:18 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka7972_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka7972_<-1000-1000>_pivoting.mtx        double          7972          7972      63548773                       CM PP_all           CPU  1.786103e+02           nan           nan     1           N/A        0.000000e+00            2.182787e-11
+Cejka7972_<-1000-1000>_pivoting.mtx        double          7972          7972      63548773                    PCM_8 PP_all           GPU  1.132911e+01           nan           nan     1  1.576562e+01        3.141631e-07            2.119123e-10
+
+
+Po čen 19 07:38:16 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka8385_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka8385_<-1000-1000>_pivoting.mtx        double          8385          8385      70304004                       CM PP_all           CPU  2.811091e+02           nan           nan     1           N/A        0.000000e+00            2.182787e-11
+Cejka8385_<-1000-1000>_pivoting.mtx        double          8385          8385      70304004                    PCM_8 PP_all           GPU  1.284349e+01           nan           nan     1  2.188727e+01        3.455207e-07            2.193019e-10
+
+
+Po čen 19 09:35:39 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka9234_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka9234_<-1000-1000>_pivoting.mtx        double          9234          9234      85262150                       CM PP_all           CPU  3.066896e+02           nan           nan     1           N/A        0.000000e+00            2.182787e-11
+Cejka9234_<-1000-1000>_pivoting.mtx        double          9234          9234      85262150                    PCM_8 PP_all           GPU  1.501949e+01           nan           nan     1  2.041944e+01        3.861205e-07            2.380602e-10
+
+
+===== [ FINISH ] Benchmark (precision = double)
+Elapsed: 27hrs 18min 5sec
+
+
+===== [ START ] Benchmark (precision = float)
+
+Po čen 19 12:10:28 CEST 2023
+-> Running benchmark for: ./mtx-matrices/685_bus/685_bus.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                     685_bus.mtx         float           685           685          3249                       CM PP_all           CPU  8.444313e-02           nan           nan     1           N/A        0.000000e+00            6.103516e-05
+                     685_bus.mtx         float           685           685          3249                    PCM_8 PP_all           GPU  4.584546e-02           nan           nan     1  1.841908e+00        9.765625e-04            9.765625e-04
+
+
+Po čen 19 12:10:29 CEST 2023
+-> Running benchmark for: ./mtx-matrices/b2_ss/b2_ss.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                       b2_ss.mtx         float          1089          1089          3895                       CM PP_all           CPU  3.602115e-01           nan           nan     1           N/A        0.000000e+00            4.882812e-04
+                       b2_ss.mtx         float          1089          1089          3895                    PCM_8 PP_all           GPU  1.033902e-01           nan           nan     1  3.483999e+00        8.287726e+05            4.882812e-04
+
+
+Po čen 19 12:10:39 CEST 2023
+-> Running benchmark for: ./mtx-matrices/bayer06/bayer06.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                     bayer06.mtx         float          3008          3008         20455                       CM PP_all           CPU  8.698601e+00           nan           nan     1           N/A        0.000000e+00            6.400000e+01
+                     bayer06.mtx         float          3008          3008         20455                    PCM_8 PP_all           GPU  5.677077e-01           nan           nan     1  1.532232e+01        2.607963e+16            6.400000e+01
+
+
+Po čen 19 12:13:52 CEST 2023
+-> Running benchmark for: ./mtx-matrices/bayer09/bayer09.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                     bayer09.mtx         float          3083          3083         11765                       CM PP_all           CPU  8.243541e+00           nan           nan     1           N/A        0.000000e+00            6.400000e+01
+                     bayer09.mtx         float          3083          3083         11765                    PCM_8 PP_all           GPU  4.895576e-01           nan           nan     1  1.683876e+01        2.535232e+03            6.400000e+01
+
+
+Po čen 19 12:17:15 CEST 2023
+-> Running benchmark for: ./mtx-matrices/bcsstk01/bcsstk01.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    bcsstk01.mtx         float            48            48           400                       CM PP_all           CPU  2.484700e-05           nan           nan     1           N/A        0.000000e+00            2.560000e+02
+                    bcsstk01.mtx         float            48            48           400                    PCM_8 PP_all           GPU  2.002184e-03           nan           nan     1  1.240995e-02        1.296000e+03            2.560000e+02
+
+
+Po čen 19 12:17:15 CEST 2023
+-> Running benchmark for: ./mtx-matrices/bcsstk02/bcsstk02.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    bcsstk02.mtx         float            66            66          4356                       CM PP_all           CPU  5.724600e-05           nan           nan     1           N/A        0.000000e+00            4.882812e-04
+                    bcsstk02.mtx         float            66            66          4356                    PCM_8 PP_all           GPU  2.710743e-03           nan           nan     1  2.111820e-02        1.464844e-03            9.765625e-04
+
+
+Po čen 19 12:17:16 CEST 2023
+-> Running benchmark for: ./mtx-matrices/bcsstk03/bcsstk03.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    bcsstk03.mtx         float           112           112           640                       CM PP_all           CPU  2.775060e-04           nan           nan     1           N/A        0.000000e+00            4.096000e+03
+                    bcsstk03.mtx         float           112           112           640                    PCM_8 PP_all           GPU  4.833782e-03           nan           nan     1  5.740971e-02        3.827200e+04            4.096000e+03
+
+
+Po čen 19 12:17:17 CEST 2023
+-> Running benchmark for: ./mtx-matrices/bp_0/bp_0.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                        bp_0.mtx         float           822           822          3276                       CM PP_all           CPU  1.469547e-01           nan           nan     1           N/A        0.000000e+00            9.536743e-07
+                        bp_0.mtx         float           822           822          3276                    PCM_8 PP_all           GPU  6.657290e-02           nan           nan     1  2.207425e+00        0.000000e+00            9.536743e-07
+
+
+Po čen 19 12:17:22 CEST 2023
+-> Running benchmark for: ./mtx-matrices/bp_1400/bp_1400.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                     bp_1400.mtx         float           822           822          4790                       CM PP_all           CPU  1.518432e-01           nan           nan     1           N/A        0.000000e+00            1.525879e-05
+                     bp_1400.mtx         float           822           822          4790                    PCM_8 PP_all           GPU  6.670274e-02           nan           nan     1  2.276417e+00        1.571655e-03            1.525879e-05
+
+
+Po čen 19 12:17:27 CEST 2023
+-> Running benchmark for: ./mtx-matrices/c-22/c-22.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                        c-22.mtx         float          3792          3792         28870                       CM PP_all           CPU  1.567042e+01           nan           nan     1           N/A        0.000000e+00            9.536743e-07
+                        c-22.mtx         float          3792          3792         28870                    PCM_8 PP_all           GPU  9.703763e-01           nan           nan     1  1.614881e+01        2.354493e+00            7.629395e-06
+
+
+Po čen 19 12:22:09 CEST 2023
+-> Running benchmark for: ./mtx-matrices/circuit204/circuit204.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                  circuit204.mtx         float          1020          1020          5508                       CM PP_all           CPU  3.117248e-01           nan           nan     1           N/A        0.000000e+00            2.384186e-07
+                  circuit204.mtx         float          1020          1020          5508                    PCM_8 PP_all           GPU  8.846593e-02           nan           nan     1  3.523671e+00        3.803516e+01            2.384186e-07
+
+
+Po čen 19 12:22:15 CEST 2023
+-> Running benchmark for: ./mtx-matrices/crout_python/crout_python.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                crout_python.mtx         float             4             4            15                       CM PP_all           CPU  1.282000e-06           nan           nan     1           N/A        0.000000e+00            0.000000e+00
+                crout_python.mtx         float             4             4            15                    PCM_8 PP_all           GPU  1.304730e-04           nan           nan     1  9.825788e-03        0.000000e+00            0.000000e+00
+
+
+Po čen 19 12:22:16 CEST 2023
+-> Running benchmark for: ./mtx-matrices/exdata_1/exdata_1.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    exdata_1.mtx         float          6001          6001       2269500                       CM PP_all           CPU  8.637770e+01           nan           nan     1           N/A        0.000000e+00            3.200000e+01
+                    exdata_1.mtx         float          6001          6001       2269500                    PCM_8 PP_all           GPU  3.191270e+00           nan           nan     1  2.706687e+01        2.859000e+03            2.500000e+01
+
+
+Po čen 19 12:37:41 CEST 2023
+-> Running benchmark for: ./mtx-matrices/fp/fp.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                          fp.mtx         float          7548          7548        834222                       CM PP_all           CPU  1.632154e+02           nan           nan     1           N/A        0.000000e+00            9.059906e-05
+                          fp.mtx         float          7548          7548        834222                    PCM_8 PP_all           GPU  5.223489e+00           nan           nan     1  3.124643e+01        3.447266e-01            2.441406e-04
+
+
+Po čen 19 13:04:15 CEST 2023
+-> Running benchmark for: ./mtx-matrices/freeFlyingRobot_9/freeFlyingRobot_9.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+           freeFlyingRobot_9.mtx         float          4778          4778         39964                       CM PP_all           CPU  3.812477e+01           nan           nan     1           N/A        0.000000e+00            6.250000e-02
+           freeFlyingRobot_9.mtx         float          4778          4778         39964                    PCM_8 PP_all           GPU  1.873625e+00           nan           nan     1  2.034814e+01        1.666260e-02            6.250000e-02
+
+
+Po čen 19 13:13:59 CEST 2023
+-> Running benchmark for: ./mtx-matrices/garon1/garon1.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                      garon1.mtx         float          3175          3175         84723                       CM PP_all           CPU  9.925889e+00           nan           nan     1           N/A        0.000000e+00            9.536743e-07
+                      garon1.mtx         float          3175          3175         84723                    PCM_8 PP_all           GPU  5.244904e-01           nan           nan     1  1.892483e+01        1.907349e-06            1.907349e-06
+
+
+Po čen 19 13:15:05 CEST 2023
+-> Running benchmark for: ./mtx-matrices/heart1/heart1.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                      heart1.mtx         float          3557          3557       1385317                       CM PP_all           CPU  1.317525e+01           nan           nan     1           N/A        0.000000e+00            3.589821e-02
+                      heart1.mtx         float          3557          3557       1385317                    PCM_8 PP_all           GPU  7.605733e-01           nan           nan     1  1.732279e+01        3.845000e+02            1.406250e-01
+
+
+Po čen 19 13:19:18 CEST 2023
+-> Running benchmark for: ./mtx-matrices/lns_131/lns_131.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                     lns_131.mtx         float           131           131           536                       CM PP_all           CPU  4.568300e-04           nan           nan     1           N/A        0.000000e+00            5.120000e+02
+                     lns_131.mtx         float           131           131           536                    PCM_8 PP_all           GPU  6.147467e-03           nan           nan     1  7.431191e-02        5.288778e-02            5.120000e+02
+
+
+Po čen 19 13:19:19 CEST 2023
+-> Running benchmark for: ./mtx-matrices/msc10848/msc10848.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    msc10848.mtx         float         10848         10848       1229776                       CM PP_all           CPU  4.858370e+02           nan           nan     1           N/A        0.000000e+00            1.638400e+04
+                    msc10848.mtx         float         10848         10848       1229776                    PCM_8 PP_all           GPU  1.179744e+01           nan           nan     1  4.118155e+01        2.320800e+04            1.638400e+04
+
+
+Po čen 19 14:12:19 CEST 2023
+-> Running benchmark for: ./mtx-matrices/nd3k/nd3k.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                        nd3k.mtx         float          9000          9000       3279690                       CM PP_all           CPU  2.268792e+02           nan           nan     1           N/A        0.000000e+00            7.629395e-06
+                        nd3k.mtx         float          9000          9000       3279690                    PCM_8 PP_all           GPU  7.599416e+00           nan           nan     1  2.985482e+01        3.233647e-02            1.171231e-05
+
+
+Po čen 19 15:02:59 CEST 2023
+-> Running benchmark for: ./mtx-matrices/orani678/orani678.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    orani678.mtx         float          2529          2529         90158                       CM PP_all           CPU  4.396127e+00           nan           nan     1           N/A        0.000000e+00            1.192093e-07
+                    orani678.mtx         float          2529          2529         90158                    PCM_8 PP_all           GPU  3.311750e-01           nan           nan     1  1.327433e+01        1.907349e-06            1.577428e-07
+
+
+Po čen 19 15:04:33 CEST 2023
+-> Running benchmark for: ./mtx-matrices/sinc15/sinc15.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                      sinc15.mtx         float         11532         11532        551184                       CM PP_all           CPU  5.287446e+02           nan           nan     1           N/A        0.000000e+00            1.600000e+01
+                      sinc15.mtx         float         11532         11532        551184                    PCM_8 PP_all           GPU  1.272622e+01           nan           nan     1  4.154765e+01        7.942716e+06            1.200000e+01
+
+
+Po čen 19 17:55:17 CEST 2023
+-> Running benchmark for: ./mtx-matrices/sistek/poc-20_2_2.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                  poc-20_2_2.mtx         float          1274          1274       1304296                       CM PP_all           CPU  5.630323e-01           nan           nan     1           N/A        0.000000e+00            3.814697e-06
+                  poc-20_2_2.mtx         float          1274          1274       1304296                    PCM_8 PP_all           GPU  1.137390e-01           nan           nan     1  4.950214e+00        1.875000e-01            3.906250e-03
+
+
+Po čen 19 17:55:23 CEST 2023
+-> Running benchmark for: ./mtx-matrices/sistek/poc-24_2_2.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                  poc-24_2_2.mtx         float          1814          1814       2749120                       CM PP_all           CPU  1.628198e+00           nan           nan     1           N/A        0.000000e+00            1.220703e-04
+                  poc-24_2_2.mtx         float          1814          1814       2749120                    PCM_8 PP_all           GPU  1.912515e-01           nan           nan     1  8.513385e+00        1.000000e+00            7.812500e-03
+
+
+Po čen 19 17:55:38 CEST 2023
+-> Running benchmark for: ./mtx-matrices/sistek/poc-28_2_2.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                  poc-28_2_2.mtx         float          2450          2450       5153080                       CM PP_all           CPU  4.099185e+00           nan           nan     1           N/A        0.000000e+00            7.812500e-03
+                  poc-28_2_2.mtx         float          2450          2450       5153080                    PCM_8 PP_all           GPU  3.062040e-01           nan           nan     1  1.338711e+01        1.000000e+00            7.812500e-03
+
+
+Po čen 19 17:56:13 CEST 2023
+-> Running benchmark for: ./mtx-matrices/sistek/poc-32_2_2.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                  poc-32_2_2.mtx         float          3182          3182       8868688                       CM PP_all           CPU  8.966532e+00           nan           nan     1           N/A        0.000000e+00            1.562500e-02
+                  poc-32_2_2.mtx         float          3182          3182       8868688                    PCM_8 PP_all           GPU  5.324986e-01           nan           nan     1  1.683860e+01        1.000000e+00            1.562500e-02
+
+
+Po čen 19 17:57:26 CEST 2023
+-> Running benchmark for: ./mtx-matrices/sistek/poc-8_4_2-938719427.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+         poc-8_4_2-938719427.mtx         float           230           230         28960                       CM PP_all           CPU  2.743163e-03           nan           nan     1           N/A        0.000000e+00            6.103516e-05
+         poc-8_4_2-938719427.mtx         float           230           230         28960                    PCM_8 PP_all           GPU  9.249947e-03           nan           nan     1  2.965599e-01        3.906250e-03            6.103516e-05
+
+
+Po čen 19 17:57:27 CEST 2023
+-> Running benchmark for: ./mtx-matrices/sistek/poc-8_4_2-938719741.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+         poc-8_4_2-938719741.mtx         float           298           298         54816                       CM PP_all           CPU  6.298807e-03           nan           nan     1           N/A        0.000000e+00            1.220703e-04
+         poc-8_4_2-938719741.mtx         float           298           298         54816                    PCM_8 PP_all           GPU  1.304882e-02           nan           nan     1  4.827107e-01        3.906250e-03            1.220703e-04
+
+
+Po čen 19 17:57:27 CEST 2023
+-> Running benchmark for: ./mtx-matrices/sistek/poc-8_4_2-938719829.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+         poc-8_4_2-938719829.mtx         float           298           298         54816                       CM PP_all           CPU  6.266236e-03           nan           nan     1           N/A        0.000000e+00            1.220703e-04
+         poc-8_4_2-938719829.mtx         float           298           298         54816                    PCM_8 PP_all           GPU  1.274865e-02           nan           nan     1  4.915213e-01        3.906250e-03            1.220703e-04
+
+
+Po čen 19 17:57:28 CEST 2023
+-> Running benchmark for: ./mtx-matrices/spaceShuttleEntry_3/spaceShuttleEntry_3.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+         spaceShuttleEntry_3.mtx         float          1834          1834         28757                       CM PP_all           CPU  1.749005e+00           nan           nan     1           N/A        0.000000e+00            3.051758e-05
+         spaceShuttleEntry_3.mtx         float          1834          1834         28757                    PCM_8 PP_all           GPU  1.926843e-01           nan           nan     1  9.077050e+00        2.319336e-02            1.387596e-04
+
+
+Po čen 19 17:58:03 CEST 2023
+-> Running benchmark for: ./mtx-matrices/TSC_OPF_1047/TSC_OPF_1047.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                TSC_OPF_1047.mtx         float          8140          8140       2012833                       CM PP_all           CPU  1.791525e+02           nan           nan     1           N/A        0.000000e+00            2.929688e-03
+                TSC_OPF_1047.mtx         float          8140          8140       2012833                    PCM_8 PP_all           GPU  6.106103e+00           nan           nan     1  2.933991e+01        5.599576e+02            3.906250e-03
+
+
+Po čen 19 18:43:24 CEST 2023
+-> Running benchmark for: ./mtx-matrices/TSOPF_FS_b162_c1/TSOPF_FS_b162_c1.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+            TSOPF_FS_b162_c1.mtx         float         10798         10798        608540                       CM PP_all           CPU  4.645255e+02           nan           nan     1           N/A        0.000000e+00            3.906250e-03
+            TSOPF_FS_b162_c1.mtx         float         10798         10798        608540                    PCM_8 PP_all           GPU  1.102301e+01           nan           nan     1  4.214143e+01        1.567698e+04            3.906250e-03
+
+
+Po čen 19 20:03:38 CEST 2023
+-> Running benchmark for: ./mtx-matrices/west0067/west0067.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    west0067.mtx         float            67            67           294                       CM PP_all           CPU  6.378800e-05           nan           nan     1           N/A        0.000000e+00            1.192093e-07
+                    west0067.mtx         float            67            67           294                    PCM_8 PP_all           GPU  2.785945e-03           nan           nan     1  2.289636e-02        4.768372e-07            1.192093e-07
+
+
+Po čen 19 20:03:39 CEST 2023
+-> Running benchmark for: ./mtx-matrices/west0156/west0156.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    west0156.mtx         float           156           156           362                       CM PP_all           CPU  7.842290e-04           nan           nan     1           N/A        0.000000e+00            9.536743e-07
+                    west0156.mtx         float           156           156           362                    PCM_8 PP_all           GPU  6.534371e-03           nan           nan     1  1.200160e-01        1.605691e+04            9.536743e-07
+
+
+Po čen 19 20:03:40 CEST 2023
+-> Running benchmark for: ./mtx-matrices/west0381/west0381.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    west0381.mtx         float           381           381          2134                       CM PP_all           CPU  1.359450e-02           nan           nan     1           N/A        0.000000e+00            6.103516e-05
+                    west0381.mtx         float           381           381          2134                    PCM_8 PP_all           GPU  2.052577e-02           nan           nan     1  6.623138e-01        2.929688e-03            6.103516e-05
+
+
+Po čen 19 20:03:40 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka10135_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka10135_<-1000-1000>_pivoting.mtx         float         10135         10135     102713214                       CM PP_all           CPU  4.348724e+02           nan           nan     1           N/A        0.000000e+00            1.684570e-02
+Cejka10135_<-1000-1000>_pivoting.mtx         float         10135         10135     102713214                    PCM_8 PP_all           GPU  9.713122e+00           nan           nan     1  4.477165e+01        2.447567e+05            1.406860e-01
+
+
+Po čen 19 22:06:38 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka1157_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka1157_<-1000-1000>_pivoting.mtx         float          1157          1157       1338040                       CM PP_all           CPU  4.273015e-01           nan           nan     1           N/A        0.000000e+00            5.752563e-03
+Cejka1157_<-1000-1000>_pivoting.mtx         float          1157          1157       1338040                    PCM_8 PP_all           GPU  9.690504e-02           nan           nan     1  4.409486e+00        2.722656e+00            2.026367e-02
+
+
+Po čen 19 22:06:51 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka2599_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka2599_<-1000-1000>_pivoting.mtx         float          2599          2599       6753502                       CM PP_all           CPU  4.947392e+00           nan           nan     1           N/A        0.000000e+00            9.094238e-03
+Cejka2599_<-1000-1000>_pivoting.mtx         float          2599          2599       6753502                    PCM_8 PP_all           GPU  3.430120e-01           nan           nan     1  1.442338e+01        9.839396e+04            3.598022e-02
+
+
+Po čen 19 22:08:37 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka3839_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka3839_<-1000-1000>_pivoting.mtx         float          3839          3839      14736045                       CM PP_all           CPU  1.764485e+01           nan           nan     1           N/A        0.000000e+00            5.859375e-03
+Cejka3839_<-1000-1000>_pivoting.mtx         float          3839          3839      14736045                    PCM_8 PP_all           GPU  1.001377e+00           nan           nan     1  1.762058e+01        1.327781e+05            5.859375e-02
+
+
+Po čen 19 22:15:32 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka4156_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka4156_<-1000-1000>_pivoting.mtx         float          4156          4156      17270197                       CM PP_all           CPU  2.266318e+01           nan           nan     1           N/A        0.000000e+00            1.110840e-02
+Cejka4156_<-1000-1000>_pivoting.mtx         float          4156          4156      17270197                    PCM_8 PP_all           GPU  1.276099e+00           nan           nan     1  1.775973e+01        1.345767e+05            5.786133e-02
+
+
+Po čen 19 22:24:07 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka5069_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka5069_<-1000-1000>_pivoting.mtx         float          5069          5069      25692197                       CM PP_all           CPU  5.226044e+01           nan           nan     1           N/A        0.000000e+00            9.399414e-03
+Cejka5069_<-1000-1000>_pivoting.mtx         float          5069          5069      25692197                    PCM_8 PP_all           GPU  2.187171e+00           nan           nan     1  2.389408e+01        1.228210e+05            7.171631e-02
+
+
+Po čen 19 22:40:00 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka558_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka558_<-1000-1000>_pivoting.mtx         float           558           558        311090                       CM PP_all           CPU  4.646563e-02           nan           nan     1           N/A        0.000000e+00            2.563477e-03
+Cejka558_<-1000-1000>_pivoting.mtx         float           558           558        311090                    PCM_8 PP_all           GPU  3.480229e-02           nan           nan     1  1.335131e+00        8.300781e-01            8.499146e-03
+
+
+Po čen 19 22:40:03 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka6075_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka6075_<-1000-1000>_pivoting.mtx         float          6075          6075      36902629                       CM PP_all           CPU  9.103846e+01           nan           nan     1           N/A        0.000000e+00            1.168442e-02
+Cejka6075_<-1000-1000>_pivoting.mtx         float          6075          6075      36902629                    PCM_8 PP_all           GPU  3.283860e+00           nan           nan     1  2.772300e+01        1.431665e+05            8.361816e-02
+
+
+Po čen 19 23:07:21 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka6192_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka6192_<-1000-1000>_pivoting.mtx         float          6192          6192      38337786                       CM PP_all           CPU  7.352713e+01           nan           nan     1           N/A        0.000000e+00            1.110840e-02
+Cejka6192_<-1000-1000>_pivoting.mtx         float          6192          6192      38337786                    PCM_8 PP_all           GPU  3.421719e+00           nan           nan     1  2.148836e+01        1.619985e+05            9.228516e-02
+
+
+Po čen 19 23:35:23 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka6574_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka6574_<-1000-1000>_pivoting.mtx         float          6574          6574      43214237                       CM PP_all           CPU  9.918046e+01           nan           nan     1           N/A        0.000000e+00            1.123047e-02
+Cejka6574_<-1000-1000>_pivoting.mtx         float          6574          6574      43214237                    PCM_8 PP_all           GPU  3.865841e+00           nan           nan     1  2.565560e+01        1.854932e+05            8.599854e-02
+
+
+Út čen 20 00:09:28 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka665_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka665_<-1000-1000>_pivoting.mtx         float           665           665        441886                       CM PP_all           CPU  7.685453e-02           nan           nan     1           N/A        0.000000e+00            2.868652e-03
+Cejka665_<-1000-1000>_pivoting.mtx         float           665           665        441886                    PCM_8 PP_all           GPU  4.384921e-02           nan           nan     1  1.752700e+00        1.462402e+00            9.872437e-03
+
+
+Út čen 20 00:09:31 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka7510_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka7510_<-1000-1000>_pivoting.mtx         float          7510          7510      56396360                       CM PP_all           CPU  1.561381e+02           nan           nan     1           N/A        0.000000e+00            1.164246e-02
+Cejka7510_<-1000-1000>_pivoting.mtx         float          7510          7510      56396360                    PCM_8 PP_all           GPU  5.090748e+00           nan           nan     1  3.067096e+01        1.812392e+05            1.120605e-01
+
+
+Út čen 20 01:00:21 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka7972_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka7972_<-1000-1000>_pivoting.mtx         float          7972          7972      63548773                       CM PP_all           CPU  1.671793e+02           nan           nan     1           N/A        0.000000e+00            1.161957e-02
+Cejka7972_<-1000-1000>_pivoting.mtx         float          7972          7972      63548773                    PCM_8 PP_all           GPU  5.853239e+00           nan           nan     1  2.856185e+01        1.965373e+05            1.135864e-01
+
+
+Út čen 20 01:59:41 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka8385_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka8385_<-1000-1000>_pivoting.mtx         float          8385          8385      70304004                       CM PP_all           CPU  2.436974e+02           nan           nan     1           N/A        0.000000e+00            1.168823e-02
+Cejka8385_<-1000-1000>_pivoting.mtx         float          8385          8385      70304004                    PCM_8 PP_all           GPU  6.408631e+00           nan           nan     1  3.802644e+01        1.751176e+05            1.267090e-01
+
+
+Út čen 20 03:10:25 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka9234_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-float.log
+Log file ./log-files/decomposers-benchmark-float.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP_all'...
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka9234_<-1000-1000>_pivoting.mtx         float          9234          9234      85262150                       CM PP_all           CPU  2.814774e+02           nan           nan     1           N/A        0.000000e+00            1.168823e-02
+Cejka9234_<-1000-1000>_pivoting.mtx         float          9234          9234      85262150                    PCM_8 PP_all           GPU  7.951376e+00           nan           nan     1  3.539984e+01        1.909857e+05            1.330261e-01
+
+
+===== [ FINISH ] Benchmark (precision = float)
+Elapsed: 16hrs 32min 31sec
+
+
+========== [ FINISH ] Decomposers benchmark

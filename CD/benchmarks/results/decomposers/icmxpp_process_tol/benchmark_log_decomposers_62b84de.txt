@@ -1,0 +1,1108 @@
+========== [ START ] Decomposers Benchmark
+
+===== Parameters
+BENCHMARK TYPE               = decomposers
+BENCHMARK TYPE UPPER CASE    = Decomposers
+COMPUTE DIRECTORY            = /data/temporary/cejkaluk/2023-06-21_16-42-13
+=====
+
+---> Removing compiled benchmark files in /data/temporary/cejkaluk/2023-06-21_16-42-13/.local/bin and in build, and headers in /data/temporary/cejkaluk/2023-06-21_16-42-13/.local/include...
+---> Compiling Decomposers Benchmark...
+Configuring Decomposition for Release build ...
+-- The C compiler identification is GNU 12.2.0
+-- The CXX compiler identification is GNU 12.2.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /mnt/appl/software/GCCcore/12.2.0/bin/gcc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /mnt/appl/software/GCCcore/12.2.0/bin/g++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Looking for C++ include filesystem
+-- Looking for C++ include filesystem - found
+-- Performing Test CXX_FILESYSTEM_NO_LINK_NEEDED
+-- Performing Test CXX_FILESYSTEM_NO_LINK_NEEDED - Success
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+-- Check if compiler accepts -pthread
+-- Check if compiler accepts -pthread - yes
+-- Found Threads: TRUE  
+-- Looking for a CUDA compiler
+-- Looking for a CUDA compiler - /mnt/appl/software/CUDA/12.0.0/bin/nvcc
+-- Looking for a CUDA host compiler - /mnt/appl/software/GCCcore/12.2.0/bin/g++
+-- Found CUDAToolkit: /mnt/appl/software/CUDA/12.0.0/include (found version "12.0.76") 
+-- The CUDA compiler identification is NVIDIA 12.0.76
+-- Detecting CUDA compiler ABI info
+-- Detecting CUDA compiler ABI info - done
+-- Check for working CUDA compiler: /mnt/appl/software/CUDA/12.0.0/bin/nvcc - skipped
+-- Detecting CUDA compile features
+-- Detecting CUDA compile features - done
+-- Build options:
+   DECOMP_USE_CUDA = yes
+   CMAKE_CUDA_ARCHITECTURES = native
+   DECOMP_USE_SYSTEM_GTEST= no
+   DECOMP_BUILD_BENCHMARKS = yes
+   DECOMP_BUILD_TESTS = no
+   DECOMPO_BUILD_COVERAGE = no
+   DECOMP_OFFLINE_BUILD = no
+-- Compiler options:
+   CMAKE_C_FLAGS = 
+   CMAKE_C_FLAGS_DEBUG = -g
+   CMAKE_C_FLAGS_RELEASE = -O3 -DNDEBUG
+   CMAKE_CXX_FLAGS =  -Wall -Werror=vla -Wextra-semi -Wno-unknown-pragmas -Wno-maybe-uninitialized
+   CMAKE_CXX_FLAGS_DEBUG = -g
+   CMAKE_CXX_FLAGS_RELEASE = -O3 -DNDEBUG
+   CMAKE_CUDA_FLAGS =  -Wall
+   CMAKE_CUDA_FLAGS_DEBUG = -g
+   CMAKE_CUDA_FLAGS_RELEASE = -O3 -DNDEBUG
+   CMAKE_SHARED_LIBRARY_LINK_C_FLAGS = -rdynamic
+   CMAKE_SHARED_LIBRARY_LINK_C_FLAGS_DEBUG = 
+   CMAKE_SHARED_LIBRARY_LINK_C_FLAGS_RELEASE = 
+   CMAKE_EXE_LINKER_FLAGS = 
+   CMAKE_EXE_LINKER_FLAGS_DEBUG = 
+   CMAKE_EXE_LINKER_FLAGS_RELEASE = 
+   CMAKE_SHARED_LINKER_FLAGS = 
+   CMAKE_SHARED_LINKER_FLAGS_DEBUG = 
+   CMAKE_SHARED_LINKER_FLAGS_RELEASE = 
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /tmp/cejkaluk/2023-06-21_16-42-13/decomposition/build/Release
+Building Decomposition in Release configuration using 64 parallel jobs ...
+[ 16%] Building CUDA object src/Benchmarks/Decomposers/CMakeFiles/decomposers-benchmark.dir/decomposers-benchmark.cu.o
+[ 33%] Building CUDA object src/Benchmarks/Solvers/CMakeFiles/solvers-benchmark.dir/solvers-benchmark.cu.o
+[ 50%] Linking CUDA device code CMakeFiles/decomposers-benchmark.dir/cmake_device_link.o
+[ 66%] Linking CUDA executable ../../../bin/decomposers-benchmark
+[ 66%] Built target decomposers-benchmark
+[ 83%] Linking CUDA device code CMakeFiles/solvers-benchmark.dir/cmake_device_link.o
+[100%] Linking CUDA executable ../../../bin/solvers-benchmark
+[100%] Built target solvers-benchmark
+-- Install configuration: "Release"
+-- Installing: /tmp/cejkaluk/2023-06-21_16-42-13/.local/lib64/cmake/DECOMP/DECOMPTargets.cmake
+-- Installing: /tmp/cejkaluk/2023-06-21_16-42-13/.local/lib64/cmake/DECOMP/DECOMPConfig.cmake
+-- Installing: /tmp/cejkaluk/2023-06-21_16-42-13/.local/lib64/cmake/DECOMP/Modules/FindFilesystem.cmake
+-- Removing existing include directory: /tmp/cejkaluk/2023-06-21_16-42-13/.local/include/Decomposition/
+-- Installing include directory: /tmp/cejkaluk/2023-06-21_16-42-13/.local/include/Decomposition/
+-- Installing: /tmp/cejkaluk/2023-06-21_16-42-13/.local/bin/decomposers-benchmark
+-- Installing: /tmp/cejkaluk/2023-06-21_16-42-13/.local/bin/solvers-benchmark
+
+WARNING !!!
+
+Your system does not see Decomposition which was installed right now.
+You need to add it to your environment variables $PATH and $LD_LIBRARY_PATH.
+Add the following to your shell configuration file (e.g. .bashrc):
+
+export PATH="$PATH:/data/temporary/cejkaluk/2023-06-21_16-42-13/.local/bin"
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/data/temporary/cejkaluk/2023-06-21_16-42-13/.local/lib"
+
+Total Installation time (incl. unit tests - if run): 0 min 50 sec 600 ms
+
+
+===== [ START ] Benchmark (precision = double)
+
+St čen 21 16:44:09 CEST 2023
+-> Running benchmark for: ./mtx-matrices/685_bus/685_bus.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                     685_bus.mtx        double           685           685          3249                 ICM_32 PP 1e-10           GPU  3.079035e-02           nan           nan     1           N/A        1.005022e+04            2.540354e-10
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+                     685_bus.mtx        double           685           685          3249                 ICM_32 PP 1e-05           GPU  2.645770e-02           nan           nan     1  1.163758e+00        1.005022e+04            6.933021e-04
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+                     685_bus.mtx        double           685           685          3249                  ICM_32 PP 0.01           GPU  2.276907e-02           nan           nan     1  1.352288e+00        1.005022e+04            2.736135e-01
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+                     685_bus.mtx        double           685           685          3249                   ICM_32 PP 0.1           GPU  2.331426e-02           nan           nan     1  1.320666e+00        1.005022e+04            2.451591e+00
+
+
+St čen 21 16:44:11 CEST 2023
+-> Running benchmark for: ./mtx-matrices/b2_ss/b2_ss.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                       b2_ss.mtx        double          1089          1089          3895                 ICM_32 PP 1e-10           GPU  3.516174e-01           nan           nan     1           N/A        4.709386e+06            5.820766e-11
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+                       b2_ss.mtx        double          1089          1089          3895                 ICM_32 PP 1e-05           GPU  3.474815e-01           nan           nan     1  1.011902e+00        4.708898e+06            3.330408e-08
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+                       b2_ss.mtx        double          1089          1089          3895                  ICM_32 PP 0.01           GPU  3.319479e-01           nan           nan     1  1.059255e+00        3.411704e+06            3.970143e-05
+	 Using processing tolerance = 0.1
+timeFunction failed due to a C++ exception with description: -!> Input Matrix 'A' is singular - division by 0 during decomposition with partial pivoting. LU( 574, 574 ) = 0. Cannot divide by 0.
+                       b2_ss.mtx        double          1089          1089          3895                   ICM_32 PP 0.1           GPU           nan           nan           nan     0           nan        2.239805e+06            1.401680e+07
+
+
+St čen 21 16:44:39 CEST 2023
+-> Running benchmark for: ./mtx-matrices/bayer06/bayer06.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                     bayer06.mtx        double          3008          3008         20715                 ICM_32 PP 1e-10           GPU  2.151250e+00           nan           nan     1           N/A        3.745246e+15            1.192093e-07
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+                     bayer06.mtx        double          3008          3008         20715                 ICM_32 PP 1e-05           GPU  2.002803e+00           nan           nan     1  1.074120e+00        3.745246e+15            1.192093e-07
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+                     bayer06.mtx        double          3008          3008         20715                  ICM_32 PP 0.01           GPU  1.825613e+00           nan           nan     1  1.178371e+00        3.745246e+15            1.192093e-07
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+                     bayer06.mtx        double          3008          3008         20715                   ICM_32 PP 0.1           GPU  1.770095e+00           nan           nan     1  1.215330e+00        3.745246e+15            4.728541e-06
+
+
+St čen 21 16:55:17 CEST 2023
+-> Running benchmark for: ./mtx-matrices/bayer09/bayer09.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                     bayer09.mtx        double          3083          3083         11767                 ICM_32 PP 1e-10           GPU  2.327640e+00           nan           nan     1           N/A        1.212852e+11            1.192093e-07
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+                     bayer09.mtx        double          3083          3083         11767                 ICM_32 PP 1e-05           GPU  2.253805e+00           nan           nan     1  1.032760e+00        1.212852e+11            1.192093e-07
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+                     bayer09.mtx        double          3083          3083         11767                  ICM_32 PP 0.01           GPU  1.994743e+00           nan           nan     1  1.166887e+00        1.212852e+11            5.017664e-07
+	 Using processing tolerance = 0.1
+timeFunction failed due to a C++ exception with description: -!> Input Matrix 'A' is singular - division by 0 during decomposition with partial pivoting. LU( 2594, 2594 ) = 0. Cannot divide by 0.
+                     bayer09.mtx        double          3083          3083         11767                   ICM_32 PP 0.1           GPU           nan           nan           nan     0           nan        1.212852e+11            1.592100e+02
+
+
+St čen 21 17:06:08 CEST 2023
+-> Running benchmark for: ./mtx-matrices/bcsstk01/bcsstk01.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    bcsstk01.mtx        double            48            48           400                 ICM_32 PP 1e-10           GPU  6.436097e-03           nan           nan     1           N/A        2.813294e+09            2.875458e-07
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+                    bcsstk01.mtx        double            48            48           400                 ICM_32 PP 1e-05           GPU  6.405731e-03           nan           nan     1  1.004740e+00        2.813294e+09            2.875458e-07
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+                    bcsstk01.mtx        double            48            48           400                  ICM_32 PP 0.01           GPU  6.431169e-03           nan           nan     1  1.000766e+00        2.813294e+09            2.875458e-07
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+                    bcsstk01.mtx        double            48            48           400                   ICM_32 PP 0.1           GPU  6.404630e-03           nan           nan     1  1.004913e+00        2.813294e+09            2.875458e-07
+
+
+St čen 21 17:06:08 CEST 2023
+-> Running benchmark for: ./mtx-matrices/bcsstk02/bcsstk02.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    bcsstk02.mtx        double            66            66          4356                 ICM_32 PP 1e-10           GPU  3.623304e-03           nan           nan     1           N/A        5.295414e+03            1.818989e-12
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+                    bcsstk02.mtx        double            66            66          4356                 ICM_32 PP 1e-05           GPU  3.585965e-03           nan           nan     1  1.010413e+00        5.295414e+03            1.818989e-12
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+                    bcsstk02.mtx        double            66            66          4356                  ICM_32 PP 0.01           GPU  3.567300e-03           nan           nan     1  1.015699e+00        5.295414e+03            1.818989e-12
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+                    bcsstk02.mtx        double            66            66          4356                   ICM_32 PP 0.1           GPU  3.564735e-03           nan           nan     1  1.016430e+00        5.295414e+03            7.858034e-10
+
+
+St čen 21 17:06:09 CEST 2023
+-> Running benchmark for: ./mtx-matrices/bcsstk03/bcsstk03.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    bcsstk03.mtx        double           112           112           640                 ICM_32 PP 1e-10           GPU  1.620755e-02           nan           nan     1           N/A        3.648941e+11            7.629395e-06
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+                    bcsstk03.mtx        double           112           112           640                 ICM_32 PP 1e-05           GPU  1.736792e-02           nan           nan     1  9.331893e-01        3.648941e+11            7.629395e-06
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+                    bcsstk03.mtx        double           112           112           640                  ICM_32 PP 0.01           GPU  1.614218e-02           nan           nan     1  1.004050e+00        3.648941e+11            7.629395e-06
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+                    bcsstk03.mtx        double           112           112           640                   ICM_32 PP 0.1           GPU  1.623816e-02           nan           nan     1  9.981152e-01        3.648941e+11            7.629395e-06
+
+
+St čen 21 17:06:10 CEST 2023
+-> Running benchmark for: ./mtx-matrices/bp_0/bp_0.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                        bp_0.mtx        double           822           822          3276                 ICM_32 PP 1e-10           GPU  1.710224e-01           nan           nan     1           N/A        2.389500e+02            1.776357e-15
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+                        bp_0.mtx        double           822           822          3276                 ICM_32 PP 1e-05           GPU  1.857275e-01           nan           nan     1  9.208242e-01        2.389500e+02            1.776357e-15
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+                        bp_0.mtx        double           822           822          3276                  ICM_32 PP 0.01           GPU  1.825059e-01           nan           nan     1  9.370787e-01        2.389500e+02            1.776357e-15
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+                        bp_0.mtx        double           822           822          3276                   ICM_32 PP 0.1           GPU  1.856482e-01           nan           nan     1  9.212177e-01        2.389500e+02            1.776357e-15
+
+
+St čen 21 17:06:25 CEST 2023
+-> Running benchmark for: ./mtx-matrices/bp_1400/bp_1400.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                     bp_1400.mtx        double           822           822          4790                 ICM_32 PP 1e-10           GPU  2.518905e-01           nan           nan     1           N/A        1.241452e+05            3.092282e-11
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+                     bp_1400.mtx        double           822           822          4790                 ICM_32 PP 1e-05           GPU  2.514028e-01           nan           nan     1  1.001940e+00        1.241452e+05            6.428947e-07
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+                     bp_1400.mtx        double           822           822          4790                  ICM_32 PP 0.01           GPU  2.486338e-01           nan           nan     1  1.013098e+00        1.241452e+05            3.834555e-04
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+                     bp_1400.mtx        double           822           822          4790                   ICM_32 PP 0.1           GPU  2.414628e-01           nan           nan     1  1.043185e+00        1.352253e+05            1.000000e+00
+
+
+St čen 21 17:06:41 CEST 2023
+-> Running benchmark for: ./mtx-matrices/c-22/c-22.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                        c-22.mtx        double          3792          3792         28870                 ICM_32 PP 1e-10           GPU  1.194495e+00           nan           nan     1           N/A        3.625237e+03            8.624959e-10
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+                        c-22.mtx        double          3792          3792         28870                 ICM_32 PP 1e-05           GPU  1.129992e+00           nan           nan     1  1.057083e+00        3.625237e+03            1.533951e-05
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+                        c-22.mtx        double          3792          3792         28870                  ICM_32 PP 0.01           GPU  1.106315e+00           nan           nan     1  1.079706e+00        6.272980e+05            4.532323e-02
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+                        c-22.mtx        double          3792          3792         28870                   ICM_32 PP 0.1           GPU  1.085695e+00           nan           nan     1  1.100212e+00        6.272980e+05            1.971397e-01
+
+
+St čen 21 17:09:09 CEST 2023
+-> Running benchmark for: ./mtx-matrices/circuit204/circuit204.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                  circuit204.mtx        double          1020          1020          5883                 ICM_32 PP 1e-10           GPU  1.330286e-01           nan           nan     1           N/A        3.131398e+08            8.425241e-08
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+                  circuit204.mtx        double          1020          1020          5883                 ICM_32 PP 1e-05           GPU  1.342118e-01           nan           nan     1  9.911842e-01        5.265703e+08            2.674224e-05
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+                  circuit204.mtx        double          1020          1020          5883                  ICM_32 PP 0.01           GPU  1.332085e-01           nan           nan     1  9.986495e-01        1.223839e+08            2.976257e+01
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+                  circuit204.mtx        double          1020          1020          5883                   ICM_32 PP 0.1           GPU  1.252623e-01           nan           nan     1  1.062001e+00        1.280033e+11            2.976257e+01
+
+
+St čen 21 17:09:18 CEST 2023
+-> Running benchmark for: ./mtx-matrices/crout_python/crout_python.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                crout_python.mtx        double             4             4            15                 ICM_32 PP 1e-10           GPU  4.671220e-04           nan           nan     1           N/A        7.527778e+00            0.000000e+00
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+                crout_python.mtx        double             4             4            15                 ICM_32 PP 1e-05           GPU  4.516630e-04           nan           nan     1  1.034227e+00        7.527778e+00            0.000000e+00
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+                crout_python.mtx        double             4             4            15                  ICM_32 PP 0.01           GPU  4.065290e-04           nan           nan     1  1.149050e+00        7.527778e+00            0.000000e+00
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+                crout_python.mtx        double             4             4            15                   ICM_32 PP 0.1           GPU  4.010690e-04           nan           nan     1  1.164692e+00        7.527778e+00            0.000000e+00
+
+
+St čen 21 17:09:19 CEST 2023
+-> Running benchmark for: ./mtx-matrices/exdata_1/exdata_1.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    exdata_1.mtx        double          6001          6001       2269500                 ICM_32 PP 1e-10           GPU  1.297550e+01           nan           nan     1           N/A        3.584281e+08            1.767032e-08
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+                    exdata_1.mtx        double          6001          6001       2269500                 ICM_32 PP 1e-05           GPU  1.176116e+01           nan           nan     1  1.103251e+00        3.584281e+08            4.115572e-04
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+                    exdata_1.mtx        double          6001          6001       2269500                  ICM_32 PP 0.01           GPU  1.105271e+01           nan           nan     1  1.173966e+00        3.584281e+08            1.592718e+00
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+                    exdata_1.mtx        double          6001          6001       2269500                   ICM_32 PP 0.1           GPU  1.122454e+01           nan           nan     1  1.155994e+00        3.584281e+08            2.574197e+01
+
+
+St čen 21 17:25:38 CEST 2023
+-> Running benchmark for: ./mtx-matrices/fp/fp.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                          fp.mtx        double          7548          7548        834222                 ICM_32 PP 1e-10           GPU  6.597441e+00           nan           nan     1           N/A        1.939503e+03            4.824161e-10
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+                          fp.mtx        double          7548          7548        834222                 ICM_32 PP 1e-05           GPU  5.446368e+00           nan           nan     1  1.211347e+00        1.939503e+03            4.632100e-05
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+                          fp.mtx        double          7548          7548        834222                  ICM_32 PP 0.01           GPU  4.589518e+00           nan           nan     1  1.437502e+00        1.939318e+03            2.800301e-02
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+                          fp.mtx        double          7548          7548        834222                   ICM_32 PP 0.1           GPU  4.172327e+00           nan           nan     1  1.581238e+00        1.939046e+03            5.842453e-01
+
+
+St čen 21 17:44:44 CEST 2023
+-> Running benchmark for: ./mtx-matrices/freeFlyingRobot_9/freeFlyingRobot_9.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+           freeFlyingRobot_9.mtx        double          4778          4778         39964                 ICM_32 PP 1e-10           GPU  7.489701e+00           nan           nan     1           N/A        2.285634e+09            1.196750e-07
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+           freeFlyingRobot_9.mtx        double          4778          4778         39964                 ICM_32 PP 1e-05           GPU  7.462714e+00           nan           nan     1  1.003616e+00        2.285634e+09            1.855822e-07
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+           freeFlyingRobot_9.mtx        double          4778          4778         39964                  ICM_32 PP 0.01           GPU  7.462061e+00           nan           nan     1  1.003704e+00        2.285634e+09            3.428203e+02
+	 Using processing tolerance = 0.1
+timeFunction failed due to a C++ exception with description: -!> Input Matrix 'A' is singular - division by 0 during decomposition with partial pivoting. LU( 4321, 4321 ) = 0. Cannot divide by 0.
+           freeFlyingRobot_9.mtx        double          4778          4778         39964                   ICM_32 PP 0.1           GPU           nan           nan           nan     0           nan        2.285634e+09            3.428203e+02
+
+
+St čen 21 17:51:50 CEST 2023
+-> Running benchmark for: ./mtx-matrices/garon1/garon1.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                      garon1.mtx        double          3175          3175         84723                 ICM_32 PP 1e-10           GPU  6.950946e-01           nan           nan     1           N/A        1.303015e+01            3.468356e-10
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+                      garon1.mtx        double          3175          3175         84723                 ICM_32 PP 1e-05           GPU  5.437634e-01           nan           nan     1  1.278303e+00        1.303017e+01            4.261620e-05
+	 Using processing tolerance = 0.01
+timeFunction failed due to a C++ exception with description: -!> Input Matrix 'A' is singular - division by 0 during decomposition with partial pivoting. LU( 2881, 2881 ) = 0. Cannot divide by 0.
+                      garon1.mtx        double          3175          3175         84723                  ICM_32 PP 0.01           GPU           nan           nan           nan     0           nan        1.303911e+01            4.251176e-02
+	 Using processing tolerance = 0.1
+timeFunction failed due to a C++ exception with description: -!> Input Matrix 'A' is singular - division by 0 during decomposition with partial pivoting. LU( 2881, 2881 ) = 0. Cannot divide by 0.
+                      garon1.mtx        double          3175          3175         84723                   ICM_32 PP 0.1           GPU           nan           nan           nan     0           nan        1.467953e+01            3.355622e-01
+
+
+St čen 21 17:53:14 CEST 2023
+-> Running benchmark for: ./mtx-matrices/heart1/heart1.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                      heart1.mtx        double          3557          3557       1385317                 ICM_32 PP 1e-10           GPU  2.301223e+00           nan           nan     1           N/A        5.149922e+05            2.883973e-07
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+                      heart1.mtx        double          3557          3557       1385317                 ICM_32 PP 1e-05           GPU  2.125982e+00           nan           nan     1  1.082428e+00        5.149922e+05            7.252538e-02
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+                      heart1.mtx        double          3557          3557       1385317                  ICM_32 PP 0.01           GPU  2.005447e+00           nan           nan     1  1.147486e+00        5.149922e+05            4.877569e+01
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+                      heart1.mtx        double          3557          3557       1385317                   ICM_32 PP 0.1           GPU  1.961675e+00           nan           nan     1  1.173091e+00        5.149922e+05            2.178249e+02
+
+
+St čen 21 17:55:26 CEST 2023
+-> Running benchmark for: ./mtx-matrices/lns_131/lns_131.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                     lns_131.mtx        double           131           131           536                 ICM_32 PP 1e-10           GPU  4.644984e-03           nan           nan     1           N/A        2.094355e+13            3.906250e-03
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+                     lns_131.mtx        double           131           131           536                 ICM_32 PP 1e-05           GPU  4.456763e-03           nan           nan     1  1.042233e+00        2.094355e+13            3.906250e-03
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+                     lns_131.mtx        double           131           131           536                  ICM_32 PP 0.01           GPU  4.330798e-03           nan           nan     1  1.072547e+00        2.094355e+13            3.906250e-03
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+                     lns_131.mtx        double           131           131           536                   ICM_32 PP 0.1           GPU  4.202129e-03           nan           nan     1  1.105388e+00        2.094355e+13            3.906250e-03
+
+
+St čen 21 17:55:26 CEST 2023
+-> Running benchmark for: ./mtx-matrices/msc10848/msc10848.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    msc10848.mtx        double         10848         10848       1229776                 ICM_32 PP 1e-10           GPU  2.285410e+02           nan           nan     1           N/A        5.921974e+11            1.209947e-04
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+                    msc10848.mtx        double         10848         10848       1229776                 ICM_32 PP 1e-05           GPU  2.274416e+02           nan           nan     1  1.004834e+00        5.921974e+11            7.457160e+00
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+                    msc10848.mtx        double         10848         10848       1229776                  ICM_32 PP 0.01           GPU  2.267754e+02           nan           nan     1  1.007786e+00        5.921974e+11            1.272808e+04
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+                    msc10848.mtx        double         10848         10848       1229776                   ICM_32 PP 0.1           GPU  2.265503e+02           nan           nan     1  1.008787e+00        5.921974e+11            8.466514e+04
+
+
+St čen 21 19:54:47 CEST 2023
+-> Running benchmark for: ./mtx-matrices/nd3k/nd3k.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                        nd3k.mtx        double          9000          9000       3279690                 ICM_32 PP 1e-10           GPU  1.031587e+02           nan           nan     1           N/A        6.068903e+01            2.121668e-10
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+                        nd3k.mtx        double          9000          9000       3279690                 ICM_32 PP 1e-05           GPU  1.010441e+02           nan           nan     1  1.020927e+00        6.068903e+01            9.518894e-05
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+                        nd3k.mtx        double          9000          9000       3279690                  ICM_32 PP 0.01           GPU  9.910149e+01           nan           nan     1  1.040940e+00        6.068908e+01            3.525792e-02
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+                        nd3k.mtx        double          9000          9000       3279690                   ICM_32 PP 0.1           GPU  9.846048e+01           nan           nan     1  1.047717e+00        6.068773e+01            2.670036e-01
+
+
+St čen 21 20:39:17 CEST 2023
+-> Running benchmark for: ./mtx-matrices/orani678/orani678.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    orani678.mtx        double          2529          2529         90158                 ICM_32 PP 1e-10           GPU  1.925967e+00           nan           nan     1           N/A        1.036766e+12            1.464844e-03
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+                    orani678.mtx        double          2529          2529         90158                 ICM_32 PP 1e-05           GPU  1.853811e+00           nan           nan     1  1.038923e+00        5.086941e+11            7.812500e-03
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+                    orani678.mtx        double          2529          2529         90158                  ICM_32 PP 0.01           GPU  1.760680e+00           nan           nan     1  1.093876e+00        5.650932e+13            1.000000e+00
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+                    orani678.mtx        double          2529          2529         90158                   ICM_32 PP 0.1           GPU  1.723763e+00           nan           nan     1  1.117303e+00        4.620423e+13            3.200000e+01
+
+
+St čen 21 20:44:15 CEST 2023
+-> Running benchmark for: ./mtx-matrices/sinc15/sinc15.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                      sinc15.mtx        double         11532         11532        551184                 ICM_32 PP 1e-10           GPU  2.879656e+02           nan           nan     1           N/A        6.756487e+13            5.312500e-01
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+                      sinc15.mtx        double         11532         11532        551184                 ICM_32 PP 1e-05           GPU  2.851070e+02           nan           nan     1  1.010026e+00        3.359381e+13            1.625000e+00
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+                      sinc15.mtx        double         11532         11532        551184                  ICM_32 PP 0.01           GPU  2.826557e+02           nan           nan     1  1.018786e+00        3.958036e+13            4.171875e+00
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+                      sinc15.mtx        double         11532         11532        551184                   ICM_32 PP 0.1           GPU  2.816486e+02           nan           nan     1  1.022429e+00        3.656799e+13            8.187055e+00
+
+
+Čt čen 22 02:46:53 CEST 2023
+-> Running benchmark for: ./mtx-matrices/sistek/poc-20_2_2.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                  poc-20_2_2.mtx        double          1274          1274       1304296                 ICM_32 PP 1e-10           GPU  3.789569e-02           nan           nan     1           N/A        7.015499e+04            2.910383e-11
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+                  poc-20_2_2.mtx        double          1274          1274       1304296                 ICM_32 PP 1e-05           GPU  2.851869e-02           nan           nan     1  1.328802e+00        6.989241e+04            2.106804e-06
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+                  poc-20_2_2.mtx        double          1274          1274       1304296                  ICM_32 PP 0.01           GPU  1.691120e-02           nan           nan     1  2.240864e+00        5.817251e+04            4.597850e-03
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+                  poc-20_2_2.mtx        double          1274          1274       1304296                   ICM_32 PP 0.1           GPU  1.220519e-02           nan           nan     1  3.104885e+00        5.248704e+04            4.989778e-02
+
+
+Čt čen 22 02:47:01 CEST 2023
+-> Running benchmark for: ./mtx-matrices/sistek/poc-24_2_2.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                  poc-24_2_2.mtx        double          1814          1814       2749120                 ICM_32 PP 1e-10           GPU  8.584310e-02           nan           nan     1           N/A        1.481084e+05            2.910383e-11
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+                  poc-24_2_2.mtx        double          1814          1814       2749120                 ICM_32 PP 1e-05           GPU  6.368248e-02           nan           nan     1  1.347986e+00        1.443382e+05            4.096153e-06
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+                  poc-24_2_2.mtx        double          1814          1814       2749120                  ICM_32 PP 0.01           GPU  3.518117e-02           nan           nan     1  2.440030e+00        1.120709e+05            3.104926e-03
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+                  poc-24_2_2.mtx        double          1814          1814       2749120                   ICM_32 PP 0.1           GPU  2.431382e-02           nan           nan     1  3.530630e+00        8.712332e+04            4.687355e-02
+
+
+Čt čen 22 02:47:19 CEST 2023
+-> Running benchmark for: ./mtx-matrices/sistek/poc-28_2_2.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                  poc-28_2_2.mtx        double          2450          2450       5153080                 ICM_32 PP 1e-10           GPU  1.322812e-01           nan           nan     1           N/A        2.782024e+05            2.910383e-11
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+                  poc-28_2_2.mtx        double          2450          2450       5153080                 ICM_32 PP 1e-05           GPU  9.658588e-02           nan           nan     1  1.369571e+00        2.662421e+05            3.582163e-06
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+                  poc-28_2_2.mtx        double          2450          2450       5153080                  ICM_32 PP 0.01           GPU  5.248465e-02           nan           nan     1  2.520379e+00        1.998607e+05            3.226201e-03
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+                  poc-28_2_2.mtx        double          2450          2450       5153080                   ICM_32 PP 0.1           GPU  3.820487e-02           nan           nan     1  3.462418e+00        1.493689e+05            3.517802e-02
+
+
+Čt čen 22 02:48:03 CEST 2023
+-> Running benchmark for: ./mtx-matrices/sistek/poc-32_2_2.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                  poc-32_2_2.mtx        double          3182          3182       8868688                 ICM_32 PP 1e-10           GPU  1.906073e-01           nan           nan     1           N/A        4.798872e+05            8.731149e-11
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+                  poc-32_2_2.mtx        double          3182          3182       8868688                 ICM_32 PP 1e-05           GPU  1.371525e-01           nan           nan     1  1.389747e+00        4.554498e+05            3.500171e-06
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+                  poc-32_2_2.mtx        double          3182          3182       8868688                  ICM_32 PP 0.01           GPU  7.103578e-02           nan           nan     1  2.683257e+00        3.264025e+05            2.782897e-03
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+                  poc-32_2_2.mtx        double          3182          3182       8868688                   ICM_32 PP 0.1           GPU  5.427691e-02           nan           nan     1  3.511756e+00        2.509740e+05            5.209540e-02
+
+
+Čt čen 22 02:49:35 CEST 2023
+-> Running benchmark for: ./mtx-matrices/sistek/poc-8_4_2-938719427.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+         poc-8_4_2-938719427.mtx        double           230           230         28960                 ICM_32 PP 1e-10           GPU  2.242441e-03           nan           nan     1           N/A        3.144056e+03            1.875833e-11
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+         poc-8_4_2-938719427.mtx        double           230           230         28960                 ICM_32 PP 1e-05           GPU  1.597248e-03           nan           nan     1  1.403940e+00        3.144056e+03            2.827675e-06
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+         poc-8_4_2-938719427.mtx        double           230           230         28960                  ICM_32 PP 0.01           GPU  1.213012e-03           nan           nan     1  1.848655e+00        3.144051e+03            3.773310e-03
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+         poc-8_4_2-938719427.mtx        double           230           230         28960                   ICM_32 PP 0.1           GPU  1.103718e-03           nan           nan     1  2.031716e+00        3.144037e+03            2.279338e-02
+
+
+Čt čen 22 02:49:36 CEST 2023
+-> Running benchmark for: ./mtx-matrices/sistek/poc-8_4_2-938719741.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+         poc-8_4_2-938719741.mtx        double           298           298         54816                 ICM_32 PP 1e-10           GPU  5.845558e-03           nan           nan     1           N/A        3.162274e+03            7.275958e-12
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+         poc-8_4_2-938719741.mtx        double           298           298         54816                 ICM_32 PP 1e-05           GPU  4.399783e-03           nan           nan     1  1.328601e+00        3.162269e+03            5.019140e-07
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+         poc-8_4_2-938719741.mtx        double           298           298         54816                  ICM_32 PP 0.01           GPU  2.980907e-03           nan           nan     1  1.961000e+00        3.054970e+03            1.626859e-03
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+         poc-8_4_2-938719741.mtx        double           298           298         54816                   ICM_32 PP 0.1           GPU  2.429279e-03           nan           nan     1  2.406293e+00        2.759992e+03            4.025096e-02
+
+
+Čt čen 22 02:49:37 CEST 2023
+-> Running benchmark for: ./mtx-matrices/sistek/poc-8_4_2-938719829.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+         poc-8_4_2-938719829.mtx        double           298           298         54816                 ICM_32 PP 1e-10           GPU  5.814220e-03           nan           nan     1           N/A        3.162274e+03            7.275958e-12
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+         poc-8_4_2-938719829.mtx        double           298           298         54816                 ICM_32 PP 1e-05           GPU  4.441260e-03           nan           nan     1  1.309137e+00        3.162269e+03            5.019140e-07
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+         poc-8_4_2-938719829.mtx        double           298           298         54816                  ICM_32 PP 0.01           GPU  2.968795e-03           nan           nan     1  1.958444e+00        3.054970e+03            1.626859e-03
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+         poc-8_4_2-938719829.mtx        double           298           298         54816                   ICM_32 PP 0.1           GPU  2.403661e-03           nan           nan     1  2.418902e+00        2.759992e+03            4.025096e-02
+
+
+Čt čen 22 02:49:37 CEST 2023
+-> Running benchmark for: ./mtx-matrices/spaceShuttleEntry_3/spaceShuttleEntry_3.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+         spaceShuttleEntry_3.mtx        double          1834          1834         28757                 ICM_32 PP 1e-10           GPU  6.388234e-01           nan           nan     1           N/A        1.391649e+09            2.503395e-06
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+         spaceShuttleEntry_3.mtx        double          1834          1834         28757                 ICM_32 PP 1e-05           GPU  6.262186e-01           nan           nan     1  1.020128e+00        1.391649e+09            1.099219e-05
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+         spaceShuttleEntry_3.mtx        double          1834          1834         28757                  ICM_32 PP 0.01           GPU  6.143428e-01           nan           nan     1  1.039848e+00        1.391649e+09            4.055636e-02
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+         spaceShuttleEntry_3.mtx        double          1834          1834         28757                   ICM_32 PP 0.1           GPU  6.050825e-01           nan           nan     1  1.055762e+00        1.391649e+09            5.136231e-01
+
+
+Čt čen 22 02:50:11 CEST 2023
+-> Running benchmark for: ./mtx-matrices/TSC_OPF_1047/TSC_OPF_1047.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                TSC_OPF_1047.mtx        double          8140          8140       2012833                 ICM_32 PP 1e-10           GPU  1.838276e+01           nan           nan     1           N/A        6.282788e+07            4.768372e-07
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+                TSC_OPF_1047.mtx        double          8140          8140       2012833                 ICM_32 PP 1e-05           GPU  1.704979e+01           nan           nan     1  1.078181e+00        6.282788e+07            3.222213e-04
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+                TSC_OPF_1047.mtx        double          8140          8140       2012833                  ICM_32 PP 0.01           GPU  1.709012e+01           nan           nan     1  1.075637e+00        6.282788e+07            3.544439e-02
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+                TSC_OPF_1047.mtx        double          8140          8140       2012833                   ICM_32 PP 0.1           GPU  1.607870e+01           nan           nan     1  1.143299e+00        6.282788e+07            4.760444e+00
+
+
+Čt čen 22 03:16:18 CEST 2023
+-> Running benchmark for: ./mtx-matrices/TSOPF_FS_b162_c1/TSOPF_FS_b162_c1.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+            TSOPF_FS_b162_c1.mtx        double         10798         10798        608540                 ICM_32 PP 1e-10           GPU  9.862729e+01           nan           nan     1           N/A        6.687162e+04            8.871827e-11
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+            TSOPF_FS_b162_c1.mtx        double         10798         10798        608540                 ICM_32 PP 1e-05           GPU  7.611504e+01           nan           nan     1  1.295766e+00        2.533959e+07            3.713789e-05
+	 Using processing tolerance = 0.01
+timeFunction failed due to a C++ exception with description: -!> Input Matrix 'A' is singular - division by 0 during decomposition with partial pivoting. LU( 10241, 10241 ) = 0. Cannot divide by 0.
+            TSOPF_FS_b162_c1.mtx        double         10798         10798        608540                  ICM_32 PP 0.01           GPU           nan           nan           nan     0           nan        9.898682e+05            1.776788e+00
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+            TSOPF_FS_b162_c1.mtx        double         10798         10798        608540                   ICM_32 PP 0.1           GPU  9.165108e+01           nan           nan     1  1.076117e+00        2.361797e+06            3.614872e-01
+
+
+Čt čen 22 06:03:35 CEST 2023
+-> Running benchmark for: ./mtx-matrices/west0067/west0067.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    west0067.mtx        double            67            67           294                 ICM_32 PP 1e-10           GPU  9.802146e-03           nan           nan     1           N/A        8.693984e+01            7.105427e-15
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+                    west0067.mtx        double            67            67           294                 ICM_32 PP 1e-05           GPU  9.285381e-03           nan           nan     1  1.055654e+00        8.693984e+01            7.105427e-15
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+                    west0067.mtx        double            67            67           294                  ICM_32 PP 0.01           GPU  9.086269e-03           nan           nan     1  1.078787e+00        8.693984e+01            3.133802e-04
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+                    west0067.mtx        double            67            67           294                   ICM_32 PP 0.1           GPU  8.907977e-03           nan           nan     1  1.100378e+00        8.693984e+01            3.133802e-04
+
+
+Čt čen 22 06:03:35 CEST 2023
+-> Running benchmark for: ./mtx-matrices/west0156/west0156.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    west0156.mtx        double           156           156           362                 ICM_32 PP 1e-10           GPU  1.845644e-02           nan           nan     1           N/A        8.375021e+13            1.421085e-14
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+                    west0156.mtx        double           156           156           362                 ICM_32 PP 1e-05           GPU  1.846125e-02           nan           nan     1  9.997395e-01        8.375021e+13            1.421085e-14
+	 Using processing tolerance = 0.01
+timeFunction failed due to a C++ exception with description: -!> Input Matrix 'A' is singular - division by 0 during decomposition with partial pivoting. LU( 153, 153 ) = 0. Cannot divide by 0.
+                    west0156.mtx        double           156           156           362                  ICM_32 PP 0.01           GPU           nan           nan           nan     0           nan        8.375021e+13            1.002280e+00
+	 Using processing tolerance = 0.1
+timeFunction failed due to a C++ exception with description: -!> Input Matrix 'A' is singular - division by 0 during decomposition with partial pivoting. LU( 153, 153 ) = 0. Cannot divide by 0.
+                    west0156.mtx        double           156           156           362                   ICM_32 PP 0.1           GPU           nan           nan           nan     0           nan        8.375021e+13            1.002280e+00
+
+
+Čt čen 22 06:03:36 CEST 2023
+-> Running benchmark for: ./mtx-matrices/west0381/west0381.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+                    west0381.mtx        double           381           381          2134                 ICM_32 PP 1e-10           GPU  8.983845e-02           nan           nan     1           N/A        2.635496e+10            2.047740e-05
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+                    west0381.mtx        double           381           381          2134                 ICM_32 PP 1e-05           GPU  8.779217e-02           nan           nan     1  1.023308e+00        2.635496e+10            2.047740e-05
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+                    west0381.mtx        double           381           381          2134                  ICM_32 PP 0.01           GPU  8.522825e-02           nan           nan     1  1.054092e+00        2.635496e+10            2.271136e-04
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+                    west0381.mtx        double           381           381          2134                   ICM_32 PP 0.1           GPU  9.207563e-02           nan           nan     1  9.757028e-01        2.635496e+10            3.681181e-03
+
+
+Čt čen 22 06:03:39 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka10135_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka10135_<-1000-1000>_pivoting.mtx        double         10135         10135     102713214                 ICM_32 PP 1e-10           GPU  2.435026e+02           nan           nan     1           N/A        2.014605e+09            4.179522e-06
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+Cejka10135_<-1000-1000>_pivoting.mtx        double         10135         10135     102713214                 ICM_32 PP 1e-05           GPU  2.433519e+02           nan           nan     1  1.000619e+00        2.005360e+09            1.103437e-03
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+Cejka10135_<-1000-1000>_pivoting.mtx        double         10135         10135     102713214                  ICM_32 PP 0.01           GPU  2.434252e+02           nan           nan     1  1.000318e+00        1.130129e+09            1.160181e+00
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+Cejka10135_<-1000-1000>_pivoting.mtx        double         10135         10135     102713214                   ICM_32 PP 0.1           GPU  2.434428e+02           nan           nan     1  1.000246e+00        1.642513e+09            7.560167e+01
+
+
+Čt čen 22 08:21:32 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka1157_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka1157_<-1000-1000>_pivoting.mtx        double          1157          1157       1338040                 ICM_32 PP 1e-10           GPU  4.376521e-01           nan           nan     1           N/A        1.234143e+08            9.014025e-08
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+Cejka1157_<-1000-1000>_pivoting.mtx        double          1157          1157       1338040                 ICM_32 PP 1e-05           GPU  4.347720e-01           nan           nan     1  1.006624e+00        1.234143e+08            9.014025e-08
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+Cejka1157_<-1000-1000>_pivoting.mtx        double          1157          1157       1338040                  ICM_32 PP 0.01           GPU  4.345256e-01           nan           nan     1  1.007195e+00        1.234143e+08            9.014025e-08
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+Cejka1157_<-1000-1000>_pivoting.mtx        double          1157          1157       1338040                   ICM_32 PP 0.1           GPU  4.355818e-01           nan           nan     1  1.004753e+00        1.234143e+08            9.014025e-08
+
+
+Čt čen 22 08:21:43 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka2599_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka2599_<-1000-1000>_pivoting.mtx        double          2599          2599       6753502                 ICM_32 PP 1e-10           GPU  2.523518e+00           nan           nan     1           N/A        1.052090e+08            8.916618e-08
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+Cejka2599_<-1000-1000>_pivoting.mtx        double          2599          2599       6753502                 ICM_32 PP 1e-05           GPU  2.520309e+00           nan           nan     1  1.001273e+00        1.052133e+08            4.882881e-02
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+Cejka2599_<-1000-1000>_pivoting.mtx        double          2599          2599       6753502                  ICM_32 PP 0.01           GPU  2.505966e+00           nan           nan     1  1.007004e+00        8.287333e+07            1.103287e+01
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+Cejka2599_<-1000-1000>_pivoting.mtx        double          2599          2599       6753502                   ICM_32 PP 0.1           GPU  2.513252e+00           nan           nan     1  1.004085e+00        7.012176e+07            1.050521e+03
+
+
+Čt čen 22 08:23:31 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka3839_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka3839_<-1000-1000>_pivoting.mtx        double          3839          3839      14736045                 ICM_32 PP 1e-10           GPU  7.448830e+00           nan           nan     1           N/A        6.799189e+08            6.431166e-07
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+Cejka3839_<-1000-1000>_pivoting.mtx        double          3839          3839      14736045                 ICM_32 PP 1e-05           GPU  7.440080e+00           nan           nan     1  1.001176e+00        6.795530e+08            2.770441e-04
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+Cejka3839_<-1000-1000>_pivoting.mtx        double          3839          3839      14736045                  ICM_32 PP 0.01           GPU  7.393910e+00           nan           nan     1  1.007428e+00        1.383632e+08            1.773161e+01
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+Cejka3839_<-1000-1000>_pivoting.mtx        double          3839          3839      14736045                   ICM_32 PP 0.1           GPU  7.427495e+00           nan           nan     1  1.002872e+00        4.547373e+08            1.124955e+01
+
+
+Čt čen 22 08:29:35 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka4156_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka4156_<-1000-1000>_pivoting.mtx        double          4156          4156      17270197                 ICM_32 PP 1e-10           GPU  9.380185e+00           nan           nan     1           N/A        1.107687e+08            1.778180e-07
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+Cejka4156_<-1000-1000>_pivoting.mtx        double          4156          4156      17270197                 ICM_32 PP 1e-05           GPU  9.371273e+00           nan           nan     1  1.000951e+00        1.107687e+08            1.059014e-04
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+Cejka4156_<-1000-1000>_pivoting.mtx        double          4156          4156      17270197                  ICM_32 PP 0.01           GPU  9.364321e+00           nan           nan     1  1.001694e+00        1.107687e+08            7.313312e-02
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+Cejka4156_<-1000-1000>_pivoting.mtx        double          4156          4156      17270197                   ICM_32 PP 0.1           GPU  9.361743e+00           nan           nan     1  1.001970e+00        1.107687e+08            1.600145e+00
+
+
+Čt čen 22 08:37:16 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka5069_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka5069_<-1000-1000>_pivoting.mtx        double          5069          5069      25692197                 ICM_32 PP 1e-10           GPU  1.860172e+01           nan           nan     1           N/A        6.343784e+09            1.925057e-06
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+Cejka5069_<-1000-1000>_pivoting.mtx        double          5069          5069      25692197                 ICM_32 PP 1e-05           GPU  1.860731e+01           nan           nan     1  9.996993e-01        6.343784e+09            1.925057e-06
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+Cejka5069_<-1000-1000>_pivoting.mtx        double          5069          5069      25692197                  ICM_32 PP 0.01           GPU  1.859761e+01           nan           nan     1  1.000221e+00        2.370725e+08            2.347202e+01
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+Cejka5069_<-1000-1000>_pivoting.mtx        double          5069          5069      25692197                   ICM_32 PP 0.1           GPU  1.861200e+01           nan           nan     1  9.994478e-01        2.370725e+08            2.347202e+01
+
+
+Čt čen 22 08:51:34 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka558_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka558_<-1000-1000>_pivoting.mtx        double           558           558        311090                 ICM_32 PP 1e-10           GPU  1.612559e-01           nan           nan     1           N/A        5.534329e+06            9.611540e-09
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+Cejka558_<-1000-1000>_pivoting.mtx        double           558           558        311090                 ICM_32 PP 1e-05           GPU  1.520323e-01           nan           nan     1  1.060669e+00        5.534329e+06            9.611540e-09
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+Cejka558_<-1000-1000>_pivoting.mtx        double           558           558        311090                  ICM_32 PP 0.01           GPU  1.553981e-01           nan           nan     1  1.037696e+00        5.534329e+06            9.611540e-09
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+Cejka558_<-1000-1000>_pivoting.mtx        double           558           558        311090                   ICM_32 PP 0.1           GPU  1.532321e-01           nan           nan     1  1.052364e+00        5.534329e+06            9.611540e-09
+
+
+Čt čen 22 08:51:37 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka6075_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka6075_<-1000-1000>_pivoting.mtx        double          6075          6075      36902629                 ICM_32 PP 1e-10           GPU  3.437114e+01           nan           nan     1           N/A        1.891733e+09            1.421717e-06
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+Cejka6075_<-1000-1000>_pivoting.mtx        double          6075          6075      36902629                 ICM_32 PP 1e-05           GPU  3.433816e+01           nan           nan     1  1.000961e+00        1.901574e+09            1.996564e-03
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+Cejka6075_<-1000-1000>_pivoting.mtx        double          6075          6075      36902629                  ICM_32 PP 0.01           GPU  3.430085e+01           nan           nan     1  1.002049e+00        1.170888e+08            1.110558e+01
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+Cejka6075_<-1000-1000>_pivoting.mtx        double          6075          6075      36902629                   ICM_32 PP 0.1           GPU  3.439922e+01           nan           nan     1  9.991839e-01        9.959108e+08            2.855386e+01
+
+
+Čt čen 22 09:16:41 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka6192_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka6192_<-1000-1000>_pivoting.mtx        double          6192          6192      38337786                 ICM_32 PP 1e-10           GPU  3.967510e+01           nan           nan     1           N/A        2.201189e+09            1.419467e-06
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+Cejka6192_<-1000-1000>_pivoting.mtx        double          6192          6192      38337786                 ICM_32 PP 1e-05           GPU  3.966082e+01           nan           nan     1  1.000360e+00        2.404145e+09            2.927087e-02
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+Cejka6192_<-1000-1000>_pivoting.mtx        double          6192          6192      38337786                  ICM_32 PP 0.01           GPU  3.963061e+01           nan           nan     1  1.001123e+00        6.308471e+08            8.502728e+01
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+Cejka6192_<-1000-1000>_pivoting.mtx        double          6192          6192      38337786                   ICM_32 PP 0.1           GPU  3.962516e+01           nan           nan     1  1.001261e+00        6.308471e+08            8.502728e+01
+
+
+Čt čen 22 09:43:55 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka6574_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka6574_<-1000-1000>_pivoting.mtx        double          6574          6574      43214237                 ICM_32 PP 1e-10           GPU  4.846577e+01           nan           nan     1           N/A        1.508698e+09            1.424105e-06
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+Cejka6574_<-1000-1000>_pivoting.mtx        double          6574          6574      43214237                 ICM_32 PP 1e-05           GPU  4.844335e+01           nan           nan     1  1.000463e+00        1.508698e+09            2.760688e-04
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+Cejka6574_<-1000-1000>_pivoting.mtx        double          6574          6574      43214237                  ICM_32 PP 0.01           GPU  4.842144e+01           nan           nan     1  1.000915e+00        1.596791e+09            1.617624e-02
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+Cejka6574_<-1000-1000>_pivoting.mtx        double          6574          6574      43214237                   ICM_32 PP 0.1           GPU  4.836765e+01           nan           nan     1  1.002029e+00        1.596791e+09            3.872045e+01
+
+
+Čt čen 22 10:17:04 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka665_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka665_<-1000-1000>_pivoting.mtx        double           665           665        441886                 ICM_32 PP 1e-10           GPU  1.711338e-01           nan           nan     1           N/A        5.353344e+06            2.739853e-09
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+Cejka665_<-1000-1000>_pivoting.mtx        double           665           665        441886                 ICM_32 PP 1e-05           GPU  1.633885e-01           nan           nan     1  1.047404e+00        5.353344e+06            2.739853e-09
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+Cejka665_<-1000-1000>_pivoting.mtx        double           665           665        441886                  ICM_32 PP 0.01           GPU  1.630530e-01           nan           nan     1  1.049560e+00        5.353344e+06            2.739853e-09
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+Cejka665_<-1000-1000>_pivoting.mtx        double           665           665        441886                   ICM_32 PP 0.1           GPU  1.628501e-01           nan           nan     1  1.050868e+00        5.353344e+06            2.739853e-09
+
+
+Čt čen 22 10:17:07 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka7510_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka7510_<-1000-1000>_pivoting.mtx        double          7510          7510      56396360                 ICM_32 PP 1e-10           GPU  7.949934e+01           nan           nan     1           N/A        6.258569e+09            2.995481e-06
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+Cejka7510_<-1000-1000>_pivoting.mtx        double          7510          7510      56396360                 ICM_32 PP 1e-05           GPU  7.943258e+01           nan           nan     1  1.000840e+00        6.258642e+09            8.820745e-04
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+Cejka7510_<-1000-1000>_pivoting.mtx        double          7510          7510      56396360                  ICM_32 PP 0.01           GPU  7.942782e+01           nan           nan     1  1.000900e+00        5.975194e+09            2.588866e+00
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+Cejka7510_<-1000-1000>_pivoting.mtx        double          7510          7510      56396360                   ICM_32 PP 0.1           GPU  7.943561e+01           nan           nan     1  1.000802e+00        5.975194e+09            1.907874e+01
+
+
+Čt čen 22 11:09:36 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka7972_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka7972_<-1000-1000>_pivoting.mtx        double          7972          7972      63548773                 ICM_32 PP 1e-10           GPU  9.410290e+01           nan           nan     1           N/A        2.247414e+09            2.801303e-06
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+Cejka7972_<-1000-1000>_pivoting.mtx        double          7972          7972      63548773                 ICM_32 PP 1e-05           GPU  9.399657e+01           nan           nan     1  1.001131e+00        2.247387e+09            2.162672e-05
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+Cejka7972_<-1000-1000>_pivoting.mtx        double          7972          7972      63548773                  ICM_32 PP 0.01           GPU  9.406176e+01           nan           nan     1  1.000437e+00        1.979215e+09            3.414191e-01
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+Cejka7972_<-1000-1000>_pivoting.mtx        double          7972          7972      63548773                   ICM_32 PP 0.1           GPU  9.406661e+01           nan           nan     1  1.000386e+00        2.520084e+09            1.073770e+00
+
+
+Čt čen 22 12:11:28 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka8385_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka8385_<-1000-1000>_pivoting.mtx        double          8385          8385      70304004                 ICM_32 PP 1e-10           GPU  1.238391e+02           nan           nan     1           N/A        1.627137e+09            1.423371e-06
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+Cejka8385_<-1000-1000>_pivoting.mtx        double          8385          8385      70304004                 ICM_32 PP 1e-05           GPU  1.237861e+02           nan           nan     1  1.000428e+00        1.627154e+09            1.388900e-05
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+Cejka8385_<-1000-1000>_pivoting.mtx        double          8385          8385      70304004                  ICM_32 PP 0.01           GPU  1.237243e+02           nan           nan     1  1.000928e+00        1.494048e+09            1.291876e-01
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+Cejka8385_<-1000-1000>_pivoting.mtx        double          8385          8385      70304004                   ICM_32 PP 0.1           GPU  1.237090e+02           nan           nan     1  1.001052e+00        6.776461e+08            1.167740e+02
+
+
+Čt čen 22 13:26:22 CEST 2023
+-> Running benchmark for: ./mtx-matrices/ZCejka_dense/Cejka9234_<-1000-1000>_pivoting.mtx
+-> log_file: ./log-files/decomposers-benchmark-double.log
+Log file ./log-files/decomposers-benchmark-double.log exists and new logs will be appended.
+-> Benchmark results are only available for 10 loops. Running benchmark for 'CM PP'...
+	 Using processing tolerance = 1e-10
+	 Using processing tolerance = 1e-10
+                     matrix name     precision          rows       columns      nonzeros                          format     performer          time        stddev   stddev/time loops       speedup     Base MaxAbsDiff        Input MaxAbsDiff
+Cejka9234_<-1000-1000>_pivoting.mtx        double          9234          9234      85262150                 ICM_32 PP 1e-10           GPU  1.665193e+02           nan           nan     1           N/A        1.553179e+09            5.064900e-06
+	 Using processing tolerance = 1e-05
+	 Using processing tolerance = 1e-05
+Cejka9234_<-1000-1000>_pivoting.mtx        double          9234          9234      85262150                 ICM_32 PP 1e-05           GPU  1.664379e+02           nan           nan     1  1.000489e+00        1.553179e+09            1.742268e-03
+	 Using processing tolerance = 0.01
+	 Using processing tolerance = 0.01
+Cejka9234_<-1000-1000>_pivoting.mtx        double          9234          9234      85262150                  ICM_32 PP 0.01           GPU  1.664885e+02           nan           nan     1  1.000185e+00        1.564746e+09            1.083590e+02
+	 Using processing tolerance = 0.1
+	 Using processing tolerance = 0.1
+Cejka9234_<-1000-1000>_pivoting.mtx        double          9234          9234      85262150                   ICM_32 PP 0.1           GPU  1.659350e+02           nan           nan     1  1.003521e+00        1.096889e+09            7.148597e+00
+
+
+===== [ FINISH ] Benchmark (precision = double)
+Elapsed: 22hrs 23min 18sec
+
+
+========== [ FINISH ] Decomposers benchmark

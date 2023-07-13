@@ -35,7 +35,7 @@ multiplyMatrices(A, B, C):
 
 Since parallelism is not used, the computation is strictly sequential and would arguably benefit from the faster core clock speeds of a CPU \cite{Cejka2022}.
 However, since the computation of every element in $\mathbf{C}$ is independent of the other elements, it is possible to compute all elements of $\mathbf{C}$ simultaneously.
-In other words, every thread of the GPU can be tasked to compute one element of $\mathbf{C}$, i.e. each thread would only compute the innermost loop.\\
+In other words, every thread of the GPU can be tasked to compute one element of $\mathbf{C}$, i.e., each thread would only compute the innermost loop.\\
 Note that the parallelization of some tasks is not as straightforward, for example, Crout Method with partial pivoting (detailed in Section~\ref{Subsection:theory->ICMPP->LUP->CMPP}).
 
 Similarly to the above-mentioned example of displaying the image on a monitor, the GPU - and its many processing units - greatly benefits from the parallelized workload largely due to its architecture.
@@ -219,7 +219,7 @@ While CUDA provides special functions for intra-warp thread management \cite{Gro
 
 \paragraph{Block} To execute a group of threads they must first be grouped into a \textit{block}.
 A single block can comprise up to 1024 threads (as of CUDA compute capability 3.5) that are organized in either 1D, 2D, or 3D \cite{NVIDIADecember2022}.
-Every thread of a particular block has a unique ID per dimension, i.e. \code{x} for 1D, \code{x}, \code{y} for 2D, and \code{x}, \code{y}, \code{z} for 3D.
+Every thread of a particular block has a unique ID per dimension, i.e., \code{x} for 1D, \code{x}, \code{y} for 2D, and \code{x}, \code{y}, \code{z} for 3D.
 Combined with the fact that the threads of a warp are consecutive, choosing the dimension and size of a thread block can play a crucial role in achieving optimal performance.
 To illustrate this, an example showing threads of a block divided into warps can be seen in Figure~\ref{Figure:theory->CUDA->thread-management->grouping-threads-in-block-into-warps}.
 

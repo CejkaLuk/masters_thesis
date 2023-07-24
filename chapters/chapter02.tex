@@ -8,8 +8,8 @@ Finally, the last section presents the integration of the Decomposition project 
 
 \section{Libraries Used}\label{Section:implementation->libraries-used}
 This section aims to introduce the two main libraries used in the \textit{Decomposition} project.
-The first, \textit{Template Numerical Library (TNL)}\footnote{TNL webpage URL: \url{https://tnl-project.org}}, provides this project with data structures and parallel functionalities.
-The second, \textit{CUDA Libraries} (\textit{cuSOLVER}\footnote{cuSOLVER webpage URL: \url{https://developer.nvidia.com/cusolver}}, \textit{cuBLAS}\footnote{cuBLAS webpage URL: \url{https://developer.nvidia.com/cublas}}), provides state-of-the-art decompositions and linear system solvers.
+The first, \textit{Template Numerical Library (TNL)}\footnote{TNL website URL: \url{https://tnl-project.org}}, provides this project with data structures and parallel functionalities.
+The second, \textit{CUDA Libraries} (\textit{cuSOLVER}\footnote{cuSOLVER website URL: \url{https://developer.nvidia.com/cusolver}}, \textit{cuBLAS}\footnote{cuBLAS website URL: \url{https://developer.nvidia.com/cublas}}), provides state-of-the-art decompositions and linear system solvers.
 
 \subsection{Template Numerical Library (TNL)}\label{Subsection:implementation->libraries-used->TNL}
 The Template Numerical Library (TNL) \cite{Oberhuber2021, Klinkovsky2022} is an open-source and collaborative project licensed under the MIT license.
@@ -1190,9 +1190,9 @@ Thus, aside from unit tests, benchmarks were a crucial part of assuring the qual
 
 \section{BDDCML Integration}\label{Section:implementation->BDDCML}
 Another key task for this thesis was to apply the decomposers and solvers made available by the Decomposition project in the Multilevel BDDC Solver Library (BDDCML) \cite{Sistek2011, Sistek2012, Sousedik2013, Sistek2015}.
-According to the project's website\footnote{\label{Footnote:implementation->BDDCML-integration->BDDCML-webpage}BDDCML webpage URL: \url{https://users.math.cas.cz/~sistek/software/bddcml.html}}, the goal of BDDCML is to provide a scalable parallel solver of linear equations for systems originating from finite element computations.
+According to the project's website\footnote{\label{Footnote:implementation->BDDCML-integration->BDDCML-website}BDDCML website URL: \url{https://users.math.cas.cz/~sistek/software/bddcml.html}}, the goal of BDDCML is to provide a scalable parallel solver of linear equations for systems originating from finite element computations.
 The implementation of the library was inspired by the Adaptive-Multilevel variant of the Balancing Domain Decomposition by Constraints (BDDC) method.
-More information regarding BDDCML can be found on its website\footref{Footnote:implementation->BDDCML-integration->BDDCML-webpage} or in its GitHub repository\footnote{Multilevel BDDC Solver Library GitHub repository URL: \url{https://github.com/sistek/bddcml}}.
+More information regarding BDDCML can be found on its website\footref{Footnote:implementation->BDDCML-integration->BDDCML-website} or in its GitHub repository\footnote{Multilevel BDDC Solver Library GitHub repository URL: \url{https://github.com/sistek/bddcml}}.
 
 \paragraph{Integration with the Decomposition Project} BDDCML is written in Fortran 95 and the Decomposition project is written in C++.
 Therefore, to use decomposers and solvers from the Decomposition project in BDDCML, the TNL-BDDCML Interface\footnote{tnl\_bddcml\_interface Bitbucket repository URL: \url{https://bitbucket.org/tnl-decomposition/tnl_bddcml_interface/src/master}} was used.

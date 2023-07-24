@@ -25,8 +25,8 @@ Following that, the benchmark results of the decomposers are analyzed, and the b
 Finally, a summary of the benchmark results is provided, along with recommendations.
 
 \subsection{Benchmark Platform Specifications}\label{Subsection:comparing-decomposers-and-solvers->decomposition-project-benchmarks->benchmark-platform-specifications}
-The benchmarks were run on the HPC (High-Performance Computing) platform of CTU referred to as the RCI (Research Center for Informations in CTU Prague) Cluster\footnote{RCI homepage URL: \url{https://rci.cvut.cz/}}.
-The cluster uses the SLURM\footnote{Slurm homepage URL: \url{https://slurm.schedmd.com/overview.html}} cluster management tool to schedule jobs on CPU and GPU compute nodes.
+The benchmarks were run on the HPC (High-Performance Computing) platform of CTU referred to as the RCI (Research Center for Informations in CTU Prague) Cluster\footnote{RCI website URL: \url{https://rci.cvut.cz/}}.
+The cluster uses the SLURM\footnote{Slurm website URL: \url{https://slurm.schedmd.com/overview.html}} cluster management tool to schedule jobs on CPU and GPU compute nodes.
 The Decomposition benchmarks were run on a node with an AMD CPU and an Nvidia GPU.
 Specifically, the hardware and software configuration used for the benchmarks is presented in Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->benchmark-platform-specifications->RCI-node-hardware-software-specifications}.
 
@@ -130,7 +130,7 @@ The benchmark was run for both double and single precision.
 One of the tasks for this thesis was to compare the implemented decomposers to a CPU library and a GPU library.
 However, the former was intentionally omitted as the performance of the implemented decomposers was severely lacking.
 Furthermore, neither PCM\_\textit{x}PP nor ICM\_\textit{x}PP were implemented for the CPU, and the implementation of the CMPP decomposer was not comparison-worthy.
-Thus, combined with the fact that the AMD-CPU-specialized library, \textit{AOCL-ScaLAPACK}\footnote{AOCL-ScaLAPACK webpage URL: \url{https://www.amd.com/en/developer/aocl/scalapack.html}}, which provides the LU factorization function, was not available in the RCI cluster, it was decided to forego implementing another wrapper into the Decomposition project to facilitate the comparison.
+Thus, combined with the fact that the AMD-CPU-specialized library, \textit{AOCL-ScaLAPACK}\footnote{AOCL-ScaLAPACK website URL: \url{https://www.amd.com/en/developer/aocl/scalapack.html}}, which provides the LU factorization function, was not available in the RCI cluster, it was decided to forego implementing another wrapper into the Decomposition project to facilitate the comparison.
 
 First, for both double and single precision, the execution times of the decomposers on the subset of 15 matrices are compared.
 Then, the comparison of the execution times on the entire set of 50 matrices is presented.
@@ -1821,11 +1821,11 @@ Refer to Table~\ref{Table:comparing-decomposers-and-solvers->bddcml-benchmark->b
 		\multicolumn{4}{|c|}{\cellcolor[HTML]{C0C0C0}\textbf{Software}}                                                                                      \\ \hline
 		\rowcolor[HTML]{C0C0C0} 
 		\textbf{Library/Tool}         & \textbf{Version} & \textbf{Library/Tool}             & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}\textbf{Version}} \\
-		\cellcolor[HTML]{EFEFEF}CMake\tablefootnote{CMake webpage URL: \url{https://cmake.org}} & 3.24.3           & \cellcolor[HTML]{EFEFEF}MUMPS\tablefootnote{MUMPS webpage URL: \url{https://mumps-solver.org/index.php}}     & \multicolumn{1}{l|}{5.6.0}                                    \\
-		\cellcolor[HTML]{EFEFEF}GCC\tablefootnote{GCC webpage URL: \url{https://gcc.gnu.org}}   & 12.2.0           & \cellcolor[HTML]{EFEFEF}OpenBLAS\tablefootnote{OpenBLAS webpage URL: \url{https://www.openblas.net}}  & \multicolumn{1}{l|}{0.3.21}                                   \\
-		\cellcolor[HTML]{EFEFEF}CUDA\tablefootnote{CUDA webpage URL: \url{https://developer.nvidia.com/cuda-toolkit}}  & 12.0.0           & \cellcolor[HTML]{EFEFEF}Open MPI\tablefootnote{Open MPI webpage URL: \url{https://www.open-mpi.org}}  & \multicolumn{1}{l|}{4.1.4}                                    \\
-		\cellcolor[HTML]{EFEFEF}MAGMA\tablefootnote{MAGMA webpage URL: \url{https://icl.utk.edu/magma}} & 2.7.1            & \cellcolor[HTML]{EFEFEF}ParMETIS\tablefootnote{ParMETIS webpage URL: \url{https://github.com/KarypisLab/ParMETIS}}  & \multicolumn{1}{l|}{4.0.3}                                    \\
-		\cellcolor[HTML]{EFEFEF}METIS\tablefootnote{METIS GitHub repository URL: \url{https://github.com/KarypisLab/METIS}} & 5.1.0            & \cellcolor[HTML]{EFEFEF}ScaLAPACK\tablefootnote{ScaLAPACK webpage URL: \url{https://netlib.org/scalapack}} & \multicolumn{1}{l|}{2.2.0}                                    \\ \hline
+		\cellcolor[HTML]{EFEFEF}CMake\tablefootnote{CMake website URL: \url{https://cmake.org}} & 3.24.3           & \cellcolor[HTML]{EFEFEF}MUMPS\tablefootnote{MUMPS website URL: \url{https://mumps-solver.org/index.php}}     & \multicolumn{1}{l|}{5.6.0}                                    \\
+		\cellcolor[HTML]{EFEFEF}GCC\tablefootnote{GCC website URL: \url{https://gcc.gnu.org}}   & 12.2.0           & \cellcolor[HTML]{EFEFEF}OpenBLAS\tablefootnote{OpenBLAS website URL: \url{https://www.openblas.net}}  & \multicolumn{1}{l|}{0.3.21}                                   \\
+		\cellcolor[HTML]{EFEFEF}CUDA\tablefootnote{CUDA website URL: \url{https://developer.nvidia.com/cuda-toolkit}}  & 12.0.0           & \cellcolor[HTML]{EFEFEF}Open MPI\tablefootnote{Open MPI website URL: \url{https://www.open-mpi.org}}  & \multicolumn{1}{l|}{4.1.4}                                    \\
+		\cellcolor[HTML]{EFEFEF}MAGMA\tablefootnote{MAGMA website URL: \url{https://icl.utk.edu/magma}} & 2.7.1            & \cellcolor[HTML]{EFEFEF}ParMETIS\tablefootnote{ParMETIS website URL: \url{https://github.com/KarypisLab/ParMETIS}}  & \multicolumn{1}{l|}{4.0.3}                                    \\
+		\cellcolor[HTML]{EFEFEF}METIS\tablefootnote{METIS GitHub repository URL: \url{https://github.com/KarypisLab/METIS}} & 5.1.0            & \cellcolor[HTML]{EFEFEF}ScaLAPACK\tablefootnote{ScaLAPACK website URL: \url{https://netlib.org/scalapack}} & \multicolumn{1}{l|}{2.2.0}                                    \\ \hline
 	\end{tabular}
 	\caption{Hardware and software configuration of the RCI cluster node on which the BDDCML benchmark was run.
 		The information is sourced from \citetitle{9V4RBlLGVAweD9V9} \cite{9V4RBlLGVAweD9V9} and computation job configuration.
@@ -1836,7 +1836,7 @@ Refer to Table~\ref{Table:comparing-decomposers-and-solvers->bddcml-benchmark->b
 	\label{Table:comparing-decomposers-and-solvers->bddcml-benchmark->benchmark-platform-specifications->RCI-node-hardware-software-specifications}
 \end{table}
 
-It is important to mention that the executable was run using \code{srun} with \code{pmix}\footnote{PMIX webpage URL: \url{https://pmix.github.io}}, which is the standard SLURM command to start an MPI program.
+It is important to mention that the executable was run using \code{srun} with \code{pmix}\footnote{PMIX website URL: \url{https://pmix.github.io}}, which is the standard SLURM command to start an MPI program.
 In particular, the number of MPI ranks launched to execute the \code{poisson\_on\_cube} program was 32.
 Furthermore, the ranks were distributed equally across the eight GPUs available using the modulo operation: \code{my\_device = my\_rank \% 8}.
 

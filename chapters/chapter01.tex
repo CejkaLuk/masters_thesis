@@ -487,7 +487,7 @@ The first limitation is dependent on the compute capability version as presented
 \end{table}
 
 The second limitation prevents the concurrent execution of kernels from two distinct CUDA applications on the same device.
-In particular, if kernels are issued from distinct processes, they cannot run concurrently unless CUDA MPS\footnote{CUDA MPS documentation webpage URL: \url{https://docs.nvidia.com/deploy/mps/index.html}} is used \cite{Crovella16December2016, Crovella17August2017}.
+In particular, if kernels are issued from distinct processes, they cannot run concurrently unless CUDA MPS\footnote{CUDA MPS documentation website URL: \url{https://docs.nvidia.com/deploy/mps/index.html}} is used \cite{Crovella16December2016, Crovella17August2017}.
 
 The third limitation states that a device can only run kernels concurrently if its resource limits are not overstepped.
 However, this does not mean that the kernels will not be run.

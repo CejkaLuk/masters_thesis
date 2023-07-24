@@ -732,13 +732,13 @@ IterativeSolver< THREADS_PER_BLOCK >::solve( const Matrix& LU, Matrix& X, const 
 	Index num_rows_rounded = ( num_rows + THREADS_PER_BLOCK - 1 ) / THREADS_PER_BLOCK * THREADS_PER_BLOCK;
 	
 	// Number of right-hand sides is usually small
-	const Index BLOCK_SIZE_y = 8; @\label{Listing:ISxPP-implementation-excerpt->num-threads-2nd-dim}@
+	const Index BLOCK_SIZE_y = 8;
 	const Index nrhs_rounded = ( nrhs + BLOCK_SIZE_y - 1 ) / BLOCK_SIZE_y * BLOCK_SIZE_y;
 	
 	const Index blocks_perGrid_x = num_rows_rounded / THREADS_PER_BLOCK;
 	const Index blocks_perGrid_y = nrhs_rounded / BLOCK_SIZE_y;
 	
-	dim3 threads_perBlock( THREADS_PER_BLOCK, BLOCK_SIZE_y );
+	dim3 threads_perBlock( THREADS_PER_BLOCK, BLOCK_SIZE_y ); @\label{Line:ISxPP-implementation-excerpt->num-threads-per-block}@
 	dim3 blocks_perGrid( blocks_perGrid_x, blocks_perGrid_y );
 	
 	// Forward substitution: LY = B

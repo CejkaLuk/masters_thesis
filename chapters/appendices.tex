@@ -16,8 +16,8 @@ CroutMethod::decompose( Matrix& LU, Vector& piv )
 	using Real = typename Matrix::RealType;
 	using Index = typename Matrix::IndexType;
 	
-	const Index& num_rows = LU.getRows();
-	const Index& num_cols = LU.getColumns();
+	const Index num_rows = LU.getRows();
+	const Index num_cols = LU.getColumns();
 	
 	// Pivoting tolerance
 	const Real piv_tol = 1.0e-5;
@@ -34,7 +34,7 @@ CroutMethod::decompose( Matrix& LU, Vector& piv )
 		for( i = j; i < num_rows; ++i ) {
 			sum = 0;
 			for( k = 0; k < j; ++k )
-				sum = sum + LU_view( i, k ) * LU_view( k, j );
+				sum += LU_view( i, k ) * LU_view( k, j );
 			
 			LU_view( i, j ) = LU_view( i, j ) - sum;
 		}
@@ -52,7 +52,7 @@ CroutMethod::decompose( Matrix& LU, Vector& piv )
 		for( i = j + 1; i < num_rows; ++i ) {
 			sum = 0;
 			for( k = 0; k < j; ++k )
-				sum = sum + LU_view( j, k ) * LU_view( k, i );
+				sum += LU_view( j, k ) * LU_view( k, i );
 			
 			LU_view( j, i ) = ( LU_view( j, i ) - sum ) / LU_view( j, j );
 		}
@@ -63,8 +63,8 @@ template< typename Index, typename MatrixView, typename VectorView, typename Rea
 std::pair< Real, Index >
 pivotRowOfMatrix_host( const Index& j, MatrixView& M, const Index& num_rows, const Index& num_cols, VectorView& piv )
 {
-	// Find the row below the j-th row with max. value in the j-th column
-	Real max = TNL::abs( M( j, j ) );  // or M(i,j)
+	// Find the row from the j-th row (incl. it) with max. value in the j-th column
+	Real max = TNL::abs( M( j, j ) );
 	Index piv_row = j;
 	
 	for( Index i = j + 1; i < num_rows; ++i ) {
@@ -75,7 +75,7 @@ pivotRowOfMatrix_host( const Index& j, MatrixView& M, const Index& num_rows, con
 		}
 	}
 	
-	if( piv_row != j ) {  // exchange rows j, piv_row
+	if( piv_row != j ) { // Exchange rows j, piv_row
 		swapRows_host( M, j, piv_row, num_cols );
 		piv( j ) = piv_row + 1;
 	}
@@ -98,17 +98,17 @@ On input, matrix \code{LU} is assumed to contain the values of $\mathbf{A}$, and
 Furthermore, unlike \code{LU}, \code{piv} is assumed to be allocated on the Host.
 The \code{pivotRowOfMatrix\_device()} function, presented below the \code{decompose()} method, is implemented in the parent class of \code{CroutMethod}: \code{BaseDecomposer}.
 Note that the code has been slightly modified for brevity.
-For example, the \code{swapRows\_device()} function has been omitted as it is a basic operation, and the checks for appropriate sizing of matrices/vectors have been removed.},label={Listing:PCMxPP-implementation-excerpt}]
+For example, the \code{swapRows\_device()} function has been omitted as it is a basic operation, and the checks for appropriate sizing of matrices and vectors have been removed.},label={Listing:PCMxPP-implementation-excerpt}]
 template< const int BLOCK_SIZE >
-template< typename Matrix, typename VecIndex, typename Device >
+template< typename Matrix, typename Vector >
 void
-CroutMethod< BLOCK_SIZE >::decompose( Matrix& LU, Containers::RowOrderVector< VecIndex, Device >& piv )
+CroutMethod< BLOCK_SIZE >::decompose( Matrix& LU, Vector& piv )
 {
 	using Real = typename Matrix::RealType;
 	using Index = typename Matrix::IndexType;
 	
-	const Index& num_rows = LU.getRows();
-	const Index& num_cols = LU.getColumns();
+	const Index num_rows = LU.getRows();
+	const Index num_cols = LU.getColumns();
 	
 	auto LU_view = LU.getView();
 	auto piv_view = piv.getView();
@@ -140,11 +140,7 @@ CroutMethod< BLOCK_SIZE >::decompose( Matrix& LU, Containers::RowOrderVector< Ve
 	}
 }
 
-template< const int THREADS_PER_BLOCK,
-		  typename Index,
-		  typename MatrixView,
-		  typename VectorView,
-		  typename Real = typename MatrixView::RealType >
+template< const int THREADS_PER_BLOCK, typename Index, typename MatrixView, typename VectorView, typename Real = typename MatrixView::RealType >
 std::pair< Real, Index >
 pivotRowOfMatrix_device( const Index& j, MatrixView& M, const Index& num_rows, const Index& num_cols, VectorView& piv )
 {
@@ -239,7 +235,7 @@ IterativeCroutMethod< BLOCK_SIZE >::decompose( Matrix& A, Matrix& LU, Vector& pi
 	
 	// Processing tolerance
 	const Real process_tol = 0.0;
-	// Pivoting tolerance - inclusive lower bound
+	// Pivoting tolerance - lower bound
 	const Real piv_tol_lower = 1.0e-5;
 	// Pivoting tolerance - uppder bound
 	const Real piv_tol_upper = 1.0e+5;
@@ -285,8 +281,9 @@ IterativeCroutMethod< BLOCK_SIZE >::decompose( Matrix& A, Matrix& LU, Vector& pi
 	
 	// Diagonal section start and end
 	Index dSec_start, dSec_end;
-	// Non-diagonal section start, end, and id
+	// Non-diagonal section start, end, and ID
 	Index sec_start, sec_end, sec_id;
+	// Row/Column index of the bad element
 	Index badEl_idx;
 	
 	// Loop through the diagonal sections
@@ -299,7 +296,7 @@ IterativeCroutMethod< BLOCK_SIZE >::decompose( Matrix& A, Matrix& LU, Vector& pi
 			// Get next badEl_idx
 			badEl_idx = TNL::Algorithms::reduce< TNL::Devices::Cuda >( badEl_searchStart, dSec_end, get_badEl_colIdxs, TNL::Min{}, num_cols );
 			
-			do {  // Process the diagonal section
+			do { // Process the diagonal section
 				// Reset the processed flag
 				processed_view.setElement( 0, true );
 				
@@ -328,6 +325,7 @@ IterativeCroutMethod< BLOCK_SIZE >::decompose( Matrix& A, Matrix& LU, Vector& pi
 				nonDiagSec_processed_host = nonDiagSec_processed;
 				nonDiagSec_processed_view.setValue( true );
 				
+				// Launch kernels for all sections below the diagonal section - each section has its own stream
 				for( sec_start = dSec_end, sec_end = min( num_cols, dSec_end + sec_size ), sec_id = 0; sec_start < sec_end; sec_start += sec_size, sec_end = min( num_cols, sec_end + sec_size ), ++sec_id )
 				{
 					// Only compute sections that are not yet processed
@@ -354,7 +352,6 @@ IterativeCroutMethod< BLOCK_SIZE >::decompose( Matrix& A, Matrix& LU, Vector& pi
 			nonDiagSec_processed_host = nonDiagSec_processed;
 			nonDiagSec_processed_view.setValue( true );
 			
-			// Launch kernels for all sections below the diagonal section - each section has its stream
 			for( sec_start = dSec_end, sec_end = min( num_cols, dSec_end + sec_size ), sec_id = 0; sec_start < sec_end; sec_start += sec_size, sec_end = min( num_cols, sec_end + sec_size ), ++sec_id )
 			{
 				// Only compute sections that are not yet processed
@@ -447,7 +444,7 @@ LSecCompute_kernel( const ConstMatrixView A, MatrixView LU, MatrixView LUnext, c
 	Index row = blockIdx.y * blockDim.y + ty + sec_start_row;
 	Index col = blockIdx.x * blockDim.x + tx + sec_start_col;
 	
-	// Set the IDs of threads that overreach the bounds to the closest boundary
+	// Adjust the IDs of threads that overreach the bounds to the closest boundary
 	Index max_col = sec_end_col - 1;
 	Index max_row = sec_end_row - 1;
 	Index row_adj = min( row, max_row );
@@ -514,7 +511,7 @@ RSecCompute_kernel( const ConstMatrixView A, MatrixView LU, MatrixView LUnext, c
 	Index row = blockIdx.y * blockDim.y + ty + sec_start_row;
 	Index col = blockIdx.x * blockDim.x + tx + sec_start_col;
 	
-	// Set the IDs of threads that overreach the bounds to the closest boundary
+	// Adjust the IDs of threads that overreach the bounds to the closest boundary
 	Index max_col = sec_end_col - 1;
 	Index max_row = sec_end_row - 1;
 	Index row_adj = min( row, max_row );
@@ -611,9 +608,8 @@ SequentialSolver::solve( const Matrix& LU, Matrix& X, const Vector& piv )
 	// Solve (LU)X = B, where X holds the values of B on input
 	
 	// Order Matrix X according to vec
-	if( ! piv.empty() ) {
+	if( ! piv.empty() )
 		Decomposers::BaseDecomposer::orderMatrixAccordingTo( X, piv );
-	}
 	
 	// Just to keep the original labels in the loops for clarity
 	auto X_view = X.getView();
@@ -626,44 +622,54 @@ SequentialSolver::solve( const Matrix& LU, Matrix& X, const Vector& piv )
 	// Forward substitution: LY = B
 	for( Index i = 0; i < num_rows; ++i ) {
 		sum_view.setValue( 0 );
+		
 		for( Index j = 0; j < i; ++j ) {
-			// sum = sum + LU( i, j ) * Y( j );
+			// sum += LU( i, j ) * Y( j );
 			auto y_row = Y_view.getRow( j );
+			
 			auto rhsSum = [ = ] __cuda_callable__( Index rhs ) mutable
 			{
-				sum_view( rhs ) = sum_view( rhs ) + LU_view( i, j ) * y_row.getValue( rhs );
+				sum_view( rhs ) += LU_view( i, j ) * y_row.getValue( rhs );
 			};
+			
 			TNL::Algorithms::parallelFor< Device >( Index{ 0 }, nrhs, rhsSum );
 		}
 		// Y( i ) = ( B( i ) - sum ) / LU( i, i );
 		auto y_row = Y_view.getRow( i );
 		auto b_row = B_view.getRow( i );
+		
 		auto ySet = [ = ] __cuda_callable__( Index rhs ) mutable
 		{
 			y_row.setValue( rhs, ( b_row.getValue( rhs ) - sum_view( rhs ) ) / LU_view( i, i ) );
 		};
+		
 		TNL::Algorithms::parallelFor< Device >( Index{ 0 }, nrhs, ySet );
 	}
 	
 	// Backward substitution: UX = Y
 	for( Index i = num_rows - 1; i >= 0; --i ) {
 		sum_view.setValue( 0 );
+		
 		for( Index j = i + 1; j < num_cols; ++j ) {
-			// sum = sum + LU( i, j ) * X( j );
+			// sum += LU( i, j ) * X( j );
 			auto x_row = X_view.getRow( j );
+			
 			auto rhsSum = [ = ] __cuda_callable__( Index rhs ) mutable
 			{
-				sum_view( rhs ) = sum_view( rhs ) + LU_view( i, j ) * x_row.getValue( rhs );
+				sum_view( rhs ) += LU_view( i, j ) * x_row.getValue( rhs );
 			};
+			
 			TNL::Algorithms::parallelFor< Device >( Index{ 0 }, nrhs, rhsSum );
 		}
 		// X( i ) = Y( i ) - sum;		
 		auto x_row = X_view.getRow( i );
 		auto y_row = Y_view.getRow( i );
+		
 		auto xSet = [ = ] __cuda_callable__( Index rhs ) mutable
 		{
 			x_row.setValue( rhs, y_row.getValue( rhs ) - sum_view( rhs ) );
 		};
+		
 		TNL::Algorithms::parallelFor< Device >( Index{ 0 }, nrhs, xSet );
 	}
 }
@@ -697,9 +703,8 @@ IterativeSolver< THREADS_PER_BLOCK >::solve( const Matrix& LU, Matrix& X, const 
 	// Solve (LU)X = B, where X holds the values of B on input
 	
 	// Order Matrix X according to vec
-	if( ! piv.empty() ) {
+	if( ! piv.empty() )
 		Decomposers::BaseDecomposer::orderMatrixAccordingTo( X, piv );
-	}
 	
 	Matrix Xnext;
 	Xnext.setLike( X );
@@ -771,7 +776,7 @@ FowardSubst_kernel( const ConstMatrixView LU, MatrixView Y, MatrixView Ynext, co
 	Real sum = 0;
 	
 	for( Index j = 0; j < row; ++j )
-		sum = sum + LU( row, j ) * Y( j, rhs );
+		sum += LU( row, j ) * Y( j, rhs );
 	
 	sum = ( B( row, rhs ) - sum ) / LU( row, row );
 	
@@ -801,7 +806,7 @@ BackwardSubst_kernel( const ConstMatrixView LU, MatrixView X, MatrixView Xnext, 
 	Real sum = 0;
 	
 	for( Index j = row + 1; j < num_cols; ++j )
-		sum = sum + LU( row, j ) * X( j, rhs );
+		sum += LU( row, j ) * X( j, rhs );
 	
 	sum = Y( row, rhs ) - sum;
 	
@@ -862,7 +867,7 @@ for num_rows_cols in mtx_files:
 	header_lines = [
 	"%%MatrixMarket matrix coordinate real general",
 	"%---------------------------------------------------------------------",
-	"% Cejka Dense Matrix Collection, Tim Davis",
+	"% Cejka Dense Matrix Collection",
 	"% Insert URL here",
 	f"% name: Cejka/{dense_mtx_filename}",
 	"% date: 2023",

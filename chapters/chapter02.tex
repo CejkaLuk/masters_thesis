@@ -354,7 +354,7 @@ However, it remained as further testing showed promising results.
 
 \begin{lstlisting}[caption={The declaration of the \code{decompose()} method for the CMPP decomposer.
 On input, matrix \code{LU} is assumed to contain the values of $\mathbf{A}$, and \code{piv} is expected to be appropriately sized.
-On output, matrix \code{LU} contains the values of matrices $\mathbf{L}$ and $\mathbf{U}$ in the format presented in Equation~\ref{Equation:implementation->decomposition-project->implemented-solutions->decomposers->CMPP}, and \code{piv} contains the row permutations in the format set by cuSOLVER and cuBLAS, i.e., row \code{i} was swapped with row \code{piv[i]} \cite{5D33zKi5iStCty0r}.
+On output, matrix \code{LU} contains the values of matrices $\mathbf{L}$ and $\mathbf{U}$ in the format presented in Equation~\ref{Equation:implementation->decomposition-project->implemented-solutions->decomposers->CMPP}, and \code{piv} contains the row permutations in the format set by cuSOLVER and cuBLAS, i.e., row \code{i} was swapped with row \code{piv[ i ]} \cite{5D33zKi5iStCty0r}.
 The template parameters, \code{Matrix} and \code{Vector}, are expected to be data structures from TNL that inherit from the \code{TNL::Matrices::DenseMatrix} and \code{TNL::Containers::Vector} types, respectively.},label={Listing:implementation->decomposition-project->implemented-solutions->decomposers->CMPP}]
 template< typename Matrix, typename Vector >
 static void
@@ -376,7 +376,7 @@ decompose( Matrix& LU, Vector& piv );
 
 Similarly to cuSOLVER, \code{piv} can contain any values on input as they are all replaced during computation.
 However, in the case of the CMPP decomposer, the values of \code{piv} are initialized to their default values within the \code{decompose()} method prior to the main computation.
-Specifically, the default values follow the format set by cuSOLVER and cuBLAS, i.e., \code{piv[0] = 1}, \code{piv[1] = 2}, etc.
+Specifically, the default values follow the format set by cuSOLVER and cuBLAS, i.e., \code{piv[ 0 ] = 1}, \code{piv[ 1 ] = 2}, etc.
 Note that the values of \code{piv} must be set to their default pivoting values by every decomposer that uses conditional partial pivoting.
 The reasoning behind this requirement stems from the fact that conditional partial pivoting does not attempt to pivot all rows.
 
@@ -692,8 +692,10 @@ LUnext.setLike( LU );
 
 // Processing tolerance
 const Real process_tol = 0.0; @\label{Line:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->processing-diagonal-section->processing-tolerance}@
-// Pivoting tolerance - inclusive lower bound
+// Pivoting tolerance - lower bound
 const Real piv_tol_lower = 1.0e-5;
+// Pivoting tolerance - uppder bound
+const Real piv_tol_upper = 1.0e+5;
 
 // CUDA grid configuration
 Index blocks = sec_size / BLOCK_SIZE;
@@ -732,7 +734,7 @@ for( dSec_start = 0, dSec_end = min( num_cols, sec_size ); dSec_start < dSec_end
 		// Get next badEl_idx
 		badEl_idx = TNL::Algorithms::reduce< TNL::Devices::Cuda >( badEl_searchStart, dSec_end, get_badEl_colIdxs, TNL::Min{}, num_cols ); @\label{Line:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->processing-diagonal-section->badel-idx}@
 		
-		do {  // Process the diagonal section
+		do { // Process the diagonal section
 			// Reset the processed flag
 			processed_view.setElement( 0, true ); @\label{Line:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->processing-diagonal-section->processed-reset}@
 			
@@ -809,10 +811,7 @@ BaseDecomposer::setDefaultPivotingValues( piv );
 auto piv_view = piv.getView();
 // ...
 
-// Pivoting tolerance - upper bound
-const Real piv_tol_upper = 1.0e+5;
-
-// Non-diagonal section start, end, and id (used to access the streams)
+// Non-diagonal section start, end, and ID (used to access the streams)
 Index sec_start, sec_end, sec_id;
 
 // Loop through the diagonal sections
@@ -836,7 +835,7 @@ for( dSec_start = 0, dSec_end = min( num_cols, sec_size ); dSec_start < dSec_end
 			nonDiagSec_processed_host = nonDiagSec_processed;
 			nonDiagSec_processed_view.setValue( true );
 			
-			// Launch kernels for all sections below the diagonal section - each section has its stream
+			// Launch kernels for all sections below the diagonal section - each section has its own stream
 			for( sec_start = dSec_end, sec_end = min( num_cols, dSec_end + sec_size ), sec_id = 0; sec_start < sec_end; sec_start += sec_size, sec_end = min( num_cols, sec_end + sec_size ), ++sec_id )
 			{
 				// Only compute sections that are not yet processed
@@ -918,7 +917,7 @@ DSecCompute_kernel( const ConstMatrixView A, MatrixView LU, MatrixView LUnext, c
 	row += ty;
 	col += tx;
 	
-	// Set the IDs of threads that overreach the bounds to the closest boundary
+	// Adjust the IDs of threads that overreach the bounds to the closest boundary
 	Index max_col = sec_end_col - 1;
 	Index max_row = sec_end_row - 1;
 	Index row_adj = min( row, max_row );
@@ -982,7 +981,7 @@ DSecCompute_kernel( const ConstMatrixView A, MatrixView LU, MatrixView LUnext, c
 	// Remaining part of the formula for U
 	if( row < col ) {
 		Real divisor = LU( row, row );
-		if( ! abs( divisor ) == 0 )
+		if( abs( divisor ) != 0 )
 			sum /= divisor;
 		else
 			printf( "-!> DIVISION BY ZERO\n" );

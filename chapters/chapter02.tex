@@ -330,7 +330,7 @@ The full list of decomposers and their characteristics is presented in Table~\re
 		The decomposers highlighted in gray are discussed in this thesis, and those in \textbf{bold} font were implemented by the author of the project.
 		The "PP" suffix indicates whether partial pivoting is used.
 		The "\textit{x}" in the name of certain decomposers signifies their CUDA thread configuration.
-		The "Unit diag.	In" column indicates which of the two matrices, $\mathbf{L}$ or $\mathbf{U}$, contains the unit diagonal on output.
+		The "Unit diag.	in" column indicates which of the two matrices, $\mathbf{L}$ or $\mathbf{U}$, contains the unit diagonal on output.
 		Note that ICM\_\textit{x}PP is only implemented on the GPU as the CPU implementation would be highly inefficient.
 	}
 	\label{Table:implementation->decomposition-project->implemented-solutions->decomposers->decomposers-in-the-project}
@@ -395,7 +395,7 @@ Specifically, the algorithm consists of the following steps (changes compared to
 	\item Pivot row $j$:
 	\begin{enumerate}
 		\item \label{Item:implementation->decomposition-project->implemented-solutions->decomposers->PCxMPP->algorithm-steps->piv-row-j-maxarg-in-paralllel}
-			In the values computed in step \ref{Item:implementation->decomposition-project->implemented-solutions->decomposers->PCxMPP->algorithm-steps->compute-values-in-column-j-in-paralllel}, find the index ($p$) of the element largest in absolute value \colorbox{nvidia-light}{using parallel reduction}:
+			In the values computed in Step~\ref{Item:implementation->decomposition-project->implemented-solutions->decomposers->PCxMPP->algorithm-steps->compute-values-in-column-j-in-paralllel}, find the index ($p$) of the element largest in absolute value \colorbox{nvidia-light}{using parallel reduction}:
 		\begin{equation}
 			p = \argmax_k \left\{ \left| l_{k, j} \right|: k=j,\dots, n \right\} \,.
 		\end{equation}
@@ -404,7 +404,7 @@ Specifically, the algorithm consists of the following steps (changes compared to
 	\end{enumerate}
 	\item \label{Item:implementation->decomposition-project->implemented-solutions->decomposers->PCxMPP->algorithm-steps->compute-values-in-row-j-in-paralllel}
 		Compute values from $u_{j,j+1}$ to $u_{j,n}$ in row $j$ of $\mathbf{U}$ \colorbox{nvidia-light}{in parallel}.
-	\item Increment $j$ by 1 and go to step \ref{Item:implementation->decomposition-project->implemented-solutions->decomposers->PCxMPP->algorithm-steps->stop-execution-if}.
+	\item Increment $j$ by 1 and go to Step~\ref{Item:implementation->decomposition-project->implemented-solutions->decomposers->PCxMPP->algorithm-steps->stop-execution-if}.
 \end{enumerate}
 
 The simultaneous computations mentioned in Steps~\ref{Item:implementation->decomposition-project->implemented-solutions->decomposers->PCxMPP->algorithm-steps->compute-values-in-column-j-in-paralllel} and \ref{Item:implementation->decomposition-project->implemented-solutions->decomposers->PCxMPP->algorithm-steps->compute-values-in-row-j-in-paralllel} are possible due to the dependency of elements mentioned in Section~\ref{Subsection:theory->ICMPP->LUP->CMPP} and shown in Figure~\ref{Figure:theory->ICMPP->LUP->CMPP->sum-in-element-computation-dependance}.
@@ -423,13 +423,13 @@ Thus, the maximum number of active threads at a point in time is equal to the nu
 This lack of parallelism reflects itself on the implementation of the algorithm as it comprises the CPU sequentially tasking the GPU to perform simultaneous computations.
 
 The declaration of the \code{decompose()} method for the PCM\_\textit{x}PP decomposer is identical to that of the CMPP decomposer (shown in Listing~\ref{Listing:implementation->decomposition-project->implemented-solutions->decomposers->CMPP}), and the definition can be found in Appendix~\ref{Appendix:PCMxPP-implementation}.
-Note that, unlike \code{LU}, \code{piv} is assumed to be allocated on the Host as it is not used in kernels and its values are set by the CPU.
+Note that, unlike \code{LU}, \code{piv} is assumed to be allocated on the host as it is not used in kernels and its values are set by the CPU.
 
 In the caption of Table~\ref{Table:implementation->decomposition-project->implemented-solutions->decomposers->decomposers-in-the-project}, it was mentioned that the \textit{x} in PCM\_\textit{x}PP signifies the CUDA thread configuration of the decomposer.
 Specifically, the number of threads in each one-dimensional CUDA thread block is defined as $x^2$.
 
 \paragraph{Iterative Crout's Method with Partial Pivoting (ICM\_\textit{x}PP)} \label{Paragraph:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP}
-One of the main tasks for this thesis was to implement an LU decomposition algorithm with partial pivoting (LUP) for the GPU.
+One of the main tasks for this thesis was to implement an LU decomposition algorithm with partial Pivoting (LUP) for the GPU.
 As part of \citetitle{Cejka2022} \cite{Cejka2022}, LU decomposition (without partial pivoting) was implemented both for the CPU and for the GPU in the form of ICM\textit{x}.
 However, the performance of the CPU implementation was low, and it served solely as an initial proof-of-concept that was neither developed nor optimized further.
 Therefore, in the context of this thesis, the ICMPP algorithm, introduced in Section~\ref{Subsection:theory->ICMPP->LUP->ICMPP}, was implemented only for the GPU, as specified in Table~\ref{Table:implementation->decomposition-project->implemented-solutions->decomposers->decomposers-in-the-project}.
@@ -463,7 +463,7 @@ However, to allow for experimentation, the ICM\_\textit{x}PP decomposer also pro
 This feature is facilitated via an overloaded method whose declaration is shown in Listing~\ref{Listing:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->method-declaration-initial-estimate}.
 
 \begin{lstlisting}[caption={The declaration of the overloaded \code{decompose()} method for the ICM\_\textit{x}PP decomposer that allows the user to supply an initial estimate of the decomposition.
-On input, matrix \code{A} is assumed to contain the values of $\mathbf{A}$, matrix \code{LU} is assumed to contain the initial estimate of the decomposition, and \code{piv} is expected to be appropriately sized and allocated on the Host.
+On input, matrix \code{A} is assumed to contain the values of $\mathbf{A}$, matrix \code{LU} is assumed to contain the initial estimate of the decomposition, and \code{piv} is expected to be appropriately sized and allocated on the host.
 On output, matrix \code{LU} contains the values of matrices $\mathbf{L}$ and $\mathbf{U}$ in the format presented in Equation~\ref{Equation:implementation->decomposition-project->implemented-solutions->decomposers->CMPP}, and \code{piv} contains the row permutations.},label={Listing:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->method-declaration-initial-estimate}]
 template< typename Matrix, typename Vector >
 static void
@@ -887,7 +887,7 @@ Specifically, this part aims to present the kernels referenced in the previous p
 
 As mentioned earlier, in the implementation of the ICM\_\textit{x}PP decomposer, there are three types of sections: \textit{diagonal}, \textit{lower}, and \textit{right}.
 Each section has its own compute kernel that computes the values of the next iteration.
-Initially, there was one kernel that was used by all section types (see Listing ~2.3 on page~65 in \citetitle{Cejka2022} \cite{Cejka2022}), however, this approach was found to be suboptimal during the optimization process of this thesis.
+Initially, there was one kernel that was used by all section types (see Listing~2.3 on Page~65 in \citetitle{Cejka2022} \cite{Cejka2022}), however, this approach was found to be suboptimal during the optimization process of this thesis.
 The implementation of the kernel contained conditions that were dependent on the type of the section.
 Seeing as the kernel can be executed up to thousands of times during the decomposition of a matrix, conditions in code can hinder performance.
 Thus, the compute kernel was split into three section-specific kernels.
@@ -1013,7 +1013,7 @@ Matrix multiplication by blocks of elements using shared memory is depicted in F
 	\includegraphics[width=0.8\textwidth, keepaspectratio]{images/ch02/CUDA-matrix-multiplication-by-blocks-using-shared-memory.png}
 	\caption{Visualization of matrix multiplication by blocks of elements using shared memory.
 		Note that this figure, taken from \citetitle{NVIDIADecember2022} \cite{NVIDIADecember2022}, depicts regular matrix multiplication, i.e., not the limited rendition present in Crout's method.
-		The implementation in Listing~\ref{Listing:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->kernels->diagonal-compute} performs matrix multiplication until the element that is being computed in terms of LU decomposition, as shown in Figure~\ref{Figure:theory->ICMPP->LUP->CMPP->sum-in-element-computation-dependance} on page~\pageref{Figure:theory->ICMPP->LUP->CMPP->sum-in-element-computation-dependance}.
+		The implementation in Listing~\ref{Listing:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->kernels->diagonal-compute} performs matrix multiplication until the element that is being computed in terms of LU decomposition, as shown in Figure~\ref{Figure:theory->ICMPP->LUP->CMPP->sum-in-element-computation-dependance} on Page~\pageref{Figure:theory->ICMPP->LUP->CMPP->sum-in-element-computation-dependance}.
 	}
 	\label{Figure:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->CUDA-matrix-multiplication-with-shared-memory}
 \end{figure}
@@ -1144,7 +1144,7 @@ This section briefly introduces the benchmark procedure for both decomposers and
 First, steps that are common for both benchmarks are described.
 Then, aspects specific to each benchmark are mentioned separately.
 
-Both benchmarks are initiated via a bash script that sets up the logging directory, compiles the benchmarks, and, finally, launches the benchmark for each matrix found in a set directory.
+Both benchmarks are initiated via a Bash script that sets up the logging directory, compiles the benchmarks, and finally, launches the benchmark for each matrix found in a set directory.
 Note that the benchmark is launched twice: first using double precision, then using single precision.
 Each execution of the benchmark for a given matrix consists of the following steps:
 

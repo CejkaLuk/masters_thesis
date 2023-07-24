@@ -923,7 +923,7 @@ Solving a system of linear equations using LUP is a two-step process \cite{Cejka
 		\textit{Substitution} - the system presented in Equation~\ref{Equation:theory->ICMPP->LUP->system-linear-equations-1rhs-with-LU} is then solved in two steps:
 		\begin{enumerate}
 			\item Forward substitution - solve $\mathbf{Ly} = \mathbf{Pb}$ where only vector $\mathbf{y} \in \mathbb{R}^n$ is not known.
-Note that, in practice, vector $\mathbf{b}$ is permuted before this system is solved.
+				Note that, in practice, vector $\mathbf{b}$ is permuted using $\mathbf{P}$ before this system is solved.
 			\item Backward substitution - solve $\mathbf{Ux} = \mathbf{y}$ where only vector $\mathbf{x} \in \mathbb{R}^n$ is not known.
 		\end{enumerate}
 \end{enumerate}
@@ -1032,7 +1032,7 @@ See Figure~\ref{Figure:theory->ICMPP->LUP->CMPP->algorithm-advance-visualisation
 		,line width=1pt] {};
 		
 		% Pivoting
-		\draw [decorate, decoration = {brace, raise=0.7cm, amplitude=6pt}, thick] (nj.south) to node [midway, left=0.9cm] (argmax) {$\argmax\limits_k \left| l_{k, i} \right|$} (jj.north);
+		\draw [decorate, decoration = {brace, raise=0.7cm, amplitude=6pt}, thick] (nj.south) to node [midway, left=0.9cm] (argmax) {$\argmax\limits_k \left| l_{k, j} \right|$} (jj.north);
 		\draw[arrow_head-arrow_head, decorate, decoration={}, bend left, out=140, in=140] (argmax.west) to node [midway, rotate=28, above=-1cm, right=-1.2cm] {Swap rows $j$ and $k$} (jj.west);
 		
 		% Labels		
@@ -1042,21 +1042,22 @@ See Figure~\ref{Figure:theory->ICMPP->LUP->CMPP->algorithm-advance-visualisation
 		\node[text_label, right=33mm of nj, align=center] 									 {Subsequent\\Iterations};
 	\end{tikzpicture}
 	\caption{Visualization of the advance of CMPP's algorithm.
-		First, elements $l_{j,j}$ to $l_{n,j}$ in column $j$ of $\mathbb{L}$ are computed.
+		First, elements $l_{j,j}$ to $l_{n,j}$ in column $j$ of $\mathbf{L}$ are computed.
 		Then, row $j$ is pivoted.
 		Its row is swapped with the row containing the largest absolute value of an element in column $j$, starting from $l_{j,j}$ and ending at $l_{n,j}$, both inclusive.
-		Finally, elements $u_{j,j+1}$ to $u_{j,n}$ in row $i$ of $\mathbb{U}$ are computed.
+		Finally, elements $u_{j,j+1}$ to $u_{j,n}$ in row $j$ of $\mathbf{U}$ are computed.
 		Adapted from \citetitle{rqjYYJkSwERYYbSy} by \citename{rqjYYJkSwERYYbSy}{author} \cite{rqjYYJkSwERYYbSy}.
 	}
 	\label{Figure:theory->ICMPP->LUP->CMPP->algorithm-advance-visualisation}
 \end{figure}
 
-\begin{lstlisting}[caption={C++ pseudocode for CMPP's algorithm that decomposes with partial pivoting an \code{n}-by-\code{n} matrix \code{A}.
+\begin{lstlisting}[caption={C++ pseudocode for CMPP's algorithm that decomposes an \code{n}-by-\code{n} matrix \code{A}.
 The two-dimensional arrays \code{A[ n ][ n ]}, \code{L[ n ][ n ]}, and \code{U[ n ][ n ]} represent matrices $\mathbf{A}$, $\mathbf{L}$, and $\mathbf{U}$, respectively.
-Instead of using a two-dimensional array to represent matrix $\mathbb{P}$ a one-dimensional array \code{piv} is used.
+Instead of using a two-dimensional array to represent matrix $\mathbf{P}$ a one-dimensional array \code{piv} is used.
 It stores the index of the row that each row was pivoted with, e.g., \code{piv[ 0 ] = 8} signifies that row \code{0} was swapped with row \code{8}.
-Note that, on input, \code{L} and \code{U} are assumed to be populated with 0s.
-Derived from \citetitle{Forsythe1960} \cite{Forsythe1960} and \citetitle{Press2007} \cite{Press2007}.},label={Listing:theory->ICMPP->LUP->CMPP->pseudocode},escapechar=@]
+Note that, on input, \code{L} and \code{U} are assumed to be populated with zeros.
+Derived from \citetitle{Forsythe1960} \cite{Forsythe1960} and \citetitle{Press2007} \cite{Press2007}.
+},label={Listing:theory->ICMPP->LUP->CMPP->pseudocode},escapechar=@]
 void swapRows( M, row1, row2, n )
 {
 	for( Index j = 0; j < n; ++j ) {
@@ -1073,7 +1074,7 @@ int pivotRowOfMatrix( j, M, piv, n )
 	int pivRow = j;
 	
 	for( Index i = j + 1; i < n; ++i ) {
-		double absElem = abs( M[ j ][ j ] );
+		double absElem = abs( M[ i ][ j ] );
 		if( absElem > maxAbs ) {
 			maxAbs = absElem;
 			pivRow = i;
@@ -1093,7 +1094,7 @@ void cmpp( A, L, U, piv, n )
 	int i, j, k;
 	double sum = 0;
 	
-	// Fill main diagonal of U with 1s
+	// Fill main diagonal of U with ones
 	for( i = 0; i < n; ++i )
 		U[ i ][ i ] = 1;
 	
@@ -1177,21 +1178,21 @@ Although the method proposed by the authors generates incomplete factorization, 
 As detailed in \citetitle{Cejka2022} \cite{Cejka2022}, the complete-factorization approach converges to a sufficiently approximate solution of $\mathbf{A} = \mathbf{LU}$.
 This approach, labeled as \textit{Iterative Crout's Method} (ICM), has been modified to include partial pivoting, thus creating \textit{Iterative Crout's Method with Partial Pivoting} (ICMPP).
 
-The decomposition of matrix $\mathbf{A} \in \mathbb{R}^{n \times n}$ into the product of matrices $\mathbf{L}, \mathbf{U} \in \mathbb{R}^{n \times n}$, and a permutation matrix $\mathbf{P} \in \left\{0,1\right\}^{n \times n}$ using ICMPP consists of the following steps \cite{Cejka2022}:
+The decomposition of matrix $\mathbf{A} \in \mathbb{R}^{n \times n} \left(n \in \mathbb{N}\right)$ into the product of matrices $\mathbf{L}, \mathbf{U} \in \mathbb{R}^{n \times n}$, and a permutation matrix $\mathbf{P} \in \left\{0,1\right\}^{n \times n}$ using ICMPP consists of the following steps \cite{Cejka2022}:
 
 \begin{enumerate}
 	\item Create an initial estimate of matrices $\mathbf{L}^{0}$ and $\mathbf{U}^{0}$ using $\mathbf{A}$:
 		\begin{align}
-			l_{i,j}^{0} &= a_{i,j} & u_{i,j}^{0} &= 0 \quad &i < j \nonumber\,, \\
-			u_{i,j}^{0} &= a_{i,j} & l_{i,j}^{0} &= 0 \quad &i > j \nonumber\,, \\
-			u_{i,j}^{0} &= 1	   &			 & \quad    &i = j \nonumber\,,
+			l_{i,j}^{0} & = a_{i,j} & u_{i,j}^{0} & = 0 \quad & i > j \nonumber\,, &  \\
+			u_{i,j}^{0} & = a_{i,j} & l_{i,j}^{0} & = 0 \quad & i < j \nonumber\,, &  \\
+			l_{i,j}^{0} & = a_{i,j} & u_{i,j}^{0} & = 1       & i = j \nonumber\,, &
 		\end{align}
 		and initialize $\mathbf{P}$ as the identity matrix.
 	\item Denote the current iteration as $t \in \mathbb{N}$ and initialize it to 1.
 	\item \label{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt}
 		Compute $\mathbf{L}^{t}$ using Formula~\ref{Equation:theory->ICMPP->LUP->CMPP->lij}:
 		\begin{align}
-			l_{i,j}^{t} &= a_{ij} - \sum_{k=1}^{j-1}l_{i,k}^{t-1}u_{k,j}^{t-1} &\quad i \geq j \nonumber\,.
+			l_{i,j}^{t} &= a_{i,j} - \sum_{k=1}^{j-1}l_{i,k}^{t-1}u_{k,j}^{t-1} &\quad i \geq j \nonumber\,.
 		\end{align}
 	\item \label{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->converge-lower-sections}
 		Take the first $j \in \widehat{n}$ that satisfies the conditions $\left|l^{t-1}_{j, j} - l^{t}_{j, j}\right| \leq \epsilon_1$ (where $\epsilon_1$ denotes a tolerance, e.g., 0.001) and $\left|l^{t}_{j, j}\right| \leq \epsilon_2$, where $\epsilon_2$ denotes a \textit{pivoting tolerance}, e.g., 1e-5.
@@ -1209,18 +1210,18 @@ The decomposition of matrix $\mathbf{A} \in \mathbb{R}^{n \times n}$ into the pr
 					p = \argmax_k \left\{ \left| l^{t}_{k, j} \right|: k=j,\dots, n \right\} \nonumber\,.
 				\end{equation}
 			\item \label{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row->swap-rows}
-				If $j$ is not equal to $p$, swap rows $j$ and $p$ in matrices $\mathbf{L}^{t}$, $\mathbf{U}^{t}$, and $\mathbf{P}$.
+				If $j$ is not equal to $p$, swap rows $j$ and $p$ in matrices $\mathbf{A}$, $\mathbf{L}^{t}$, $\mathbf{U}^{t}$, and $\mathbf{P}$.
 			\item \label{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row->singular-matrix-check}
 				If $l^{t}_{j,j}$ is equal to 0, then the decomposition procedure has failed as the matrix is singular.
 		\end{enumerate}
 	\item \label{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Ut}
 		Compute $\mathbf{U}^{t}$ using the values of $\mathbf{L}^{t}$ computed in earlier steps according to the formula provided in Equation~\ref{Equation:theory->ICMPP->LUP->CMPP->uij}:
 		\begin{align}
-			u_{i,j}^{t} &= \frac{1}{l_{ii}^{t}} \left ( a_{ij} - \sum_{k=1}^{i-1}l_{ik}^{t}u_{kj}^{t-1} \right ) &\quad i < j \nonumber\,.
+			u_{i,j}^{t} &= \frac{1}{l_{i,i}^{t}} \left ( a_{i,j} - \sum_{k=1}^{i-1}l_{i,k}^{t}u_{k,j}^{t-1} \right ) &\quad i < j \nonumber\,.
 		\end{align}
 	\item \label{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->evaluate-convergence-rule}
-		If the maximum absolute difference between $\mathbf{L}^{t-1}$ and $\mathbf{L}^{t}$, or between $\mathbf{U}^{t-1}$ and $\mathbf{U}^{t}$, exceeds tolerance $\epsilon$, then increment $t$ by 1 and return to Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt}.
-	\item The algorithm has converged to an approximate solution of $ \mathbf{A} = \mathbf{LUP} $.
+		If the maximum absolute difference between $\mathbf{L}^{t-1}$ and $\mathbf{L}^{t}$, or between $\mathbf{U}^{t-1}$ and $\mathbf{U}^{t}$, exceeds tolerance $\epsilon_1$, then increment $t$ by 1 and return to Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt}.
+	\item The algorithm has converged to an approximate solution of $\mathbf{A} = \mathbf{LUP}$, where $\mathbf{A}$  represents its original state before any potential changes occurred during this algorithm.
 \end{enumerate}
 
 While the instructions in Steps~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt} to \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->evaluate-convergence-rule} must be performed consecutively, the operations in each step can be executed in parallel:
@@ -1229,7 +1230,7 @@ While the instructions in Steps~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-s
 	\item Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt} - The element $l^{t}_{i,j} \left(i, j \in \widehat{n}; n \in \mathbb{N}\right)$ is dependent only on elements from matrices $\mathbf{A}$, $\mathbf{L}^{t-1}$, and $\mathbf{U}^{t-1}$.
 Since the values in the first matrix are constant - excluding the swapping of rows - and the last two matrices were set in the previous iteration, no elements from $\mathbf{L}^{t}$ are dependent on each other.
 Thus, all elements $l^{t}_{i,j}$ can be computed simultaneously.
-	\item Step \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->converge-lower-sections} - The absolute-value condition can be checked in parallel, and, similarly to Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt}, the iterative convergence is computed according to the same formula.
+	\item Step \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->converge-lower-sections} - The absolute-value conditions can be checked in parallel, and, similarly to Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt}, the iterative convergence is computed according to the same formula.
 	\item Step \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row} - The $\max$ operation mentioned in Section~\ref{Subsection:theory->CUDA->parallel-reduction} can be adapted to suit the needs of $\argmax$ used in Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row->argmax}.
 While the swapping of elements in two rows can be performed in parallel, Steps~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row->swap-rows} and \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row->singular-matrix-check} must be executed consecutively.
 	\item Step \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Ut} - The element $u^{t}_{i,j} \left(i, j \in \widehat{n}; n \in \mathbb{N}\right)$ is dependent only on elements from matrices $\mathbf{A}$, $\mathbf{L}^{t}$, and $\mathbf{U}^{t-1}$.

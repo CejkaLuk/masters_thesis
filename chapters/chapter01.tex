@@ -36,7 +36,7 @@ multiplyMatrices(A, B, C):
 Since parallelism is not used, the computation is strictly sequential and would arguably benefit from the faster core clock speeds of a CPU \cite{Cejka2022}.
 However, since the computation of every element in $\mathbf{C}$ is independent of the other elements, it is possible to compute all elements of $\mathbf{C}$ simultaneously.
 In other words, every thread of the GPU can be tasked to compute one element of $\mathbf{C}$, i.e., each thread would only compute the innermost loop.\\
-Note that the parallelization of some tasks is not as straightforward, for example, Crout Method with partial pivoting (detailed in Section~\ref{Subsection:theory->ICMPP->LUP->CMPP}).
+Note that the parallelization of certain tasks is not as straightforward, for example, Crout Method with partial pivoting (detailed in Section~\ref{Subsection:theory->ICMPP->LUP->CMPP}).
 
 Similarly to the above-mentioned example of displaying the image on a monitor, the GPU - and its many processing units - greatly benefits from the parallelized workload largely due to its architecture.
 To illustrate this, Figure~\ref{Figure:theory->GPUs->GPGPU->CPU-nvidia-GPU-architecture-comparison} shows a general architecture comparison of a CPU and a GPU.
@@ -295,7 +295,7 @@ To execute a kernel on the device, it is necessary to provide the kernel with an
 An example of a kernel call with a basic execution configuration is presented in Listing~\ref{Listing:theory->CUDA->thread-management->kernel-configuration-example}.
 
 \begin{lstlisting}[caption={Excerpt of C++ code portraying the creation of a grid configuration and the launching of a kernel.
-The example implemented aims to increment every value of the \code{N}-by-\code{N} matrix \code{mtx} by 1 using the device. \code{dim3} is an integer vector type based on \code{uint3} that is used to specify dimensions - unspecified components are implicitly set to 1 \cite{NVIDIADecember2022}.
+The example implementation aims to increment every value of the \code{N}-by-\code{N} matrix \code{mtx} by 1 using the device. \code{dim3} is an integer vector type based on \code{uint3} that is used to specify dimensions - unspecified components are implicitly set to 1 \cite{NVIDIADecember2022}.
 Taken from \citetitle{NVIDIADecember2022} \cite{NVIDIADecember2022}.},label={Listing:theory->CUDA->thread-management->kernel-configuration-example}]
 // Kernel definition
 __global__ void AddOneToMatrix( float mtx[N][N] )
@@ -325,7 +325,7 @@ int main()
 }
 \end{lstlisting}
 
-In Listing~\ref{Listing:theory->CUDA->thread-management->kernel-configuration-example}, the code in the \code{main()} function is executed on the host while the code in the \code{AddOneToMatrix(...)} function is executed on the device.
+In Listing~\ref{Listing:theory->CUDA->thread-management->kernel-configuration-example}, the code in the \code{main()} function is executed on the host while the code in the \code{AddOneToMatrix(...)} kernel is executed on the device.
 From the host's point of view, kernel calls are asynchronous.
 In other words, the host will call for the kernel to be executed on the device and then it will move on to the next line of execution without delay.
 This holds even if the host calls two kernels in succession.
@@ -361,7 +361,7 @@ The maximum size of shared memory per block varies depending on the CUDA compute
 		\cellcolor[HTML]{C0C0C0}\textbf{Max. shared memory per block [KB]} &    96     & 64  & 163 & 99  & 163 & 99  & 227 \\ \hline
 	\end{tabular}
 	\caption{Maximum shared memory per thread block depending on the CUDA compute capability version.
-		Note that to use more than 48 KB dynamic shared memory must be used.
+		Note that to use more than 48 KB, dynamic shared memory must be used.
 		Taken from \citetitle{NVIDIADecember2022} \cite{NVIDIADecember2022}.
 	}
 	\label{Table:theory->CUDA->memory-management->max-shared-memory-per-block-based-on-compute-capability}
@@ -409,7 +409,7 @@ For more information regarding shared memory see Section~1.2.3 in \citetitle{Cej
 
 \paragraph{Global Memory} The largest memory space present in CUDA is \textit{global memory}.
 It is occasionally referred to as \textit{device memory} as it resides in an Nvidia GPU's DRAM (Dynamic Random Access Memory).
-While global memory resides in a device's memory it can be accessed by both the host and the device, thus, creating a communication medium between the two.
+While global memory resides in a device's memory, it can be accessed by both the host and the device, thus creating a communication medium between the two.
 The amount of global memory available depends on the GPU used, for example, the Nvidia A100 GPU is available with either 40 GB or 80 GB (shown in Table~\ref{Table:theory->GPUs->GPGPU->nvidia-gpu-details-comparison}).
 Although it is the largest memory space found on the device, it is high-latency and low-bandwidth compared to, e.g., shared memory.
 
@@ -445,14 +445,14 @@ In other words, global memory is the same for all kernels in a CUDA application.
 \subsection{Concurrent Kernel Execution}\label{Subsection:theory->CUDA->concurrent-kernel-execution}
 Concurrent kernel execution describes a scenario where two or more kernels from the same CUDA application are running simultaneously.
 Note that kernels can be executed concurrently only on certain devices with compute capability 2.x or higher.
-To check whether a device is capable of concurrent kernel execution the \code{deviceQuery} executable provided with the CUDA Toolkit can be used \cite{NVIDIADecember2022}.
+To check whether a device is capable of concurrent kernel execution, the \code{deviceQuery} executable provided with the CUDA Toolkit can be used \cite{NVIDIADecember2022}.
 
 \paragraph{Streams} As mentioned in Section~\ref{Subsection:theory->CUDA->thread-management}, tasks on the device are executed serially, i.e., in the order the host launched them.
 This series of tasks is referred to as the \textit{default stream} since it is present implicitly.
 To execute kernels concurrently, it is necessary to use multiple \textit{streams}.
-Nvidia defines a stream as "\textit{a sequence of commands that execute in order.}" \cite{NVIDIADecember2022}.
+Nvidia defines a stream as "\textit{a sequence of commands that execute in order}" \cite{NVIDIADecember2022}.
 
-Additionally, in Section~\ref{Subsection:theory->CUDA->thread-management} it was mentioned that a kernel is launched on a grid made up of thread blocks.
+Additionally, in Section~\ref{Subsection:theory->CUDA->thread-management}, it was mentioned that a kernel is launched on a grid made up of thread blocks.
 This holds even when multiple kernels are launched simultaneously, i.e., each kernel is launched on a separate grid.
 When a grid is executing a kernel it is referred to as a resident grid.
 
@@ -540,7 +540,7 @@ For a visualization of concurrent kernel execution see Figure~\ref{Figure:theory
 
 \subsection{Parallel Reduction}\label{Subsection:theory->CUDA->parallel-reduction}
 This section aims to present a parallel computation concept relevant to the project.
-As stated earlier in Section~\ref{Subsection:theory->GPUs->GPGPU}, the parallelization of some tasks is not straightforward.
+As stated earlier in Section~\ref{Subsection:theory->GPUs->GPGPU}, the parallelization of certain tasks is not straightforward.
 An example of such a task is finding the maximum value in an array.
 
 The naive procedure for finding the maximum value is to iterate through the array, compare each encountered element to a temporary variable, and save the larger of the two compared values into the variable.
@@ -558,7 +558,7 @@ In the context of CUDA, finding the maximum value of an array stored in global m
 The block then saves the maximum value into another array stored in global memory.
 This process is repeated for the array comprising of per-block maximum values until the number of elements required for comparison is smaller than the maximum number of threads a block can have.
 	\item The kernel is launched again on a grid comprising a single thread block.
-This allows loading the entire array into the block's shared memory which means that the maximum value produced will be the largest in the initial array.
+This allows loading the entire array into the block's shared memory, which means that the maximum value produced will be the largest in the initial array.
 \end{enumerate}
 
 To clearly explain parallel reduction, an example detailing the kernel will be described, i.e., finding the maximum value of an array stored in shared memory.
@@ -809,20 +809,20 @@ Parallel reduction with an alternative memory-accessing procedure known as \text
 	\label{Figure:theory->CUDA->parallel-reduction->maximum-value-in-array-using-parallel-reduction-with-seqential-addressing}
 \end{figure}
 
-For parallel reduction in CUDA, sequential addressing has been shown to be 2x faster on average than interleaved addressing \cite{Harris2023} - for more details see the performance comparison presented in \citetitle{Harris2023} \cite{Harris2023}.
+For parallel reduction in CUDA, sequential addressing has been shown to be 2x faster on average than interleaved addressing \cite{Harris2023}. For more details, see the performance comparison presented in \citetitle{Harris2023} \cite{Harris2023}.
 
 
 
 \section{Iterative Crout's Method with Partial Pivoting (ICMPP)}\label{Section:theory->ICMPP}
 The core aspect of HPC is solving advanced computation problems across various fields.
-The specific types of problems HPC is used to solve are, for example, developing new drugs, deciphering the functioning of the human brain, developing driverless cars, etc. \cite{HY9P0YzuUCw5E5cs}.
-Solving complex tasks can involve using a wide range of programs that often rely on dependencies to perform fundamental tasks, e.g., solving a system of linear equations, efficiently.
+The specific types of problems HPC is used to solve include, for example, developing new drugs, deciphering the functioning of the human brain, developing driverless cars, etc. \cite{HY9P0YzuUCw5E5cs}.
+Solving complex tasks can involve using a wide range of programs that often rely on dependencies to efficiently perform fundamental tasks, such as solving a system of linear equations.
 
 The roots of linear equation solving can be traced back to ancient Chinese mathematics books from around 100 BC \cite{Hart2011}.
 Since then, it has become a fundamental component of numerical linear algebra.
 Owing to its early discovery and wide range of uses, many different methods have been developed - Gaussian elimination being arguably the most well-known.
-However, this project focuses on the use of Lower-Upper decomposition with partial pivoting (LUP) and substitution to solve linear equations.
-Specifically, the LUP method selected was the iterative variant of Prescott Durand Crout's matrix decomposition method, referred to - in the context of this project - as the \textit{Iterative Crout Method} (ICM).
+However, this project focuses on the use of Lower-Upper decomposition with partial Pivoting (LUP) and substitution to solve linear equations.
+Specifically, the LUP method selected was the iterative variant of Prescott Durand Crout's matrix decomposition method, referred to - in the context of this project - as the \textit{Iterative Crout's Method} (ICM).
 Note that in the context of this project, ICM does not include pivoting; a modification of ICM that includes pivoting will be referred to as \textit{Iterative Crout's Method with Partial Pivoting} (ICMPP).
 
 First, LUP and its use when solving a system of linear equations will be briefly described.
@@ -867,8 +867,8 @@ and the upper-triangular matrix $\mathbf{U}$ has the form
 \end{equation}
 
 However, the above-introduced version of LU is susceptible to failure if $\mathbf{A}$ is not strongly regular.
-This limitation can be overcome by properly ordering the rows and columns of $\mathbf{A}$ - referred to as \textit{LU decomposition with full pivoting}.
-Furthermore, the factorization is numerically stable in practice even if only rows are permuted \cite{Trefethen1997} - referred to as \textit{LU decomposition with partial pivoting} (LUP).
+This limitation can be overcome by properly ordering the rows and columns of $\mathbf{A}$, which is referred to as \textit{LU decomposition with full pivoting}.
+Furthermore, the factorization is numerically stable in practice even if only rows are permuted \cite{Trefethen1997}, which is referred to as \textit{LU decomposition with partial Pivoting} (LUP).
 
 The decomposition performed by LUP is identical to that of LU with the exception of a permutation matrix being added to keep track of row permutations.
 In matrix form, LUP is written as
@@ -942,7 +942,7 @@ While there are many different approaches to LUP, this project focuses on \texti
 \subsection{Crout's Method with Partial Pivoting (CMPP)}\label{Subsection:theory->ICMPP->LUP->CMPP}
 This section aims to introduce an LUP algorithm known as \textit{Crout's Method with Partial Pivoting} (CMPP).
 CMPP's base form, Crout's Method (CM), is also referred to as \textit{Crout's matrix decomposition} or \textit{Crout's factorization} and was developed by Prescott Durand Crout \cite{Press2007} in the 20th century.
-In the context of this project, CM refers to the method without partial pivoting and whereas CMPP refers to the method with partial pivoting.
+In the context of this project, CM refers to the method without partial pivoting, whereas CMPP refers to the method with partial pivoting.
 
 When it comes to LUP algorithms, a distinctive feature of CM is that it generates a unit upper-triangular matrix $\mathbf{U} \in \mathbb{R}^{n \times n} \left(n \in \mathbb{N}\right)$, i.e., one where all the elements on its main diagonal are equal to 1:
 \begin{equation}
@@ -957,7 +957,7 @@ When it comes to LUP algorithms, a distinctive feature of CM is that it generate
 	} \,.
 \end{equation}
 
-\paragraph{Algorithm} The core part of the algorithm for decomposing matrix $\mathbf{A} \in \mathbb{R}^{n \times n} \left(n \in \mathbb{N}\right)$ into $\mathbf{LUP}$ - where $\mathbf{L}, \mathbf{U} \in \mathbb{R}^{n \times n} \left(n \in \mathbb{N}\right)$ and $\mathbf{P} \in \left\{0,1\right\}^{n \times n}$ - consists of formulas for computing the elements of $\mathbf{L}$ and $\mathbf{U}$ \cite{Press2007}:
+\paragraph{Algorithm} The core part of the algorithm for decomposing matrix $\mathbf{A} \in \mathbb{R}^{n \times n} \left(n \in \mathbb{N}\right)$ into $\mathbf{LUP}$, where $\mathbf{L}, \mathbf{U} \in \mathbb{R}^{n \times n} \left(n \in \mathbb{N}\right)$ and $\mathbf{P} \in \left\{0,1\right\}^{n \times n}$, consists of formulas for computing the elements of $\mathbf{L}$ and $\mathbf{U}$ \cite{Press2007}:
 
 \begin{align}
 	l_{i,j} & = a_{i,j} - \sum_{k=1}^{j-1}l_{i,k}u_{k,j} 								    & \quad i \geq j\,, \label{Equation:theory->ICMPP->LUP->CMPP->lij} \\
@@ -1135,8 +1135,8 @@ void cmpp( A, L, U, piv, n )
 }
 \end{lstlisting}
 
-From Formulas~\ref{Equation:theory->ICMPP->LUP->CMPP->lij} and \ref{Equation:theory->ICMPP->LUP->CMPP->uij}, and the pseudocode presented in Listing~\ref{Listing:theory->ICMPP->LUP->CMPP->pseudocode}, it can be seen that the main part of computing an element in either $\mathbf{L}$ or $\mathbf{U}$ (where $\mathbf{L}, \mathbf{U} \in \mathbb{R}^{n \times n} \left(n \in \mathbb{N}\right)$) is the sum.
-For each element, the sum is computed using some elements above and to the left of it.
+From Formulas~\ref{Equation:theory->ICMPP->LUP->CMPP->lij} and \ref{Equation:theory->ICMPP->LUP->CMPP->uij}, and the pseudocode presented in Listing~\ref{Listing:theory->ICMPP->LUP->CMPP->pseudocode}, it can be seen that the main part of computing an element in either $\mathbf{L}$ or $\mathbf{U}$, where $\mathbf{L}, \mathbf{U} \in \mathbb{R}^{n \times n} \left(n \in \mathbb{N}\right)$, is the sum.
+For each element, the sum is computed using certain elements above and to the left of it.
 Specifically, elements starting from 1 to $\minp{i,j}$ (excluding the latter) in row $i$ and column $j$ are multiplied and summed.
 This dependency of elements is visualized in Figure~\ref{Figure:theory->ICMPP->LUP->CMPP->sum-in-element-computation-dependance}.
 
@@ -1152,8 +1152,7 @@ This dependency of elements is visualized in Figure~\ref{Figure:theory->ICMPP->L
 		\includegraphics[width=.8\textwidth, keepaspectratio]{images/ch01/CMPP_elements_used_compute_sum_U.png}
 		\label{Figure:theory->ICMPP->LUP->CMPP->sum-in-element-computation-dependance-U}
 	\end{subfigure}
-	\caption{Two examples of elements used (light gray square) to compute the sum in the formula of elements $l_{i,j}$ and $u_{i,j}$.
-		The dark gray squares represent the elements being computed.
+	\caption{Two examples of elements used (light gray squares) to compute the sum in the formula of elements $l_{i,j}$ and $u_{i,j}$ (dark gray squares).
 		The lower triangle of the matrix consists of the corresponding elements of the lower triangle from $\mathbf{L}$ while the upper triangle consists of the corresponding elements of the upper triangle from $\mathbf{U}$.
 		To compute the sum, only elements with indices in the interval $\left[1, \minp{i, j}\right)$, i.e., excluding the right boundary, are used in the element's row and column.
 		Taken from \citetitle{Cejka2022} \cite{Cejka2022} and \citetitle{Chow2015} \cite{Chow2015}.
@@ -1205,7 +1204,7 @@ The decomposition of matrix $\mathbf{A} \in \mathbb{R}^{n \times n}$ into the pr
 		Pivot row $j$ (same as Step~\ref{Item:theory->ICMPP->LUP->CMPP->algorithm-steps->pivot-row-j} in the CMPP algorithm described on Page~\pageref{Item:theory->ICMPP->LUP->CMPP->algorithm-steps->pivot-row-j}):
 		\begin{enumerate}
 			\item \label{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row->argmax}
-				Find the index ($p$) of the element largest in absolute value under element $l^{t}_{j, j}$:
+				Find the index ($p$) of the element largest in absolute value in column $j$ from row $j$ to $n$:
 				\begin{equation}
 					p = \argmax_k \left\{ \left| l^{t}_{k, j} \right|: k=j,\dots, n \right\} \nonumber\,.
 				\end{equation}

@@ -932,7 +932,7 @@ Although the variants of ICM\_\textit{x}PP were generally slower than the varian
 \subsubsection{Accuracy of Results on All Matrices}\label{Subsection:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices}
 Another important aspect in the performance of a decomposer is the accuracy of the results it produces.
 The maximum absolute difference between the expected results and the actual results for the entire set of 50 matrices is shown in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-and-single-precision}.
-For context, the maximum absolute difference for decomposers was defined in Equation~\ref{Equation:implementation->decomposition-project->benchmarks->decomposers->maximum-difference} as $\left| \mathbf{A} - \mathbf{PLU} \right|$, where $\mathbf{A}$ is the input matrix, $\mathbf{L}$ and $\mathbf{U}$ are the results of the decomposition operation, and $\mathbf{P}$ is the permutation matrix.
+For context, the maximum absolute difference for decomposers was defined in Equation~\ref{Equation:implementation->decomposition-project->benchmarks->decomposers->maximum-difference} as $\max \left| \mathbf{A} - \mathbf{LUP} \right|$, where $\mathbf{A}$ is the input matrix, $\mathbf{L}$ and $\mathbf{U}$ are the results of the decomposition operation, and $\mathbf{P}$ is the permutation matrix.
 Note that the permutation matrix was represented by a vector in the implementations.
 This section mentions decomposers ICM\_\textit{x}PP and PCM\_\textit{x}PP instead of their variants, as the variations of the decomposers did not differ in terms of accuracy, i.e., there was no need to specifically address each variant.
 
@@ -1011,7 +1011,8 @@ This section mentions decomposers ICM\_\textit{x}PP and PCM\_\textit{x}PP instea
 	\label{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-and-single-precision}
 \end{figure}
 
-As depicted in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-and-single-precision}, the decomposers implemented by the author of this thesis exhibited an acceptable level of accuracy in comparison to the established CuSolverDnXgetrfPP when double precision was used.  However, when it came to single precision, the accuracy of the decomposers was found to be inferior to that of CuSolverDnXgetrfPP.
+As depicted in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-and-single-precision}, the decomposers implemented by the author of this thesis exhibited an acceptable level of accuracy in comparison to the established CuSolverDnXgetrfPP when double precision was used.
+However, when it came to single precision, the accuracy of the decomposers was found to be inferior to that of CuSolverDnXgetrfPP.
 Given the large discrepancy in result accuracy between double and single precision, they will be analyzed separately.
 
 \paragraph{Double Precision} In addition to the accuracy of results shown in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision}, a selection of statistical indices is presented in Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->statistical-indices} to offer additional insights into the performance of the decomposers.
@@ -1318,7 +1319,7 @@ On the other hand, if highly accurate results are required, CMPP is recommended,
 
 \subsection{Solvers Benchmark}\label{Subsection:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark}
 This section presents benchmark results obtained by solving systems of linear equations that originated from the set of 50 matrices.
-The benchmark for solvers consists of each matrix being used as a coefficient matrix \code{A} in \code{AX = B}.
+The benchmark for solvers consists of each matrix being used as a coefficient matrix $\mathbf{A}$ in $\mathbf{AX} = \mathbf{B}$.
 Specifically, the benchmark comprises the following steps:
 
 \begin{tight_enumerate}
@@ -1326,7 +1327,7 @@ Specifically, the benchmark comprises the following steps:
 If the unit diagonal is expected in \code{U}, then CMPP is used, whereas if it is expected in \code{L}, then GEM is used.
 	\item To mitigate possible inaccuracies caused by the decomposer, matrices \code{L} and \code{U} are multiplied to create \code{A\_res} which is later used instead of \code{A} for the verification of results.
 	\item The matrix of 10 right-hand sides, \code{B}, is filled with ones.
-	\item The solver receives the decomposed matrices, \code{L} and \code{U}, the pivoting vector \code{piv}, the matrix of unknowns, $\mathbf{X}$, and the matrix of right-hand sides \code{B}.
+	\item The solver receives the decomposed matrices, \code{L} and \code{U}, the pivoting vector \code{piv}, the matrix of unknowns, \code{X}, and the matrix of right-hand sides, \code{B}.
 	\item The system is solved 10 times by the solver, and the collected metrics are subsequently averaged and logged.
 \end{tight_enumerate}
 
@@ -1592,7 +1593,7 @@ This is due to SSPP exhibiting a significantly lower execution time for certain 
 \subsubsection{Accuracy of Results on All Matrices}\label{Subsection:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->accuracy-of-results-on-all-matrices}
 The accuracy of the values of unknowns produced by solvers is a crucial performance indicator.
 The maximum absolute difference between the expected results and the actual results for the set of 50 matrices using both double and single precision is presented in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->accuracy-of-results-on-all-matrices->double-and-single-precision}.
-For context, the maximum absolute difference for solvers was defined in Equation~\ref{Equation:implementation->decomposition-project->benchmarks->solvers->maximum-difference} as $\max \left| \mathbf{PLUX} - \mathbf{B} \right|$, where $\mathbf{L}$ (lower-triangular matrix), $\mathbf{U}$ (unit upper-triangular matrix), and $\mathbf{P}$ (permutation matrix) are the results of the decomposition operation performed on the input matrix; $\mathbf{B}$ denotes the matrix of right-hand sides (with all values equal to 1), and $\mathbf{X}$ represents the matrix of unknowns whose values are computed by a solver.
+For context, the maximum absolute difference for solvers was defined in Equation~\ref{Equation:implementation->decomposition-project->benchmarks->solvers->maximum-difference} as $\max \left| \mathbf{LUPX} - \mathbf{B} \right|$, where $\mathbf{L}$ (lower-triangular matrix), $\mathbf{U}$ (unit upper-triangular matrix), and $\mathbf{P}$ (permutation matrix) are the results of the decomposition operation performed on the input matrix; $\mathbf{X}$ represents the matrix of unknowns whose values are computed by a solver, and $\mathbf{B}$ denotes the matrix of right-hand sides (with all values equal to 1).
 Note that the permutation matrix was represented by a vector in the implementations.
 This section mentions the IS\_\textit{x}PP solver instead of its variants, as they did not differ in terms of accuracy, i.e., there was no need to specifically address each variant.
 
@@ -1685,8 +1686,8 @@ This section mentions the IS\_\textit{x}PP solver instead of its variants, as th
 \end{figure}
 
 As mentioned in the caption of Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->accuracy-of-results-on-all-matrices->double-and-single-precision}, IS\_\textit{x}PP occasionally produced invalid results.
-Specifically, when using double precision, for four matrices, the solver produced results that resulted in the maximum \textit{absolute} difference being equal to \num{1.797693e+308}, which is the highest possible value that a variable of type \code{double} can store.
-In the case of single precision, the solver produced invalid results for twelve matrices, with the maximum absolute difference equal to \num{-3.402823E+038} which is close to the lowest possible value that a variable of type \code{float} can store.
+Specifically, when using double precision, for four matrices, the solver produced results that resulted in the maximum absolute difference being equal to \num{1.797693e+308}, which is the highest possible value that a variable of type \code{double} can store.
+In the case of single precision, the solver produced invalid results for twelve matrices, with the maximum absolute difference equal to -\num{3.402823E+038} which is close to the lowest possible value that a variable of type \code{float} can store.
 Among the twelve matrices, eleven were sparse, and one was dense.
 Additionally, it is worth noting that the CPU version of IS\_\textit{x}PP also produced the same invalid results, indicating that the issue lies with the algorithm itself rather than the GPU implementation.
 The reason behind IS\_\textit{x}PP computing invalid values in the mentioned cases is currently unclear.
@@ -1765,8 +1766,8 @@ For each decomposer, the benchmark involved the following steps:
 
 \begin{tight_enumerate}
 	\item Perform a warm-up by running the \code{poisson\_on\_cube} executable with undemanding parameters.
-	\item For each value in the set $\left\{\, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50\,\right\}$, run the \code{poisson\_on\_cube} executable 10 times, providing the value as the first parameter (\code{poisson\_on\_cube value arg2 arg3}).
-Note that the decomposer is called multiple times within each run.
+	\item For each value in the set $\left\{\, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50\,\right\}$, run the \code{poisson\_on\_cube} executable 10 times, providing the value as the first parameter (\code{poisson\_on\_cube <value> <arg2> <arg3>}).
+		Note that the decomposer is called multiple times within each run.
 	\item Collect and save the logs generated by each run, as they contain the metrics relevant to this benchmark.
 \end{tight_enumerate}
 

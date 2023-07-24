@@ -205,7 +205,8 @@ However, unlike \code{cusolverDnXgetrs()}, \code{cublas<t>trsm()} is only capabl
 To use it for solving linear systems with LU decomposition, it must be called twice (as detailed in Step~\ref{Item:theory->ICMPP->LUP->solving-system-linear-equations->substitution} of the two-step process for solving a system of linear equations mentioned in Section~\ref{Subsection:theory->ICMPP->LUP}):
 
 \begin{enumerate}
-	\item To solve $\mathbf{LY}=\mathbf{PB}$, where $\mathbf{Y}$ and $\mathbf{B}$ are appropriately-sized matrices.
+	\item To solve $\mathbf{LY}=\mathbf{B}$, where $\mathbf{Y}$ and $\mathbf{B}$ are appropriately-sized matrices.
+		Note that $\mathbf{B}$ is expected to be permuted using $\mathbf{P}$ before $\mathbf{B}$ is supplied to \code{cublas<t>trsm()}.
 	\item To solve $\mathbf{UX}=\mathbf{Y}$, where $\mathbf{X}$ is an appropriately-sized matrix.
 \end{enumerate}
 
@@ -214,7 +215,7 @@ The \code{cublasFillMode\_t} datatype can be either \code{CUBLAS\_FILL\_MODE\_LO
 The first two options represent the cases when either the lower triangle or the upper triangle of the matrix is to be used, respectively, while the last option represents the case when the entire matrix is to be used.
 The \code{cublasDiagType\_t} datatype can be either \code{CUBLAS\_DIAG\_NON\_UNIT} or \code{CUBLAS\_DIAG\_UNIT}.
 The former represents the case when the main diagonal of the matrix does not consist of ones, whereas the latter represents the case when it does.\\
-For clarity, to solve $\mathbf{LY}=\mathbf{PB}$ using \code{cublas<t>trsm()}, the function must be called with the following parameters:
+For clarity, to solve $\mathbf{LY}=\mathbf{B}$ using \code{cublas<t>trsm()}, the function must be called with the following parameters:
 
 \begin{tight_itemize}
 	\item \code{CUBLAS\_FILL\_MODE\_LOWER} and \code{CUBLAS\_DIAG\_UNIT} when $\mathbf{L}$ is a \textit{unit} lower-triangular matrix; and
@@ -223,7 +224,7 @@ For clarity, to solve $\mathbf{LY}=\mathbf{PB}$ using \code{cublas<t>trsm()}, th
 
 The parameters are set similarly for $\mathbf{U}$ when solving $\mathbf{UX}=\mathbf{Y}$, with the exception of using \code{CUBLAS\_FILL\_MODE\_UPPER} instead of \code{CUBLAS\_FILL\_MODE\_LOWER}.
 
-For a selection of input parameters for \code{cublas<t>trsm()} see Listing~\ref{Listing:implementation->libraries-used->CUDA-libraries->cuBLAS->cublasTtrsm-parameters}.
+For a selection of input parameters for \code{cublasDtrsm()} see Listing~\ref{Listing:implementation->libraries-used->CUDA-libraries->cuBLAS->cublasTtrsm-parameters}.
 
 \begin{lstlisting}[caption={The function declaration of \code{cublasDtrsm()} with a selection of parameters.},label={Listing:implementation->libraries-used->CUDA-libraries->cuBLAS->cublasTtrsm-parameters}]
 cublasStatus_t cublasDtrsm(
@@ -312,7 +313,7 @@ The \textit{Solvers} group consists of implementations that use the output of an
 In the context of this project, an implementation from the \textit{Decomposers} group is referred to as a \textit{decomposer}, and an implementation from the \textit{Solvers} group is referred to as a \textit{solver}.
 
 \subsubsection{Decomposers}\label{Subsection:implementation->decomposition-project->implemented-solutions->decomposers}
-In particular, the \textit{Decomposers} group consists of implementations that perform LUP, i.e., $\mathbf{PA} = \mathbf{LU}$, or LU decomposition without partial pivoting, i.e., $\mathbf{A} = \mathbf{LU}$.
+In particular, the \textit{Decomposers} group consists of implementations that perform LUP, i.e., $\mathbf{A} = \mathbf{LUP}$, or LU decomposition without partial pivoting, i.e., $\mathbf{A} = \mathbf{LU}$.
 The full list of decomposers and their characteristics is presented in Table~\ref{Table:implementation->decomposition-project->implemented-solutions->decomposers->decomposers-in-the-project}.
 
 \begin{table}[ht!]
@@ -452,9 +453,9 @@ Thus, the choice of the initial estimate can have a significant impact on the pe
 The default choice, as shown in the aforementioned algorithm, is to estimate matrices $\mathbf{L}$ and $\mathbf{U}$ using $\mathbf{A}$ in the following manner:
 
 \begin{align}
-	l_{i,j}^{0} &= a_{i,j} & u_{i,j}^{0} &= 0 \quad &i < j \nonumber\,, \\
-	u_{i,j}^{0} &= a_{i,j} & l_{i,j}^{0} &= 0 \quad &i > j \nonumber\,, \\
-	u_{i,j}^{0} &= 1	   &			 & \quad    &i = j \nonumber\,,
+	l_{i,j}^{0} & = a_{i,j} & u_{i,j}^{0} & = 0 \quad & i > j \nonumber\,, &  \\
+	u_{i,j}^{0} & = a_{i,j} & l_{i,j}^{0} & = 0 \quad & i < j \nonumber\,, &  \\
+	l_{i,j}^{0} & = a_{i,j} & u_{i,j}^{0} & = 1       & i = j \nonumber\,, &
 \end{align}
 
 The method declaration providing this functionality is identical to the one shown in Listing~\ref{Listing:implementation->decomposition-project->implemented-solutions->decomposers->CMPP}.
@@ -672,8 +673,8 @@ IterativeCroutMethod< BLOCK_SIZE >::decompose( Matrix& A, Matrix& LU, Vector& pi
 Initially, the size of a section is set to $1/10$ of the dimensions of \code{LU}.
 However, the value is limited to the interval $\left[256, 1024\right]$, i.e., if the size of a section exceeds either boundary of the interval, it is adjusted to the value of the nearest boundary.
 Then, the value is rounded to the nearest multiple of \code{BLOCK\_SIZE} (8, 16, or 32) that is greater than or equal to it.
-For example, if \code{LU} is a 3,000-by-3,000 matrix, then the size of a section will be 300-by-300.
-However, if \code{LU} is a 12,000-by-12,000 matrix, then the size of each section is adjusted to 1024-by-1024.\\
+For example, if \code{LU} is a 3,000-by-3,000 matrix, then the size of a section will be 300-by-300 for \code{BLOCK\_SIZE} equal to 8 or 16, and 320-by-320 for \code{BLOCK\_SIZE} equal to 32.
+However, if \code{LU} is a 12,000-by-12,000 matrix, then the size of each section is adjusted to 1024-by-1024 for all \code{BLOCK\_SIZE} values.\\
 The interval was determined as a result of extensive testing performed as part of \citetitle{Cejka2022} \cite{Cejka2022}.
 For clarity, the value is rounded to assure correct loop unrolling with shared memory in the computing kernels.
 For a thorough explanation, see the last paragraph of Section~2.1 in \citetitle{Cejka2022} \cite{Cejka2022}.
@@ -1165,21 +1166,21 @@ Note that the maximum absolute difference is computed on the CPU to assure the h
 The maximum absolute difference is defined for decomposers as:
 
 \begin{equation}
-	\max \left| \mathbf{A} - \mathbf{PLU} \right| \,,
+	\max \left| \mathbf{A} - \mathbf{LUP} \right| \,,
 	\label{Equation:implementation->decomposition-project->benchmarks->decomposers->maximum-difference}
 \end{equation}
 
-where $\mathbf{A}$ is the input matrix, $\mathbf{P}$ is the permutation matrix (represented in code by a pivoting vector), and matrices $\mathbf{L}$ and $\mathbf{U}$ are the results of the LU decomposition operation.
+where $\mathbf{A}$ is the input matrix, matrices $\mathbf{L}$ and $\mathbf{U}$ are the results of the LU decomposition operation, and $\mathbf{P}$ is the permutation matrix (represented in code by a pivoting vector).
 To clarify, the maximum absolute difference for decomposers is the largest absolute difference between a computed element and its expected result.
 
 For solvers the maximum absolute difference is defined as:
 
 \begin{equation}
-	\max \left| \mathbf{PLUX} - \mathbf{B} \right| \,,
+	\max \left| \mathbf{LUPX} - \mathbf{B} \right| \,,
 	\label{Equation:implementation->decomposition-project->benchmarks->solvers->maximum-difference}
 \end{equation}
 
-where matrices $\mathbf{P}$, $\mathbf{L}$, and $\mathbf{U}$ are the same as in Equation~\ref{Equation:implementation->decomposition-project->benchmarks->decomposers->maximum-difference}, $\mathbf{X}$ is the computed matrix of unknowns, and $\mathbf{B}$ is the matrix of right-hand sides.
+where matrices $\mathbf{L}$, $\mathbf{U}$, and $\mathbf{P}$ are the same as in Equation~\ref{Equation:implementation->decomposition-project->benchmarks->decomposers->maximum-difference}, $\mathbf{X}$ is the computed matrix of unknowns, and $\mathbf{B}$ is the matrix of right-hand sides.
 To clarify, the computed unknowns are used in the system of equations in matrix form, and then the largest absolute difference between the left- and right-hand sides is used.
 
 As mentioned in \citetitle{Cejka2022} \cite{Cejka2022}, many aspects of the implementations can only be verified on larger matrices.

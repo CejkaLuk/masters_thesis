@@ -116,7 +116,8 @@ This section presents benchmark results obtained by decomposing the set of matri
 	\caption{Decomposers compared in the benchmark: CMPP (described in \namerefItalics{Paragraph:implementation->decomposition-project->implemented-solutions->decomposers->CMPP} in Section~\ref{Subsection:implementation->decomposition-project->implemented-solutions->decomposers}), CuSolverDnXgetrfPP (mentioned in Section~\ref{Subsection:implementation->libraries-used->CUDA-libraries->cuSOLVER}), ICM\_\textit{x}PP (described in \namerefItalics{Paragraph:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP} in Section~\ref{Subsection:implementation->decomposition-project->implemented-solutions->decomposers}), and PCM\_\textit{x}PP (described in \namerefItalics{Paragraph:implementation->decomposition-project->implemented-solutions->decomposers->PCMxPP} in Section~\ref{Subsection:implementation->decomposition-project->implemented-solutions->decomposers}).
 		The \textit{Variants} column indicates the different configurations of the decomposer.
 		For example, ICM\_\textit{x}PP was benchmarked as three separate decomposers depending on the CUDA thread block configuration, e.g., 8-by-8 threads per block, 16-by-16 threads per block, etc.
-		Furthermore, for ICM\_\textit{x}PP, the processing tolerance was set to zero, and the inclusive lower bound and upper bound of conditional partial pivoting tolerance were set to 1e-5 and 1e+5, respectively.
+		Furthermore, for ICM\_\textit{x}PP, the processing tolerance was set to zero, and the lower bound and upper bound of conditional partial pivoting tolerance were set to \num{1e-5} and \num{1e+5}, respectively.
+		For CMPP and PCM\_\textit{x}PP, the conditional partial pivoting tolerance was set to \num{1e-5}.
 		In the case of PCM\_\textit{x}PP, the thread blocks are one-dimensional and the number of threads per block is $x^2$, i.e., 64, 256, and 1024.
 		The \textit{Performer} column specifies the primary device used by each decomposer.
 	}
@@ -1915,8 +1916,8 @@ This section presents the benchmark results obtained by running the BDDCML bench
 		The \textit{Variants} column indicates the different configurations of the decomposer.
 		For example, ICM\_\textit{x}PP was benchmarked as three separate decomposers depending on the CUDA thread block configuration.
 		In the case of PCM\_\textit{x}PP, the thread blocks are one-dimensional, and the number of threads per block is $x^2$.
-		Unless stated otherwise, the processing tolerance for ICM\_\textit{x}PP was set to zero.
-		Furthermore, the conditional partial pivoting tolerance was set to \num{1e-5} for ICM\_\textit{x}PP and PCM\_\textit{x}PP.
+		Unless stated otherwise, the processing tolerance for ICM\_\textit{x}PP was set to zero, and the lower bound and upper bound of conditional partial pivoting tolerance were set to \num{1e-5} and \num{1e+5}, respectively.
+		For PCM\_\textit{x}PP, the conditional partial pivoting tolerance was set to \num{1e-5}.
 		Note that the \code{magmaf\_dgetrf\_gpu()} function was already used in BDDCML prior to this thesis and it is not available in the Decomposition project.
 		The \textit{Performer} column specifies the primary device used by each decomposer.
 	}

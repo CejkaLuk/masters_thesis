@@ -1195,9 +1195,12 @@ The decomposition of matrix $\mathbf{A} \in \mathbb{R}^{n \times n}$ into the pr
 			l_{i,j}^{t} &= a_{ij} - \sum_{k=1}^{j-1}l_{i,k}^{t-1}u_{k,j}^{t-1} &\quad i \geq j \nonumber\,.
 		\end{align}
 	\item \label{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->converge-lower-sections}
-		Take the first $j \in \widehat{n}; n \in \mathbb{N}$ that satisfies the condition $\left|l^{t-1}_{j, j} - l^{t}_{j, j}\right| < \epsilon$ (where $\epsilon$ denotes a tolerance, e.g., 0.001) and \textit{iteratively converge} all elements in $\mathbf{L}^{t}$ below row $j$ from column 1 to column $j$ (including both boundaries), i.e., $l^{t}_{b, c}$ where $j < b \leq n$ and $1 \leq c \leq j$.
-If no such $j$ satisfies the condition, proceed to Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Ut}.
-In this context, \textit{iteratively converge} signifies to continue computing the mentioned elements using Formula~\ref{Equation:theory->ICMPP->LUP->CMPP->lij} until they all satisfy the condition $\left|l^{t-1}_{b, c} - l^{t}_{b, c}\right| < \epsilon$.
+		Take the first $j \in \widehat{n}$ that satisfies the conditions $\left|l^{t-1}_{j, j} - l^{t}_{j, j}\right| \leq \epsilon_1$ (where $\epsilon_1$ denotes a tolerance, e.g., 0.001) and $\left|l^{t}_{j, j}\right| \leq \epsilon_2$, where $\epsilon_2$ denotes a \textit{pivoting tolerance}, e.g., 1e-5.
+		In other words, find the first element on the main diagonal of $\mathbf{L}$ whose value is finalized and check if it requires pivoting according to the pivoting tolerance.
+		In the context of this project, pivoting an element only when it is smaller than (or equal to) the pivoting tolerance is referred to as \textit{conditional partial pivoting}.
+		If no such $j$ satisfies the conditions, proceed to Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Ut}.
+		Then, \textit{iteratively converge} all elements in $\mathbf{L}^{t}$ below row $j$ from column 1 to column $j$ (including both boundaries), i.e., $l^{t}_{b, c}$ where $j < b \leq n$ and $1 \leq c \leq j$.
+		In this context, \textit{iteratively converge} signifies to continue computing the mentioned elements using Formula~\ref{Equation:theory->ICMPP->LUP->CMPP->lij} until they all satisfy the condition $\left|l^{t-1}_{b, c} - l^{t}_{b, c}\right| \leq \epsilon_1$.
 	\item \label{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row}
 		Pivot row $j$ (same as Step~\ref{Item:theory->ICMPP->LUP->CMPP->algorithm-steps->pivot-row-j} in the CMPP algorithm described on Page~\pageref{Item:theory->ICMPP->LUP->CMPP->algorithm-steps->pivot-row-j}):
 		\begin{enumerate}

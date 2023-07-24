@@ -285,12 +285,12 @@ As visualized in Figure~\ref{Figure:theory->CUDA->thread-management->thread-stru
 \end{figure}
 
 To execute a kernel on the device, it is necessary to provide the kernel with an execution configuration: \code{$<$$<$$<$ Dg, Db, Ns, S $>$$>$$>$}, where:
-\begin{itemize}
+\begin{tight_itemize}
 	\item \code{Dg} - dimension and size of the grid;
 	\item \code{Db} - dimension and size of each block;
 	\item \code{Ns} - optional (default value is 0), number of bytes in shared memory allocated per block in addition to statically allocated shared memory (explained in Section~\ref{Subsection:theory->CUDA->memory-management});
 	\item \code{S} - optional (default value is 0), stream associated with the kernel (explained in Section~\ref{Subsection:theory->CUDA->concurrent-kernel-execution}).
-\end{itemize}
+\end{tight_itemize}
 
 An example of a kernel call with a basic execution configuration is presented in Listing~\ref{Listing:theory->CUDA->thread-management->kernel-configuration-example}.
 
@@ -458,12 +458,12 @@ When a grid is executing a kernel it is referred to as a resident grid.
 
 Note that the use of concurrent kernel execution is associated with certain limitations \cite{Cejka2022, NVIDIADecember2022}:
 
-\begin{enumerate}
+\begin{tight_enumerate}
 	\item Maximum number of resident grids per device.
 	\item Kernels from different CUDA contexts cannot be run concurrently.
 	\item Kernels are only run concurrently if the device has enough resources for them.
 	\item Undefined behavior during stream interaction.
-\end{enumerate}
+\end{tight_enumerate}
 
 The first limitation is dependent on the compute capability version as presented in Table~\ref{Table:theory->CUDA->concurrent-kernel-execution->maximum-resident-grids-per-device}.
 

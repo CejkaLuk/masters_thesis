@@ -926,7 +926,6 @@ To put the results of the entire set of matrices into perspective, Table~\ref{Ta
 In terms of execution speed, both Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-time-on-all-matrices->double-and-single-precision} and Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-time-on-all-matrices->total-execution-of-decomposers-on-set-of-50-matrices} demonstrate that CuSolverDnXgetrfPP is the fastest decomposer.
 Excluding CuSolverDnXgetrfPP, the fastest decomposer is PCM\_\textit{x}PP, specifically the PCM\_8PP variant.
 Although the variants of ICM\_\textit{x}PP were generally slower than the variants of PCM\_\textit{x}PP for most matrices, they exhibited promising performance for specific matrix types, such as the \textit{poc} matrices obtained from the BDDCML benchmark.
-Note that the results of the BDDCML benchmark are presented in Section~\ref{Section:comparing-decomposers-and-solvers->bddcml-benchmark}.
 
 
 \subsubsection{Accuracy of Results on All Matrices}\label{Subsection:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices}
@@ -1168,6 +1167,7 @@ As shown in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-
 This decrease in accuracy would be concerning if CMPP and PCM\_\textit{x}PP were intended to be fully-functional decomposers.
 However, as previously mentioned, both decomposers primarily served as a proof-of-concept for conditional partial pivoting and as a baseline comparison for ICM\_\textit{x}PP.
 
+\label{Text:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->ICMxPP-nan-values-explanation-beginning}
 In the introduction of \namerefItalics{Subparagrah:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->processing-by-sections} in Section~\ref{Subsection:implementation->decomposition-project->implemented-solutions->decomposers}, the upper bound for conditional partial pivoting was introduced.
 It was explained that the upper bound is necessary only for ICM\_\textit{x}PP, as without it, the decomposer would decompose certain matrices incorrectly.
 In this context, the version of ICM\_\textit{x}PP without the upper bound for conditional partial pivoting will be referred to as ICM\_\textit{x}PP\_NaN.
@@ -1507,7 +1507,7 @@ To confirm this observation, Figure~\ref{Figure:comparing-decomposers-and-solver
 
 As depicted in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->comparison-of-execution-times-on-all-matrices->ISxPP-double-precision}, IS\_8PP consistently demonstrates better performance compared to IS\_16PP, which in turn consistently outperforms IS\_32P, and so on.
 These findings suggest that IS\_\textit{x}PP is also affected by the resource idleness issue described on Page~\pageref{Paragraph:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->PCMxPP} for PCM\_\textit{x}PP.
-In IS\_\textit{x}PP, the thread blocks comprise \textit{x}-by-8 threads, as shown in Listing~\ref{Listing:ISxPP-implementation-excerpt} on Line~\ref{Listing:ISxPP-implementation-excerpt->num-threads-2nd-dim}.
+In IS\_\textit{x}PP, the thread blocks comprise \textit{x}-by-8 threads, as shown in Listing~\ref{Listing:ISxPP-implementation-excerpt} on Line~\ref{Line:ISxPP-implementation-excerpt->num-threads-per-block}.
 Each row of threads within the eight rows of threads in the thread block is responsible for computing values for one right-hand side.
 The number of rows in the thread block has remained constant since the initial implementation of the solver.
 As solvers were not a part of the diploma thesis assignment, the implementation of thread blocks that would dynamically adapt to the number of right-hand sides was not prioritized.
@@ -2053,7 +2053,7 @@ For example, approximately 86\% of the elements in the input matrix for $H/h = 2
 \end{tight_enumerate}
 
 The summary of the decomposition benchmarks in Section~\ref{Subsection:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->summary-of-results-of-decomposition-benchmarks} suggested that using a higher processing tolerance for ICM\_\textit{x}PP may be suitable when the decomposer is employed as a preconditioner that is not expected to be highly accurate.
-As mentioned earlier in Section~\ref{Text:comparing-decomposers-and-solvers->bddcml-benchmark->poisson-on-cube-stages}, the \textit{Krylov method} stage uses the \code{LU} matrices produced by the decomposer to iteratively improve the solution.
+As mentioned earlier on Page~\pageref{Text:comparing-decomposers-and-solvers->bddcml-benchmark->poisson-on-cube-stages}, the \textit{Krylov method} stage uses the \code{LU} matrices produced by the decomposer to iteratively improve the solution.
 Hence, an inaccurate decomposition could potentially benefit the overall execution time of the problem.
 To investigate this claim, ICM\_32PP with various processing tolerances was utilized as a decomposer in the \textit{pc\_setup} stage.
 Only the ICM\_32PP variant is presented since it consistently outperformed the other variants of ICM\_\textit{x}PP.
@@ -2152,7 +2152,7 @@ As depicted in Figure~\ref{Figure:comparing-decomposers-and-solvers->bddcml-benc
 For example, with $H/h$ set to 50, "ICM\_32PP 1" achieved a speedup of 0.92 relative to MAGMAgetrf.
 It is worth noting that larger processing tolerances were not explored, as the performance gains between tolerances 0.5 and 1 were minimal, as shown in Figure~\ref{Figure:comparing-decomposers-and-solvers->bddcml-benchmark->benchmark-results->speedup-comparison-of-decomposers-in-pc-setup-stage->speedup-comparison->ICMxPP-with-varying-processing-tolerances->speedup-comparison-relative-to-MAGMAgetrf}.
 
-However, as described in Section~\ref{Text:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->ICM32PP->various-processing-tolerances->description-of-figure-with-accuracy-results}, increasing the processing tolerance results in lower accuracy of the results.
+However, as described on Page~\pageref{Text:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->ICM32PP->various-processing-tolerances->description-of-figure-with-accuracy-results}, increasing the processing tolerance results in lower accuracy of the results.
 This decrease in accuracy is observed in the \textit{Krylov method} stage, where the matrices produced by ICM\_32PP are used.
 Specifically, a higher number of iterations are needed to achieve the desired accuracy of the solution, consequently leading to longer execution times of the stage.
 Figure~\ref{Figure:comparing-decomposers-and-solvers->bddcml-benchmark->benchmark-results->speedup-comparison-of-decomposers-in-pc-setup-stage->speedup-comparison->ICMxPP-with-varying-processing-tolerances->krylov-method-iterations-and-time-with-MAGMAgetrf} presents the number of iterations and the execution times of the \textit{Krylov method} stage for ICM\_32PP with various processing tolerances, as well as for MAGMAgetrf.

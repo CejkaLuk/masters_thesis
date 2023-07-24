@@ -355,13 +355,10 @@ The maximum size of shared memory per block varies depending on the CUDA compute
 
 \begin{table}[ht!]
 	\centering
-	\renewcommand{\arraystretch}{1.5}
-	\begin{tabular}{ |c|c|c|c|c|c|c|c| } 
+	\begin{tabular}{|c|c|c|c|c|c|c|c|}
 		\hline
-		Compute capability 				  & 7.0 - 7.2 & 7.5 & 8.0 & 8.6 & 8.7 & 8.9 & 9.0 \\
-		\hline
-		Max. shared memory per block [KB] & 96		  & 64  & 163 & 99  & 163 & 99  & 227 \\
-		\hline
+		\cellcolor[HTML]{C0C0C0}\textbf{Compute capability}                & 7.0 - 7.2 & 7.5 & 8.0 & 8.6 & 8.7 & 8.9 & 9.0 \\ \hline
+		\cellcolor[HTML]{C0C0C0}\textbf{Max. shared memory per block [KB]} &    96     & 64  & 163 & 99  & 163 & 99  & 227 \\ \hline
 	\end{tabular}
 	\caption{Maximum shared memory per thread block depending on the CUDA compute capability version.
 		Note that to use more than 48 KB dynamic shared memory must be used.
@@ -472,13 +469,10 @@ The first limitation is dependent on the compute capability version as presented
 
 \begin{table}[ht!]
 	\centering
-	\renewcommand{\arraystretch}{1.5}
-	\begin{tabular}{ |c|c|c|c| } 
+	\begin{tabular}{|c|c|c|c|}
 		\hline
-		Compute capability 			   & 7.0 & 7.2 & 7.5 - 9.0 \\
-		\hline
-		Max. resident grids per device & 128 & 16  & 128       \\
-		\hline
+		\cellcolor[HTML]{C0C0C0}\textbf{Compute capability}             & 7.0 & 7.2 & 7.5 - 9.0 \\ \hline
+		\cellcolor[HTML]{C0C0C0}\textbf{Max. resident grids per device} & 128 & 16  &    128    \\ \hline
 	\end{tabular}
 	\caption{Maximum number of resident grids on one device for CUDA compute capability 7.0 and higher.
 		Taken from \citetitle{NVIDIADecember2022} \cite{NVIDIADecember2022}.

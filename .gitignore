@@ -210,6 +210,8 @@ pythontex-files-*/
 *.auxlock
 ## Externalized TikZ pictures
 images/tikz
+## Main PDF file - only the final PDf will be included
+main.pdf
 
 # todonotes
 *.tdo

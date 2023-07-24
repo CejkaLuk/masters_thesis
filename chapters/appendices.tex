@@ -88,12 +88,12 @@ pivotRowOfMatrix_host( const Index& j, MatrixView& M, const Index& num_rows, con
 
 
 
-\chapter{PCM\_\textit{x}PP Implementation}\label{Appendix:PCMxPP-implementation}
-The implementation of PCM\_\textit{x}PP is shown in Listing~\ref{Listing:PCMxPP-implementation-excerpt}.
+\chapter{PCM\_$x$PP Implementation}\label{Appendix:PCMxPP-implementation}
+The implementation of PCM\_$x$PP is shown in Listing~\ref{Listing:PCMxPP-implementation-excerpt}.
 Note that the kernels called in Listing~\ref{Listing:PCMxPP-implementation-excerpt} are shown separately in Listings~\ref{Listing:PCMxPP-implementation->kernels->column-compute-kernel} and \ref{Listing:PCMxPP-implementation->kernels->row-compute-kernel}.
 
-\begin{lstlisting}[caption={Excerpt from the implementation of PCM\_\textit{x}PP.
-The template parameter \code{BLOCK\_SIZE} is equivalent to \textit{x} in PCM\_\textit{x}PP.
+\begin{lstlisting}[caption={Excerpt from the implementation of PCM\_$x$PP.
+The template parameter \code{BLOCK\_SIZE} is equivalent to $x$ in PCM\_$x$PP.
 On input, matrix \code{LU} is assumed to contain the values of $\mathbf{A}$, and \code{piv} is expected to be appropriately sized.
 Furthermore, unlike \code{LU}, \code{piv} is assumed to be allocated on the Host.
 The \code{pivotRowOfMatrix\_device()} function, presented below the \code{decompose()} method, is implemented in the parent class of \code{CroutMethod}: \code{BaseDecomposer}.
@@ -207,12 +207,12 @@ RowCompute_kernel( MatrixView LU, Index row, const Index num_cols )
 
 
 
-\chapter{ICM\_\textit{x}PP Implementation}\label{Appendix:ICMxPP-implementation}
-The implementation of ICM\_\textit{x}PP is shown in Listing~\ref{Listing:ICMxPP-implementation-excerpt}.
+\chapter{ICM\_$x$PP Implementation}\label{Appendix:ICMxPP-implementation}
+The implementation of ICM\_$x$PP is shown in Listing~\ref{Listing:ICMxPP-implementation-excerpt}.
 Note that the kernels called in Listing~\ref{Listing:ICMxPP-implementation-excerpt} are shown separately in Listings~\ref{Listing:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->kernels->diagonal-compute}, \ref{Listing:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->kernels->diagonal-assign}, \ref{Listing:ICMxPP-implementation->kernels->lower-section-compute}, and \ref{Listing:ICMxPP-implementation->kernels->right-section-compute}.
 
-\begin{lstlisting}[caption={Excerpt from the implementation of ICM\_\textit{x}PP.
-The template parameter \code{BLOCK\_SIZE} is equivalent to \textit{x} in ICM\_\textit{x}PP.
+\begin{lstlisting}[caption={Excerpt from the implementation of ICM\_$x$PP.
+The template parameter \code{BLOCK\_SIZE} is equivalent to $x$ in ICM\_$x$PP.
 On input, matrix \code{A} is assumed to contain the values of $\mathbf{A}$, matrix \code{LU} is assumed to contain the initial estimate of the decomposition, and \code{piv} is expected to be appropriately sized and allocated on the Host.
 On output, matrix \code{LU} contains the values of matrices $\mathbf{L}$ and $\mathbf{U}$ in the format presented in Equation~\ref{Equation:implementation->decomposition-project->implemented-solutions->decomposers->CMPP}, and \code{piv} contains the row permutations.
 The \code{synchronizeStreams()} function is included below the \code{decompose()} method.
@@ -678,11 +678,11 @@ SequentialSolver::solve( const Matrix& LU, Matrix& X, const Vector& piv )
 
 
 
-\chapter{IS\_\textit{x}PP Implementation}\label{Appendix:ISxPP-implementation}
-The implementation of IS\_\textit{x}PP is shown in Listing~\ref{Listing:ISxPP-implementation-excerpt}.
+\chapter{IS\_$x$PP Implementation}\label{Appendix:ISxPP-implementation}
+The implementation of IS\_$x$PP is shown in Listing~\ref{Listing:ISxPP-implementation-excerpt}.
 Note that the kernels called in Listing~\ref{Listing:ISxPP-implementation-excerpt} are shown separately in Listings~\ref{Listing:ISxPP-implementation->kernels->forward-substitution}, \ref{Listing:ISxPP-implementation->kernels->backward-substitution}, and \ref{Listing:ISxPP-implementation->kernels->matrix-assign}.
 
-\begin{lstlisting}[caption={Excerpt from the implementation of IS\_\textit{x}PP.
+\begin{lstlisting}[caption={Excerpt from the implementation of IS\_$x$PP.
 The code has been slightly modified for brevity, for example, the checks for appropriate sizing of matrices and vectors have been removed.
 Note that the CUDA thread blocks used in the implementation are larger in the 1st dimension.
 Threads adjacent in the 1st dimension are assigned to neighboring elements in the same column since the matrices are stored in column-major order on the GPU.

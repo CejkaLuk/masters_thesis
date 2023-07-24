@@ -110,15 +110,15 @@ This section presents benchmark results obtained by decomposing the set of matri
 		\multicolumn{1}{|c|}{\cellcolor[HTML]{EFEFEF}\textbf{Name}} & \multicolumn{1}{c|}{\cellcolor[HTML]{EFEFEF}\textbf{Abbreviation}} & \multirow{-2}{*}{\cellcolor[HTML]{C0C0C0}\textbf{Variants}} & \multicolumn{1}{c|}{\multirow{-2}{*}{\cellcolor[HTML]{C0C0C0}\textbf{Performer}}} \\ \hline
 		\multicolumn{1}{|l|}{Crout's Method with Partial Piv.}           & CMPP               &     -     & CPU \\
 		\multicolumn{1}{|l|}{CuSolverDnXgetrf with Partial Piv.}         & CuSolverDnXgetrfPP &     -     & GPU \\
-		\multicolumn{1}{|l|}{Iterative Crout's Method with Partial Piv.} & ICM\_\textit{x}PP  & 8, 16, 32 & GPU \\
-		\multicolumn{1}{|l|}{Parallel Crout's Method with Partial Piv.}  & PCM\_\textit{x}PP  & 8, 16, 32 & GPU \\ \hline
+		\multicolumn{1}{|l|}{Iterative Crout's Method with Partial Piv.} & ICM\_$x$PP  & 8, 16, 32 & GPU \\
+		\multicolumn{1}{|l|}{Parallel Crout's Method with Partial Piv.}  & PCM\_$x$PP  & 8, 16, 32 & GPU \\ \hline
 	\end{tabular}
-	\caption{Decomposers compared in the benchmark: CMPP (described in \namerefItalics{Paragraph:implementation->decomposition-project->implemented-solutions->decomposers->CMPP} in Section~\ref{Subsection:implementation->decomposition-project->implemented-solutions->decomposers}), CuSolverDnXgetrfPP (mentioned in Section~\ref{Subsection:implementation->libraries-used->CUDA-libraries->cuSOLVER}), ICM\_\textit{x}PP (described in \namerefItalics{Paragraph:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP} in Section~\ref{Subsection:implementation->decomposition-project->implemented-solutions->decomposers}), and PCM\_\textit{x}PP (described in \namerefItalics{Paragraph:implementation->decomposition-project->implemented-solutions->decomposers->PCMxPP} in Section~\ref{Subsection:implementation->decomposition-project->implemented-solutions->decomposers}).
+	\caption{Decomposers compared in the benchmark: CMPP (described in \namerefItalics{Paragraph:implementation->decomposition-project->implemented-solutions->decomposers->CMPP} in Section~\ref{Subsection:implementation->decomposition-project->implemented-solutions->decomposers}), CuSolverDnXgetrfPP (mentioned in Section~\ref{Subsection:implementation->libraries-used->CUDA-libraries->cuSOLVER}), ICM\_$x$PP (described in \namerefItalics{Paragraph:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP} in Section~\ref{Subsection:implementation->decomposition-project->implemented-solutions->decomposers}), and PCM\_$x$PP (described in \namerefItalics{Paragraph:implementation->decomposition-project->implemented-solutions->decomposers->PCMxPP} in Section~\ref{Subsection:implementation->decomposition-project->implemented-solutions->decomposers}).
 		The \textit{Variants} column indicates the different configurations of the decomposer.
-		For example, ICM\_\textit{x}PP was benchmarked as three separate decomposers depending on the CUDA thread block configuration, e.g., 8-by-8 threads per block, 16-by-16 threads per block, etc.
-		Furthermore, for ICM\_\textit{x}PP, the processing tolerance was set to zero, and the lower bound and upper bound of conditional partial pivoting tolerance were set to \num{1e-5} and \num{1e+5}, respectively.
-		For CMPP and PCM\_\textit{x}PP, the conditional partial pivoting tolerance was set to \num{1e-5}.
-		In the case of PCM\_\textit{x}PP, the thread blocks are one-dimensional and the number of threads per block is $x^2$, i.e., 64, 256, and 1024.
+		For example, ICM\_$x$PP was benchmarked as three separate decomposers depending on the CUDA thread block configuration, e.g., 8-by-8 threads per block, 16-by-16 threads per block, etc.
+		Furthermore, for ICM\_$x$PP, the processing tolerance was set to zero, and the lower bound and upper bound of conditional partial pivoting tolerance were set to \num{1e-5} and \num{1e+5}, respectively.
+		For CMPP and PCM\_$x$PP, the conditional partial pivoting tolerance was set to \num{1e-5}.
+		In the case of PCM\_$x$PP, the thread blocks are one-dimensional and the number of threads per block is $x^2$, i.e., 64, 256, and 1024.
 		The \textit{Performer} column specifies the primary device used by each decomposer.
 	}
 	\label{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->table-of-decomposers}
@@ -130,7 +130,7 @@ The benchmark was run for both double and single precision.
 
 One of the tasks for this thesis was to compare the implemented decomposers to a CPU library and a GPU library.
 However, the former was intentionally omitted as the performance of the implemented decomposers was severely lacking.
-Furthermore, neither PCM\_\textit{x}PP nor ICM\_\textit{x}PP were implemented for the CPU, and the implementation of the CMPP decomposer was not comparison-worthy.
+Furthermore, neither PCM\_$x$PP nor ICM\_$x$PP were implemented for the CPU, and the implementation of the CMPP decomposer was not comparison-worthy.
 Thus, combined with the fact that the AMD-CPU-specialized library, \textit{AOCL-ScaLAPACK}\footnote{AOCL-ScaLAPACK website URL: \url{https://www.amd.com/en/developer/aocl/scalapack.html}}, which provides the LU factorization function, was not available in the RCI cluster, it was decided to forego implementing another wrapper into the Decomposition project to facilitate the comparison.
 
 First, for both double and single precision, the execution times of the decomposers on the subset of 15 matrices are compared.
@@ -228,7 +228,7 @@ The comparison using both double and single precision can be found in Figure~\re
 	\end{subfigure}
 	\caption{Execution times of decomposers listed in Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->table-of-decomposers} on the subset of matrices shown in Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->matrices-used-for-benchmarks->15-selected-matrices} using double and single precision.
 		The vertical axis, representing execution time in seconds, is log-scaled for improved visibility of differences between implementations.
-		Note that in the graph showing results for single precision, the data for the \textit{sinc15} matrix is missing for the ICM\_\textit{x}PP decomposer as it failed to decompose the matrix.
+		Note that in the graph showing results for single precision, the data for the \textit{sinc15} matrix is missing for the ICM\_$x$PP decomposer as it failed to decompose the matrix.
 	}
 	\label{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->precisions}
 \end{figure}
@@ -240,10 +240,10 @@ For context, when double precision was used, CuSolverDnXgetrfPP was able to deco
 However, CuSolverDnXgetrfPP was not able to maintain this lead when using single precision as its execution time decreased to only 0.108 seconds, while PCM\_8PP decreased its time to 12.667.
 On the other hand, the third fastest decomposer, ICM\_32PP, took 290 seconds to decompose the \textit{sinc15} matrix using double precision, and failed to decompose it using single precision.
 
-\paragraph{ICM\_\textit{x}PP} From Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->precisions}, it can be seen that the performance of ICM\_\textit{x}PP is not as consistent as that of PCM\_\textit{x}PP.
-Specifically, ICM\_\textit{x}PP consistently performed poorly when decomposing the \textit{Cejka} dense matrices as all its variants were slower than every decomposer except for CMPP.\\
-For a better understanding of why ICM\_\textit{x}PP does not perform well on randomly generated dense matrices, the nonzero element pattern of the \textit{Cejka558} matrix along with the iterative and pivoting metrics of ICM\_32PP are shown in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->matrix-with-metrics->Cejka558}.
-Note that the iterative and pivoting metrics were near-identical across all variants of ICM\_\textit{x}PP.
+\paragraph{ICM\_$x$PP} From Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->precisions}, it can be seen that the performance of ICM\_$x$PP is not as consistent as that of PCM\_$x$PP.
+Specifically, ICM\_$x$PP consistently performed poorly when decomposing the \textit{Cejka} dense matrices as all its variants were slower than every decomposer except for CMPP.\\
+For a better understanding of why ICM\_$x$PP does not perform well on randomly generated dense matrices, the nonzero element pattern of the \textit{Cejka558} matrix along with the iterative and pivoting metrics of ICM\_32PP are shown in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->matrix-with-metrics->Cejka558}.
+Note that the iterative and pivoting metrics were near-identical across all variants of ICM\_$x$PP.
 
 \begin{figure}[ht!]
 	\centering
@@ -375,17 +375,17 @@ The only exception to this color lightening is the bottom-right-most diagonal se
 Similarly to the case with the last diagonal section of the \textit{Cejka558} matrix, the section was adjusted to match the boundaries of the matrix.
 Therefore, instead of being a 1024-by-1024 section, it became a 919-by-919 section, requiring $2\cdot 919 + 237 = 2075$ iterations to process.
 
-Dense matrices with randomly generated values offer practically negligible opportunities for ICM\_\textit{x}PP to skip the computation of elements.
-Therefore, such matrices represent the worst-case scenario for the ICM\_\textit{x}PP decomposer, and the formulas derived from their decompositions can be considered as an inclusive upper bound estimate of the number of iterations required to process a section.
-In summary, for dense matrices with randomly-generated values, ICM\_\textit{x}PP effectively becomes an inefficient adaption of PCM\_\textit{x}PP.
+Dense matrices with randomly generated values offer practically negligible opportunities for ICM\_$x$PP to skip the computation of elements.
+Therefore, such matrices represent the worst-case scenario for the ICM\_$x$PP decomposer, and the formulas derived from their decompositions can be considered as an inclusive upper bound estimate of the number of iterations required to process a section.
+In summary, for dense matrices with randomly-generated values, ICM\_$x$PP effectively becomes an inefficient adaption of PCM\_$x$PP.
 
-Steering away from instances of poor performance by ICM\_\textit{x}PP, there were three notable matrices out of the subset of 15 where ICM\_\textit{x}PP outperformed PCM\_\textit{x}PP using both double and single precision: \textit{poc-24\_2\_2}, \textit{poc-32\_2\_2}, and \textit{c-22}.
-In general, it can be argued that ICM\_\textit{x}PP outperformed PCM\_\textit{x}PP on the aforementioned matrices, as they required minimal, if any, pivoting.
+Steering away from instances of poor performance by ICM\_$x$PP, there were three notable matrices out of the subset of 15 where ICM\_$x$PP outperformed PCM\_$x$PP using both double and single precision: \textit{poc-24\_2\_2}, \textit{poc-32\_2\_2}, and \textit{c-22}.
+In general, it can be argued that ICM\_$x$PP outperformed PCM\_$x$PP on the aforementioned matrices, as they required minimal, if any, pivoting.
 Seeing as the matrices prefixed with \textit{poc} were obtained from the "Poisson equation on a cube" problem implemented in BDDCML, they are discussed as part of Section~\ref{Section:comparing-decomposers-and-solvers->bddcml-benchmark}.
 
-When using double precision, the best-performing variant of ICM\_\textit{x}PP, ICM\_32PP, decomposed the \textit{c-22} matrix in 1.313 seconds, while the best-performing variant of PCM\_\textit{x}PP, PCM\_8PP, decomposed it in 2.192 seconds.
+When using double precision, the best-performing variant of ICM\_$x$PP, ICM\_32PP, decomposed the \textit{c-22} matrix in 1.313 seconds, while the best-performing variant of PCM\_$x$PP, PCM\_8PP, decomposed it in 2.192 seconds.
 When single precision was used, ICM\_32PP decomposed the matrix in 0.830 seconds, while PCM\_8PP decomposed it in 0.917 seconds.
-The main reason why ICM\_\textit{x}PP performed well specifically on the \textit{c-22} matrix is that the initial estimate, \code{A}, allowed for the majority of the sections to be processed in one iteration, as shown in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->matrix->c-22}.
+The main reason why ICM\_$x$PP performed well specifically on the \textit{c-22} matrix is that the initial estimate, \code{A}, allowed for the majority of the sections to be processed in one iteration, as shown in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->matrix->c-22}.
 To provide context for the iterative metrics, the nonzero element pattern of \code{LU} is presented in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->matrix->c-22->icmxpp-LU-nonzero-element-pattern}.
 
 \begin{figure}[ht!]
@@ -420,19 +420,19 @@ To provide context for the iterative metrics, the nonzero element pattern of \co
 \end{figure}
 
 As Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->matrix->c-22->nonzero-element-pattern} shows, the main diagonal comprises nonzero elements.
-Therefore, the conditional partial pivoting of ICM\_\textit{x}PP was not required.
+Therefore, the conditional partial pivoting of ICM\_$x$PP was not required.
 Furthermore, according to the iterative metrics in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->matrix->c-22->icmxpp-metrics} and the resulting \code{LU} matrix shown in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->matrix->c-22->icmxpp-LU-nonzero-element-pattern}, it can be seen that all sections until section (5, 5) took only one iteration to process.
 Thus, as mentioned before, the initial estimate of \code{LU} in the form of \code{A}, described in Section~\ref{Subsection:implementation->decomposition-project->implemented-solutions->decomposers}, was instrumental in the efficient decomposition of the \textit{c-22} matrix.
 In this case, the initial estimate was suitable since the input matrix mainly had elements on the main diagonal.
-Therefore, ICM\_\textit{x}PP used the elements of the main diagonal of \code{A} in the main diagonal of \code{L}.
+Therefore, ICM\_$x$PP used the elements of the main diagonal of \code{A} in the main diagonal of \code{L}.
 Then, the multiplication of \code{L} and \code{U}, which has a unit diagonal, essentially meant that \code{L} was multiplied by a matrix resembling the identity matrix.
 As the figures further show, the elements in the bottom-left and top-right of \code{LU} disrupted the simple computation of the main diagonal.
 Subsequently, the bottom-right part of \code{LU} required many iterations to account for the disturbance.
-The claim that ICM\_\textit{x}PP performs well on matrices with most of their nonzero elements on the main diagonal corresponds to the findings presented in Chapter 3 of \citetitle{Cejka2022} \cite{Cejka2022}.
+The claim that ICM\_$x$PP performs well on matrices with most of their nonzero elements on the main diagonal corresponds to the findings presented in Chapter 3 of \citetitle{Cejka2022} \cite{Cejka2022}.
 
-Next, the variants of ICM\_\textit{x}PP will be compared to each other.
-While Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->precisions} presents the execution times of all variants of ICM\_\textit{x}PP, it may be difficult to discern the differences in performance.
-Thus, to compare the performance of the variants of ICM\_\textit{x}PP, Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->ICMxPP-double-precision} shows their execution times on the subset of matrices when double precision was used.
+Next, the variants of ICM\_$x$PP will be compared to each other.
+While Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->precisions} presents the execution times of all variants of ICM\_$x$PP, it may be difficult to discern the differences in performance.
+Thus, to compare the performance of the variants of ICM\_$x$PP, Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->ICMxPP-double-precision} shows their execution times on the subset of matrices when double precision was used.
 Note that unlike in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->precisions}, the vertical axis in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->ICMxPP-double-precision} is not log-scaled to better portray the differences in performance among the variants.
 
 \begin{figure}[ht!]
@@ -472,18 +472,18 @@ Note that unlike in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomp
 			\addlegendentry{ICM\_32PP}
 		\end{axis}
 	\end{tikzpicture}	
-	\caption{Execution times of the variants of ICM\_\textit{x}PP on the subset of matrices shown in Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->matrices-used-for-benchmarks->15-selected-matrices} using double precision.}
+	\caption{Execution times of the variants of ICM\_$x$PP on the subset of matrices shown in Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->matrices-used-for-benchmarks->15-selected-matrices} using double precision.}
 	\label{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->ICMxPP-double-precision}
 \end{figure}
 
-Out of the three variants of ICM\_\textit{x}PP that were benchmarked on the subset of 15 matrices, ICM\_32PP performed the best and ICM\_8PP the worst, as can be seen in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->ICMxPP-double-precision}.
+Out of the three variants of ICM\_$x$PP that were benchmarked on the subset of 15 matrices, ICM\_32PP performed the best and ICM\_8PP the worst, as can be seen in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->ICMxPP-double-precision}.
 
 To determine the reason behind the differences in performance between the variants, it is necessary to consider different aspects of the implementations.
 Since the section size is near-identical for all variants, and the difference in the number of threads performing a row swap in each variant does not affect the performance, the only remaining major factor is the kernels computing the iterations.\\
-Disregarding the changes in the implementations of the kernels since they were benchmarked in \citetitle{Cejka2022} \cite{Cejka2022}, it can be argued that the difference in the performance of the variants of ICM\_\textit{x}PP is due to uncoalesced and inefficient global memory access.
+Disregarding the changes in the implementations of the kernels since they were benchmarked in \citetitle{Cejka2022} \cite{Cejka2022}, it can be argued that the difference in the performance of the variants of ICM\_$x$PP is due to uncoalesced and inefficient global memory access.
 
 First, the issue of uncoalesced global memory access will be described.
-In the context of the Decomposition benchmark for decomposers, the matrices were stored in row-major order on the GPU for the ICM\_\textit{x}PP decomposer.
+In the context of the Decomposition benchmark for decomposers, the matrices were stored in row-major order on the GPU for the ICM\_$x$PP decomposer.
 As a result, uncoalesced access to global memory occurs for ICM\_8PP and ICM\_16PP.
 
 For example, in the case of ICM\_8PP, this is due to it using 8-by-8 thread blocks.
@@ -499,7 +499,7 @@ Conversely, this issue is not present for ICM\_32PP since each row of a thread b
 Thus, the threads of each warp read 32 neighboring elements in one transaction.
 
 The next issue, inefficient global memory access, describes a scenario where the smaller the thread blocks are, the more accesses to global memory they perform.
-In Section~\ref{Subsection:implementation->decomposition-project->implemented-solutions->decomposers} the following was mentioned in terms of the computation kernels of ICM\_\textit{x}PP:
+In Section~\ref{Subsection:implementation->decomposition-project->implemented-solutions->decomposers} the following was mentioned in terms of the computation kernels of ICM\_$x$PP:
 
 \begin{quoting}
 \textit{... each block of threads is responsible for computing a block of elements in \code{LUnext}.
@@ -522,13 +522,13 @@ The lack of performance can be attributed to two main reasons: the algorithm of 
 The performance of CMPP greatly depends on the dimensions of the input matrix, therefore, only the execution times it achieved on the smallest and largest matrices of the subset will be mentioned.
 When using double precision, CMPP decomposed the \textit{poc-8\_4\_2-1} matrix in 0.003 seconds and the \textit{sinc15} matrix in 536.824 seconds.
 When using single precision, CMPP decomposed the matrices in 0.003 and 517.045 seconds, respectively.
-For context, the slowest variant of ICM\_\textit{x}PP, ICM\_8PP, decomposed the \textit{sinc15} matrix in 494.174 seconds using double precision.
+For context, the slowest variant of ICM\_$x$PP, ICM\_8PP, decomposed the \textit{sinc15} matrix in 494.174 seconds using double precision.
 Ultimately, in the context of the Decomposition benchmark for decomposers, CMPP served as a baseline against which other decomposers were expected to perform better.
 Additionally, it served as a means to verify the accuracy of results produced by the other decomposers.
 
-\paragraph{PCM\_\textit{x}PP}\label{Paragraph:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->PCMxPP} Overall, on the subset of 15 matrices, PCM\_\textit{x}PP was the second fastest decomposer.
+\paragraph{PCM\_$x$PP}\label{Paragraph:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->PCMxPP} Overall, on the subset of 15 matrices, PCM\_$x$PP was the second fastest decomposer.
 Since its algorithm is a parallelized version of CMPP's algorithm, its performance also heavily depends on the dimensions of the input matrix, as shown in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->precisions}.
-For the analysis of PCM\_\textit{x}PP, Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->PCMxPP-double-precision} displays the execution times of its variants when double precision was used.
+For the analysis of PCM\_$x$PP, Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->PCMxPP-double-precision} displays the execution times of its variants when double precision was used.
 
 \begin{figure}[ht!]
 	\centering
@@ -567,21 +567,21 @@ For the analysis of PCM\_\textit{x}PP, Figure~\ref{Figure:comparing-decomposers-
 			\addlegendentry{PCM\_32PP}
 		\end{axis}
 	\end{tikzpicture}	
-	\caption{Execution times of the variants of PCM\_\textit{x}PP on the subset of matrices shown in Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->matrices-used-for-benchmarks->15-selected-matrices} using double precision.}
+	\caption{Execution times of the variants of PCM\_$x$PP on the subset of matrices shown in Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->matrices-used-for-benchmarks->15-selected-matrices} using double precision.}
 	\label{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->PCMxPP-double-precision}
 \end{figure}
 
-As can be seen in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->PCMxPP-double-precision}, PCM\_8PP consistently outperforms PCM\_16PP, which in turn consistently outperforms PCM\_32PP.  Similarly to ICM\_\textit{x}PP, the difference in execution times increases with larger matrix dimensions.
+As can be seen in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->PCMxPP-double-precision}, PCM\_8PP consistently outperforms PCM\_16PP, which in turn consistently outperforms PCM\_32PP.  Similarly to ICM\_$x$PP, the difference in execution times increases with larger matrix dimensions.
 
 In the context of the Decomposition benchmark for decomposers, the input matrix was stored in row-major order, which resulted in slightly lower execution times for the variants compared to when column-major ordering was used.
 The higher performance of the decomposer with row-major ordering was unexpected since it meant that accesses to global memory were not coalesced.
-As mentioned in Section~\ref{Subsection:implementation->decomposition-project->implemented-solutions->decomposers}, the thread blocks of PCM\_\textit{x}PP are one-dimensional and consist of $x^2$ threads.
+As mentioned in Section~\ref{Subsection:implementation->decomposition-project->implemented-solutions->decomposers}, the thread blocks of PCM\_$x$PP are one-dimensional and consist of $x^2$ threads.
 In the context of PCM\_32PP, when the threads of a block read a column of elements from global memory in each iteration of the for loop shown in Listing~\ref{Listing:PCMxPP-implementation->kernels->column-compute-kernel}, the addresses accessed by the threads are not adjacent.
 As a result, the global memory access of threads belonging to each warp is not coalesced.
 This means that the read operations performed by the warp are divided into more memory transactions compared to coalesced global memory access.
-Nevertheless, uncoalesced access to global memory did not seem to have a noticeable impact on the performance of PCM\_\textit{x}PP.
+Nevertheless, uncoalesced access to global memory did not seem to have a noticeable impact on the performance of PCM\_$x$PP.
 
-The differences in the performance of the variants of PCM\_\textit{x}PP can be attributed to idle resources.
+The differences in the performance of the variants of PCM\_$x$PP can be attributed to idle resources.
 This claim is based on the observation that the execution time of PCM\_32PP and PCM\_16PP consistently appears to be worse than that of PCM\_8PP for larger sparse matrices.
 The GPU used for the benchmarks, Nvidia A100, has the following limitations per SM \cite{rfiOEXAGDlcAOxF3}:
 %
@@ -610,16 +610,16 @@ This behavior seems to occur in Figure~\ref{Figure:comparing-decomposers-and-sol
 Additionally, the figure shows that the PCM\_16PP decomposer also exhibits a noticeable spike in execution time for the \textit{msc10848} sparse matrix.
 In contrast, the PCM\_8PP decomposer, which employs smaller thread blocks compared to the other variants, shows the best performance.
 
-It should be noted once again that the implementation of PCM\_\textit{x}PP was not optimized in any way.
+It should be noted once again that the implementation of PCM\_$x$PP was not optimized in any way.
 This means that optimization techniques such as shared memory usage, block-level loop unrolling, and others were not employed.
-Consequently, as mentioned in Section~\ref{Subsection:implementation->decomposition-project->implemented-solutions->decomposers}, PCM\_\textit{x}PP is highly inefficient and fails to fully exploit the computational power of the GPU.
-However, despite its lack of optimization, PCM\_\textit{x}PP still demonstrates better performance compared to the complex implementation of ICM\_\textit{x}PP.
-This suggests that ICM\_\textit{x}PP may be suitable for specific types of matrices, such as those encountered in the BDDCML benchmark discussed in Section~\ref{Section:comparing-decomposers-and-solvers->bddcml-benchmark}.
+Consequently, as mentioned in Section~\ref{Subsection:implementation->decomposition-project->implemented-solutions->decomposers}, PCM\_$x$PP is highly inefficient and fails to fully exploit the computational power of the GPU.
+However, despite its lack of optimization, PCM\_$x$PP still demonstrates better performance compared to the complex implementation of ICM\_$x$PP.
+This suggests that ICM\_$x$PP may be suitable for specific types of matrices, such as those encountered in the BDDCML benchmark discussed in Section~\ref{Section:comparing-decomposers-and-solvers->bddcml-benchmark}.
 
 \paragraph{Performance Comparison Relative to CuSolverDnXgetrfPP}\label{Paragraph:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->performance-comparison-relative->to-CuSolverDnXgetrfPP} For completeness, this section presents the performance comparison of the decomposers listed in Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->table-of-decomposers} relative to the CuSolverDnXgetrfPP decomposer.
 First, the speedup relative to the CuSolverDnXgetrfPP decomposer, using both double and single precision, is presented in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->performance-comparison-relative->to-CuSolverDnXgetrfPP->speedup-comparison-with-other-decomposers}.
 Then, the execution times of the decomposers for both double and single precision are presented in Tables~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->execution-times->double-precision} and \ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->execution-times->single-precision}, respectively.
-Note that the tables only show the execution times of the best-performing variants of ICM\_\textit{x}PP and PCM\_\textit{x}PP.
+Note that the tables only show the execution times of the best-performing variants of ICM\_$x$PP and PCM\_$x$PP.
 
 % Speedup of decomposers relative to CuSolverDnXgetrfPP
 \begin{figure}[ht!]
@@ -734,7 +734,7 @@ Note that the tables only show the execution times of the best-performing varian
 		sinc15             & 0.1237 &  536.8241 & 290.3724 & 24.3491 \\ \hline
 	\end{tabular}
 	\caption{Execution times (in seconds) of the decomposers listed in Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->table-of-decomposers} on the set of matrices (Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->matrices-used-for-benchmarks->15-selected-matrices}) using \textit{double} precision.
-		Only the execution times of the best-performing variants of ICM\_\textit{x}PP and PCM\_\textit{x}PP are presented.
+		Only the execution times of the best-performing variants of ICM\_$x$PP and PCM\_$x$PP are presented.
 	}
 	\label{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->execution-times->double-precision}
 \end{table}
@@ -761,8 +761,8 @@ Note that the tables only show the execution times of the best-performing varian
 		sinc15             & 0.1075 & 517.0449 &        - & 12.6665 \\ \hline
 	\end{tabular}
 	\caption{Execution times (in seconds) of the decomposers listed in Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->table-of-decomposers} on the set of matrices (Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->matrices-used-for-benchmarks->15-selected-matrices}) using \textit{single} precision.
-		Only the execution times of the best-performing variants of ICM\_\textit{x}PP and PCM\_\textit{x}PP are presented.
-		The execution time of ICM\_32PP is missing for the \textit{sinc15} matrix as ICM\_\textit{x}PP failed to decompose the matrix using single precision.
+		Only the execution times of the best-performing variants of ICM\_$x$PP and PCM\_$x$PP are presented.
+		The execution time of ICM\_32PP is missing for the \textit{sinc15} matrix as ICM\_$x$PP failed to decompose the matrix using single precision.
 	}
 	\label{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->execution-times->single-precision}
 \end{table}
@@ -858,7 +858,7 @@ The execution times are presented in Figure~\ref{Figure:comparing-decomposers-an
 	\end{subfigure}
 	\caption{Execution times of decomposers listed in Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->table-of-decomposers} on the entire set of 50 matrices using double and single precision.
 		The vertical axis, representing execution time in seconds, is log-scaled for improved visibility of differences between implementations.
-		Note that in the graph depicting the results for single precision, the data for the \textit{sinc15} matrix is not available for the ICM\_\textit{x}PP decomposer as it failed to decompose the matrix.
+		Note that in the graph depicting the results for single precision, the data for the \textit{sinc15} matrix is not available for the ICM\_$x$PP decomposer as it failed to decompose the matrix.
 	}
 	\label{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-time-on-all-matrices->double-and-single-precision}
 \end{figure}
@@ -868,14 +868,14 @@ The only scenario where it was surpassed by all other decomposers was with a 4-b
 Additionally, for matrices with IDs 0 to 7, it exhibited slower performance compared to CMPP.
 However, it is worth noting that the dimensions of matrices 0 to 7 range from 4-by-4 to 230-by-230; such matrices are not commonly encountered in real-life problems.
 
-In general, PCM\_\textit{x}PP and ICM\_\textit{x}PP exhibited faster performance when using single precision compared to double precision.
+In general, PCM\_$x$PP and ICM\_$x$PP exhibited faster performance when using single precision compared to double precision.
 On the other hand, CuSolverDnXgetrfPP demonstrated only minor differences in performance between double and single precision.
 
-The figures provide additional support for the claim stated in the analysis of ICM\_\textit{x}PP in Section~\ref{Subsection:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices} that larger thread blocks have a positive impact on its performance.
-For instance, Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-time-on-all-matrices->double-precision} clearly illustrates the difference in performance between the variants of ICM\_\textit{x}PP.
+The figures provide additional support for the claim stated in the analysis of ICM\_$x$PP in Section~\ref{Subsection:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices} that larger thread blocks have a positive impact on its performance.
+For instance, Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-time-on-all-matrices->double-precision} clearly illustrates the difference in performance between the variants of ICM\_$x$PP.
 Specifically, ICM\_32PP consistently outperforms ICM\_16PP, which in turn consistently outperforms ICM\_8PP.
 
-Similarly, the figures provide additional support for the claim made in the analysis of PCM\_\textit{x}PP in Section~\ref{Subsection:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices} that smaller thread blocks decrease resource idleness.
+Similarly, the figures provide additional support for the claim made in the analysis of PCM\_$x$PP in Section~\ref{Subsection:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices} that smaller thread blocks decrease resource idleness.
 Specifically, PCM\_8PP consistently outperforms PCM\_16PP, which in turn consistently outperforms PCM\_32PP.
 For example, when considering double precision, PCM\_32PP exhibited a significant spike in execution time for the sparse matrices listed in Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-time-on-all-matrices->sparse-matrices-that-execution-time-of-pcm32pp-spiked-on}.
 
@@ -889,14 +889,14 @@ For example, when considering double precision, PCM\_32PP exhibited a significan
 		44 & nd3k.mtx     &  9000 & 3279690 & 364.410 \\
 		48 & msc10848.mtx & 10848 & 1229776 & 113.364 \\ \hline
 	\end{tabular}
-	\caption{Sparse matrices for which the execution time of PCM\_32PP spiked compared to the other variants of PCM\_\textit{x}PP.
+	\caption{Sparse matrices for which the execution time of PCM\_32PP spiked compared to the other variants of PCM\_$x$PP.
 		The average number of nonzeros per row is rounded to three decimal places.
 	}
 	\label{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-time-on-all-matrices->sparse-matrices-that-execution-time-of-pcm32pp-spiked-on}
 \end{table}
 
 Note that, in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-time-on-all-matrices->double-and-single-precision}, the spikes in execution time of PCM\_32PP are more pronounced for the larger matrices listed in Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-time-on-all-matrices->sparse-matrices-that-execution-time-of-pcm32pp-spiked-on}.
-This was one of the key points of the claim made in the analysis of PCM\_\textit{x}PP.
+This was one of the key points of the claim made in the analysis of PCM\_$x$PP.
 However, Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-time-on-all-matrices->double-precision} also shows a spike in the execution time of PCM\_32PP for matrix 37 (\textit{Cejka6192}), which is a dense matrix.
 Since this behavior does not occur for any of the other dense matrices, the reason for this sudden increase in execution time remains unclear.
 
@@ -925,8 +925,8 @@ To put the results of the entire set of matrices into perspective, Table~\ref{Ta
 \end{table}
 
 In terms of execution speed, both Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-time-on-all-matrices->double-and-single-precision} and Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-time-on-all-matrices->total-execution-of-decomposers-on-set-of-50-matrices} demonstrate that CuSolverDnXgetrfPP is the fastest decomposer.
-Excluding CuSolverDnXgetrfPP, the fastest decomposer is PCM\_\textit{x}PP, specifically the PCM\_8PP variant.
-Although the variants of ICM\_\textit{x}PP were generally slower than the variants of PCM\_\textit{x}PP for most matrices, they exhibited promising performance for specific matrix types, such as the \textit{poc} matrices obtained from the BDDCML benchmark.
+Excluding CuSolverDnXgetrfPP, the fastest decomposer is PCM\_$x$PP, specifically the PCM\_8PP variant.
+Although the variants of ICM\_$x$PP were generally slower than the variants of PCM\_$x$PP for most matrices, they exhibited promising performance for specific matrix types, such as the \textit{poc} matrices obtained from the BDDCML benchmark.
 
 
 \subsubsection{Accuracy of Results on All Matrices}\label{Subsection:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices}
@@ -934,7 +934,7 @@ Another important aspect in the performance of a decomposer is the accuracy of t
 The maximum absolute difference between the expected results and the actual results for the entire set of 50 matrices is shown in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-and-single-precision}.
 For context, the maximum absolute difference for decomposers was defined in Equation~\ref{Equation:implementation->decomposition-project->benchmarks->decomposers->maximum-difference} as $\max \left| \mathbf{A} - \mathbf{LUP} \right|$, where $\mathbf{A}$ is the input matrix, $\mathbf{L}$ and $\mathbf{U}$ are the results of the decomposition operation, and $\mathbf{P}$ is the permutation matrix.
 Note that the permutation matrix was represented by a vector in the implementations.
-This section mentions decomposers ICM\_\textit{x}PP and PCM\_\textit{x}PP instead of their variants, as the variations of the decomposers did not differ in terms of accuracy, i.e., there was no need to specifically address each variant.
+This section mentions decomposers ICM\_$x$PP and PCM\_$x$PP instead of their variants, as the variations of the decomposers did not differ in terms of accuracy, i.e., there was no need to specifically address each variant.
 
 \begin{figure}[ht!]
 	\centering
@@ -967,11 +967,11 @@ This section mentions decomposers ICM\_\textit{x}PP and PCM\_\textit{x}PP instea
 				\addplot[black,mark=triangle*] table [x=id, y=CMPP-maxAbsDiff] {\datatable};
 				\addlegendentry{CMPP}
 				\addplot[blue,mark=triangle*] table [x=id, y=ICM_32PP-maxAbsDiff] {\datatable};
-				\addlegendentry{ICM\_\textit{x}PP}
+				\addlegendentry{ICM\_$x$PP}
 				\addplot[green!60!black,mark=triangle*] table [x=id, y=CuSolverDnXgetrfWrapperPP-maxAbsDiff] {\datatable};
 				\addlegendentry{CuSolverDnXgetrfPP}
 				\addplot[red,mark=triangle*] table [x=id, y=PCM_32PP-maxAbsDiff] {\datatable};
-				\addlegendentry{PCM\_\textit{x}PP}
+				\addlegendentry{PCM\_$x$PP}
 			\end{axis}
 		\end{tikzpicture}
 		\subcaption{Double precision}
@@ -1005,7 +1005,7 @@ This section mentions decomposers ICM\_\textit{x}PP and PCM\_\textit{x}PP instea
 	\caption{Accuracy of results achieved by the decomposers listed in Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->table-of-decomposers} (excluding the different variants) on the entire set of 50 matrices using both double and single precision.
 		The matrix ID signifies the ID of the matrices after they have been sorted according to their dimension from smallest to largest.
 		The vertical axis is log-scaled for improved visibility.
-		Note that the accuracy values for the first matrix for CMPP, ICM\_\textit{x}PP, and PCM\_\textit{x}PP are not plotted as their results matched the expected results, i.e., the plotted values would be equal to $\log0$.
+		Note that the accuracy values for the first matrix for CMPP, ICM\_$x$PP, and PCM\_$x$PP are not plotted as their results matched the expected results, i.e., the plotted values would be equal to $\log0$.
 		Additionally, it is important to mention that the vertical axes of both graphs do not cover the same range.
 	}
 	\label{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-and-single-precision}
@@ -1024,8 +1024,8 @@ Given the large discrepancy in result accuracy between double and single precisi
 		\rowcolor[HTML]{C0C0C0} \multicolumn{1}{|c|}{\textbf{Decomposer}} & \multicolumn{1}{c|}{\textbf{Mean}} & \multicolumn{1}{c|}{\textbf{Std. dev.}} & \multicolumn{1}{c|}{\textbf{Q1}} & \multicolumn{1}{c|}{\textbf{Q2}} & \multicolumn{1}{c|}{\textbf{Q3}} & \multicolumn{1}{c|}{\textbf{Max.}}  \\ \hline
 		CMPP               & \num{1.27e-03} & \num{8.84e-03} & \num{1.14e-13} & \num{2.40e-09} & \num{1.18e-07} &          0.063 \\
 		CuSolverDnXgetrfPP & \num{1.02e-06} & \num{5.74e-06} & \num{2.27e-13} & \num{4.27e-11} & \num{3.52e-10} & \num{4.01e-05} \\
-		ICM\_\textit{x}PP  &          0.023 &          0.163 & \num{1.06e-11} & \num{7.12e-08} & \num{1.42e-06} &          1.152 \\
-		PCM\_\textit{x}PP  &          0.948 &          6.705 & \num{1.06e-11} & \num{6.11e-08} & \num{8.96e-07} &         47.414 \\ \hline
+		ICM\_$x$PP  &          0.023 &          0.163 & \num{1.06e-11} & \num{7.12e-08} & \num{1.42e-06} &          1.152 \\
+		PCM\_$x$PP  &          0.948 &          6.705 & \num{1.06e-11} & \num{6.11e-08} & \num{8.96e-07} &         47.414 \\ \hline
 	\end{tabular}
 	\caption{Statistical indices of the accuracy of results achieved by the decomposers in the Decomposition benchmark using double precision.
 		Columns Q1, Q2, and Q3 represent the first, second, and third quartiles, respectively.
@@ -1039,13 +1039,13 @@ However, cases where the CuSolverDnXgetrfPP decomposer produced less accurate re
 For these matrices, the relative inaccuracy of CuSolverDnXgetrfPP is present for both double and single precision, as Figures~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision} and \ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->single-precision} show, respectively.
 The reasons for the relative inaccuracy are unclear as there is no consistent pattern that would indicate a matrix characteristic unfavorable to CuSolverDnXgetrfPP.
 
-For example, it was theorized that ICM\_\textit{x}PP produced more accurate results when decomposing matrices 35 and 40 due to their higher condition numbers, \num{1.06e+12} and \num{4.78e+12}, respectively.
-In other words, the iterative approach of ICM\_\textit{x}PP was theorized to produce accurate results when decomposing numerically unstable matrices.
-However, this theory was disproved by a counterexample, as the ICM\_\textit{x}PP decomposer produced less accurate results than CuSolverDnXgetrfPP on matrix 26 (\textit{bayer09}), which has a condition number equal to \num{2.63e+021}.
+For example, it was theorized that ICM\_$x$PP produced more accurate results when decomposing matrices 35 and 40 due to their higher condition numbers, \num{1.06e+12} and \num{4.78e+12}, respectively.
+In other words, the iterative approach of ICM\_$x$PP was theorized to produce accurate results when decomposing numerically unstable matrices.
+However, this theory was disproved by a counterexample, as the ICM\_$x$PP decomposer produced less accurate results than CuSolverDnXgetrfPP on matrix 26 (\textit{bayer09}), which has a condition number equal to \num{2.63e+021}.
 Note that the condition numbers were computed using a Matlab script that utilizes the approach presented in \citetitle{Davis2010} \cite{Davis2010, Amestoy1996, Amestoy2004}.
 The script is available on request or as an attachment to this thesis.
 
-In the description of the implementation of the ICM\_\textit{x}PP decomposer in Section~\ref{Subsection:implementation->decomposition-project->implemented-solutions->decomposers}, it was mentioned that the processing tolerance was specifically chosen to be zero.
+In the description of the implementation of the ICM\_$x$PP decomposer in Section~\ref{Subsection:implementation->decomposition-project->implemented-solutions->decomposers}, it was mentioned that the processing tolerance was specifically chosen to be zero.
 The reasoning behind this claim was that setting the tolerance to even a small nonzero value, e.g., \num{1e-05}, could potentially decrease the accuracy.
 To support this claim, the accuracy of results for various processing tolerances is presented in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->ICM32PP->various-processing-tolerances}.
 
@@ -1077,47 +1077,47 @@ To support this claim, the accuracy of results for various processing tolerances
 			}
 			]
 			\addplot[teal,mark=triangle*] table [x=id, y=ICM_32PP-maxAbsDiff] {\datatable};
-			\addlegendentry{ICM\_\textit{x}PP 0}
+			\addlegendentry{ICM\_$x$PP 0}
 			\addplot[nvidia,mark=triangle*] table [x=id, y=ICM_32PP1e-10-maxAbsDiff] {\datatable};
-			\addlegendentry{ICM\_\textit{x}PP \num{1e-10}}
+			\addlegendentry{ICM\_$x$PP \num{1e-10}}
 			\addplot[red,mark=triangle*] table [x=id, y=ICM_32PP1e-5-maxAbsDiff] {\datatable};
-			\addlegendentry{ICM\_\textit{x}PP \num{1e-05}}
+			\addlegendentry{ICM\_$x$PP \num{1e-05}}
 			\addplot[cyan,mark=triangle*] table [x=id, y=ICM_32PP1e-2-maxAbsDiff] {\datatable};
-			\addlegendentry{ICM\_\textit{x}PP \num{1e-02}}
+			\addlegendentry{ICM\_$x$PP \num{1e-02}}
 			\addplot[purple,mark=triangle*] table [x=id, y=ICM_32PP1e-1-maxAbsDiff] {\datatable};
-			\addlegendentry{ICM\_\textit{x}PP \num{1e-01}}
+			\addlegendentry{ICM\_$x$PP \num{1e-01}}
 		\end{axis}
 	\end{tikzpicture}	
-	\caption{Accuracy of the results achieved by ICM\_\textit{x}PP with various processing tolerances on the entire set of 50 matrices using double precision.
+	\caption{Accuracy of the results achieved by ICM\_$x$PP with various processing tolerances on the entire set of 50 matrices using double precision.
 		The name of each decomposer follows the naming pattern \textit{decomposer <processing\_tolernace>}.
 		The vertical axis is log-scaled for improved visibility.
 		Note that the accuracy values for the first matrix are not plotted as the decomposers produced results produced that matched the expected results, i.e., the plotted value would be equal to $\log0$.
 		Additionally, certain accuracy values are missing as their decomposers failed to decompose those particular matrices.
-		Specifically, ICM\_\textit{x}PP \num{1e-02} failed to decompose matrices 6 (\textit{west0156}), 27 (\textit{garon1}), and 47 (\textit{TSOPF\_FS\_b162\_c1}), while ICM\_\textit{x}PP \num{1e-01} failed to decompose matrices 6 (\textit{west0156}), 17 (\textit{b2\_ss}), 27 (\textit{garon1}), 33 (\textit{freeFlyingRobot\_9}), and 47 (\textit{TSOPF\_FS\_b162\_c1}).
+		Specifically, ICM\_$x$PP \num{1e-02} failed to decompose matrices 6 (\textit{west0156}), 27 (\textit{garon1}), and 47 (\textit{TSOPF\_FS\_b162\_c1}), while ICM\_$x$PP \num{1e-01} failed to decompose matrices 6 (\textit{west0156}), 17 (\textit{b2\_ss}), 27 (\textit{garon1}), 33 (\textit{freeFlyingRobot\_9}), and 47 (\textit{TSOPF\_FS\_b162\_c1}).
 	}
 	\label{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->ICM32PP->various-processing-tolerances}
 \end{figure}
 
 \label{Text:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->ICM32PP->various-processing-tolerances->description-of-figure-with-accuracy-results}
-As can be seen in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->ICM32PP->various-processing-tolerances}, ICM\_\textit{x}PP with its processing tolerance set to zero is the most accurate among the explored processing tolerances.
-It is noteworthy that ICM\_\textit{x}PP with its processing tolerance set to \num{1e-10} also produces accurate results.
+As can be seen in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->ICM32PP->various-processing-tolerances}, ICM\_$x$PP with its processing tolerance set to zero is the most accurate among the explored processing tolerances.
+It is noteworthy that ICM\_$x$PP with its processing tolerance set to \num{1e-10} also produces accurate results.
 Interestingly, for four matrices, it produced marginally more accurate results compared to the zero-tolerance variant.
 The reason behind this behavior is unclear.
 Nevertheless, the accuracy of the \num{1e-10} variant was inferior to that of the zero-tolerance variant in multiple cases.\\
-For the remaining processing tolerances, ICM\_\textit{x}PP produced less accurate results compared to the \num{1e-10} variant.
-However, the variants with looser processing tolerances may still be useful if ICM\_\textit{x}PP is employed as a preconditioner, particularly in scenarios where high accuracy may not be necessary.
+For the remaining processing tolerances, ICM\_$x$PP produced less accurate results compared to the \num{1e-10} variant.
+However, the variants with looser processing tolerances may still be useful if ICM\_$x$PP is employed as a preconditioner, particularly in scenarios where high accuracy may not be necessary.
 An example of such a scenario is the "Poisson equation on a cube" problem, whose benchmark results are discussed in Section~\ref{Section:comparing-decomposers-and-solvers->bddcml-benchmark}.
 
-With regard to the ICM\_\textit{x}PP decomposer with its processing tolerance set to zero, the obtained data seems to contradict the theory proposed in \citetitle{Cejka2022} \cite{Cejka2022}: "\textit{Since Crout’s method is direct, it can be theorized that rounding errors may result in it providing less accurate results compared to its numerical modification}".
+With regard to the ICM\_$x$PP decomposer with its processing tolerance set to zero, the obtained data seems to contradict the theory proposed in \citetitle{Cejka2022} \cite{Cejka2022}: "\textit{Since Crout’s method is direct, it can be theorized that rounding errors may result in it providing less accurate results compared to its numerical modification}".
 However, it is important to note that the theory was formulated without considering partial pivoting.
-Therefore, the results of this benchmark indicate that combining the iterative approach of ICM\textit{x} and partial pivoting is not a viable approach for LU decomposition in terms of accuracy.
+Therefore, the results of this benchmark indicate that combining the iterative approach of ICM$x$ and partial pivoting is not a viable approach for LU decomposition in terms of accuracy.
 
-When considering the CMPP and PCM\_\textit{x}PP decomposers, the values in Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->statistical-indices} highlight occasional inaccuracies.
+When considering the CMPP and PCM\_$x$PP decomposers, the values in Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->statistical-indices} highlight occasional inaccuracies.
 For example, in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision}, it can be seen that both decomposers exhibit large discrepancies between the expected and actual results for matrix 50 (\textit{sinc15}).
 This inaccuracy is reflected in their mean values, as shown in Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->statistical-indices}, deviating significantly.
 Additionally, the relatively small value of the third quartile further supports this observation.
 The inaccuracy of CMPP, a naive and strictly sequential implementation, can be attributed to conditional partial pivoting as the accuracy of CMPP was higher when every element was pivoted regardless of its value.
-The comparison of the accuracy of results between CMPP and PCM\_\textit{x}PP, considering both conditional partial pivoting and \textit{full partial pivoting}, is presented in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->cmpp-pcmpp-conditional-vs-full-partial-pivoting}.
+The comparison of the accuracy of results between CMPP and PCM\_$x$PP, considering both conditional partial pivoting and \textit{full partial pivoting}, is presented in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->cmpp-pcmpp-conditional-vs-full-partial-pivoting}.
 The term \textit{full partial pivoting} represents partial pivoting where every element of the main diagonal is pivoted, regardless of its value.
 
 \begin{figure}[ht!]
@@ -1151,14 +1151,14 @@ The term \textit{full partial pivoting} represents partial pivoting where every 
 			\addplot[teal,mark=triangle*] table [x=id, y=CMPP-maxAbsDiff] {\datatableConditionalPP};
 			\addlegendentry{CMPP conditionalPP}
 			\addplot[nvidia,mark=triangle*] table [x=id, y=PCM_8PP-maxAbsDiff] {\datatableConditionalPP};
-			\addlegendentry{PCM\_\textit{x}PP conditionalPP}
+			\addlegendentry{PCM\_$x$PP conditionalPP}
 			\addplot[red,mark=triangle*] table [x=id, y=CMPP-all-maxAbsDiff] {\datatableFullPP};
 			\addlegendentry{CMPP fullPP}
 			\addplot[cyan,mark=triangle*] table [x=id, y=PCM_8PP-all-maxAbsDiff] {\datatableFullPP};
-			\addlegendentry{PCM\_\textit{x}PP fullPP}
+			\addlegendentry{PCM\_$x$PP fullPP}
 		\end{axis}
 	\end{tikzpicture}	
-	\caption{Accuracy of results achieved by CMPP and PCM\_\textit{x}PP with different types of partial pivoting on the entire set of 50 matrices using double precision.
+	\caption{Accuracy of results achieved by CMPP and PCM\_$x$PP with different types of partial pivoting on the entire set of 50 matrices using double precision.
 		The name of each decomposer follows the naming pattern \textit{decomposer <type\_of\_pivoting>}.
 		The vertical axis is log-scaled for improved visibility.
 		Note that the accuracy values for the first matrix are excluded from the plot as the results produced by the decomposers matched the expected results.
@@ -1166,15 +1166,15 @@ The term \textit{full partial pivoting} represents partial pivoting where every 
 	\label{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->cmpp-pcmpp-conditional-vs-full-partial-pivoting}
 \end{figure}
 
-As shown in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->cmpp-pcmpp-conditional-vs-full-partial-pivoting}, CMPP and PCM\_\textit{x}PP produced less accurate results with conditional partial pivoting than with full partial pivoting.
-This decrease in accuracy would be concerning if CMPP and PCM\_\textit{x}PP were intended to be fully-functional decomposers.
-However, as previously mentioned, both decomposers primarily served as a proof-of-concept for conditional partial pivoting and as a baseline comparison for ICM\_\textit{x}PP.
+As shown in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->cmpp-pcmpp-conditional-vs-full-partial-pivoting}, CMPP and PCM\_$x$PP produced less accurate results with conditional partial pivoting than with full partial pivoting.
+This decrease in accuracy would be concerning if CMPP and PCM\_$x$PP were intended to be fully-functional decomposers.
+However, as previously mentioned, both decomposers primarily served as a proof-of-concept for conditional partial pivoting and as a baseline comparison for ICM\_$x$PP.
 
 \label{Text:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->ICMxPP-nan-values-explanation-beginning}
 In the introduction of \namerefItalics{Subparagrah:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->processing-by-sections} in Section~\ref{Subsection:implementation->decomposition-project->implemented-solutions->decomposers}, the upper bound for conditional partial pivoting was introduced.
-It was explained that the upper bound is necessary only for ICM\_\textit{x}PP, as without it, the decomposer would decompose certain matrices incorrectly.
-In this context, the version of ICM\_\textit{x}PP without the upper bound for conditional partial pivoting will be referred to as ICM\_\textit{x}PP\_NaN.
-Specifically, ICM\_\textit{x}PP\_NaN would produce results that contained \code{-NaN} values in seven of the 50 matrices.
+It was explained that the upper bound is necessary only for ICM\_$x$PP, as without it, the decomposer would decompose certain matrices incorrectly.
+In this context, the version of ICM\_$x$PP without the upper bound for conditional partial pivoting will be referred to as ICM\_$x$PP\_NaN.
+Specifically, ICM\_$x$PP\_NaN would produce results that contained \code{-NaN} values in seven of the 50 matrices.
 The only common characteristic of the matrices was that they were all sparse.
 To illustrate this issue, Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->matrix-with-metrics->ICM32PP-with-nan-results->msc10848} depicts the nonzero element pattern of the \code{LU} matrix produced by ICM\_32PP\_NaN through the decomposition of the \textit{msc10848} matrix.
 The figure also displays the iterative and pivoting metrics of the decomposer that were collected during the decomposition of the aforementioned matrix.
@@ -1216,9 +1216,9 @@ This implies that during the processing check, as shown on
 Page~\pageref{Listing:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->kernels->diagonal-compute} in Listing~\ref{Listing:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->kernels->diagonal-compute} on Line~\ref{Line:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->kernels->diagonal-compute->processing-check}, the \code{-NaN} values were incorrectly evaluated as processed.
 Specifically, the condition \code{( abs( val - NaN ) > process\_tol )} was evaluated as \code{false} due to the \code{abs()} function also returning \code{-NaN}.
 
-Nevertheless, how ICM\_\textit{x}PP\_NaN computed the \code{-NaN} values remains unclear.
+Nevertheless, how ICM\_$x$PP\_NaN computed the \code{-NaN} values remains unclear.
 However, it was observed that the introduction of the upper bound for conditional partial pivoting resolved the issue in all affected matrices.
-Although the inclusion of the upper bound had a negative impact on the performance of ICM\_\textit{x}PP on those particular matrices, it did not affect the performance of the decomposer on the remaining matrices.
+Although the inclusion of the upper bound had a negative impact on the performance of ICM\_$x$PP on those particular matrices, it did not affect the performance of the decomposer on the remaining matrices.
 It is hypothesized that the use of the upper bound for conditional partial pivoting serves as a temporary checkpoint in the computation, effectively eliminating any potential issues that could result in the computation of \code{-NaN} values.
 However, it is also possible that the introduction of the upper bound inadvertently masks another underlying issue in the implementation.
 
@@ -1236,8 +1236,8 @@ For example, a maximum absolute difference of \num{1e-4} may appear reasonable, 
 		\rowcolor[HTML]{C0C0C0} \multicolumn{1}{|c|}{\textbf{Decomposer}} & \multicolumn{1}{c|}{\textbf{Mean}} & \multicolumn{1}{c|}{\textbf{Std. dev.}} & \multicolumn{1}{c|}{\textbf{Q1}} & \multicolumn{1}{c|}{\textbf{Q2}} & \multicolumn{1}{c|}{\textbf{Q3}} & \multicolumn{1}{c|}{\textbf{Max.}} \\ \hline
 		CMPP               & \num{6.35e+3} & \num{3.73e+4} & \num{6.10e-5} &  1.717 &  64.000 & \num{2.62e+5} \\
 		CuSolverDnXgetrfPP & \num{7.49e+2} & \num{4.66e+3} & \num{9.01e-5} &  0.016 &   0.227 & \num{3.28e+4} \\
-		ICM\_\textit{x}PP  & \num{6.37e+4} & \num{3.29e+5} & \num{2.08e-3} & 15.671 & 299.311 & \num{2.10e+6} \\
-		PCM\_\textit{x}PP  & \num{4.96e+5} & \num{2.67e+6} &         0.002 & 27.828 & 565.789 & \num{1.84e+7} \\ \hline
+		ICM\_$x$PP  & \num{6.37e+4} & \num{3.29e+5} & \num{2.08e-3} & 15.671 & 299.311 & \num{2.10e+6} \\
+		PCM\_$x$PP  & \num{4.96e+5} & \num{2.67e+6} &         0.002 & 27.828 & 565.789 & \num{1.84e+7} \\ \hline
 	\end{tabular}
 	\caption{Statistical indices of the accuracy of the results produced by the decomposers in this benchmark using single precision.
 		Columns Q1, Q2, and Q3 represent the first, second, and third quartiles, respectively.
@@ -1255,7 +1255,7 @@ Conversely, the remaining decomposers produced relatively highly inaccurate resu
 Excluding CuSolverDnXgetrfPP, the most accurate decomposer was CMPP.
 However, similar to double precision, the accuracy of the results produced by CMPP suffered due to conditional partial pivoting.
 The accuracy of the decomposer was higher when full partial pivoting was used.
-The comparison of the accuracy of results between CMPP and PCM\_\textit{x}PP, considering both conditional partial pivoting and full partial pivoting, is presented in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->single-precision->cmpp-pcmpp-conditional-vs-full-partial-pivoting}.
+The comparison of the accuracy of results between CMPP and PCM\_$x$PP, considering both conditional partial pivoting and full partial pivoting, is presented in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->single-precision->cmpp-pcmpp-conditional-vs-full-partial-pivoting}.
 
 \begin{figure}[ht!]
 	\centering
@@ -1288,14 +1288,14 @@ The comparison of the accuracy of results between CMPP and PCM\_\textit{x}PP, co
 			\addplot[teal,mark=triangle*] table [x=id, y=CMPP-maxAbsDiff] {\datatableConditionalPP};
 			\addlegendentry{CMPP conditionalPP}
 			\addplot[nvidia,mark=triangle*] table [x=id, y=PCM_8PP-maxAbsDiff] {\datatableConditionalPP};
-			\addlegendentry{PCM\_\textit{x}PP conditionalPP}
+			\addlegendentry{PCM\_$x$PP conditionalPP}
 			\addplot[red,mark=triangle*] table [x=id, y=CMPP-all-maxAbsDiff] {\datatableFullPP};
 			\addlegendentry{CMPP fullPP}
 			\addplot[cyan,mark=triangle*] table [x=id, y=PCM_8PP-all-maxAbsDiff] {\datatableFullPP};
-			\addlegendentry{PCM\_\textit{x}PP fullPP}
+			\addlegendentry{PCM\_$x$PP fullPP}
 		\end{axis}
 	\end{tikzpicture}	
-	\caption{Accuracy of results achieved by CMPP and PCM\_\textit{x}PP with different types of partial pivoting on the entire set of 50 matrices using single precision.
+	\caption{Accuracy of results achieved by CMPP and PCM\_$x$PP with different types of partial pivoting on the entire set of 50 matrices using single precision.
 		The naming pattern for each decomposer is \textit{decomposer <type\_of\_pivoting>}.
 		The vertical axis is log-scaled for better visibility.
 		Note that the accuracy values for the first matrix are excluded from the plot as the results produced by the decomposers matched the expected results.
@@ -1346,21 +1346,21 @@ The solvers compared in this benchmark are listed in Table~\ref{Table:comparing-
 		\multicolumn{1}{|l|}{Sequential Solver with Partial Piv.} & SSPP               &         -          & CPU \\
 		\multicolumn{1}{|l|}{CuBLAStrsm with Partial Piv.}        & CuBLAStrsmPP       &         -          & GPU \\
 		\multicolumn{1}{|l|}{CuSolverDnXgetrs with Partial Piv.}  & CuSolverDnXgetrsPP &         -          & GPU \\
-		\multicolumn{1}{|l|}{Iterative Solver with Partial Piv.}  & IS\_\textit{x}PP   & 8, 16, 32, 64, 128 & GPU \\ \hline
+		\multicolumn{1}{|l|}{Iterative Solver with Partial Piv.}  & IS\_$x$PP   & 8, 16, 32, 64, 128 & GPU \\ \hline
 	\end{tabular}
-	\caption{Solvers compared in the benchmark: SSPP (described in \namerefItalics{Paragraph:implementation->decomposition-project->implemented-solutions->solvers->SSPP} in Section~\ref{Subsection:implementation->decomposition-project->implemented-solutions->solvers}), CuBLAStrsmPP (mentioned in Section~\ref{Subsection:implementation->libraries-used->CUDA-libraries->cuBLAS}), CuSolverDnXgetrsPP (mentioned in Section~\ref{Subsection:implementation->libraries-used->CUDA-libraries->cuSOLVER}), and IS\_\textit{x}PP (described in \namerefItalics{Paragraph:implementation->decomposition-project->implemented-solutions->solvers->ISxPP} in Section~\ref{Subsection:implementation->decomposition-project->implemented-solutions->solvers}).
+	\caption{Solvers compared in the benchmark: SSPP (described in \namerefItalics{Paragraph:implementation->decomposition-project->implemented-solutions->solvers->SSPP} in Section~\ref{Subsection:implementation->decomposition-project->implemented-solutions->solvers}), CuBLAStrsmPP (mentioned in Section~\ref{Subsection:implementation->libraries-used->CUDA-libraries->cuBLAS}), CuSolverDnXgetrsPP (mentioned in Section~\ref{Subsection:implementation->libraries-used->CUDA-libraries->cuSOLVER}), and IS\_$x$PP (described in \namerefItalics{Paragraph:implementation->decomposition-project->implemented-solutions->solvers->ISxPP} in Section~\ref{Subsection:implementation->decomposition-project->implemented-solutions->solvers}).
 		The \textit{Variants} column indicates the different configurations of each solver.
-		The IS\_\textit{x}PP solver was benchmarked as five separate solvers depending on the CUDA thread block configuration.
-		The \textit{x} in IS\_\textit{x}PP represents the number of threads per block in the 1st dimension.
+		The IS\_$x$PP solver was benchmarked as five separate solvers depending on the CUDA thread block configuration.
+		The $x$ in IS\_$x$PP represents the number of threads per block in the 1st dimension.
 		The \textit{Performer} column specifies the primary device used by each solver.
 		The CuBLAStrsmPP solver assumed that the unit diagonal was present in matrix \code{U}.
 	}
 	\label{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->table-of-solvers}
 \end{table}
 
-Note that the processing tolerance of IS\_\textit{x}PP was set to zero, as higher accuracy of the produced results is required.
+Note that the processing tolerance of IS\_$x$PP was set to zero, as higher accuracy of the produced results is required.
 As mentioned in Section~\ref{Subsection:implementation->decomposition-project->implemented-solutions->solvers}, the implementation of solvers was not part of the diploma thesis assignment.
-Furthermore, neither SSPP nor IS\_\textit{x}PP were prioritized in terms of optimization.
+Furthermore, neither SSPP nor IS\_$x$PP were prioritized in terms of optimization.
 Therefore, the benchmark results of the solvers will only be presented briefly for the entire set of 50 matrices.
 
 First, the execution times of the solvers listed in Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->table-of-solvers} on the set of 50 matrices are presented for both double and single precision.
@@ -1455,14 +1455,14 @@ The comparison of execution times of the solvers listed in Table~\ref{Table:comp
 \end{figure}
 
 As depicted in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->comparison-of-execution-times-on-all-matrices->double-and-single-precision}, CuBLAStrsmPP and CuSolverDnXgetrsPP were the fastest solvers overall, regardless of the precision used.
-The results indicate that, similar to ICM\_\textit{x}PP, the performance of the iterative approach of IS\_\textit{x}PP depends on the characteristics of the matrix.
-For example, when double precision was used, IS\_\textit{x}PP outperformed SSPP on 26 out of the 50 matrices.
+The results indicate that, similar to ICM\_$x$PP, the performance of the iterative approach of IS\_$x$PP depends on the characteristics of the matrix.
+For example, when double precision was used, IS\_$x$PP outperformed SSPP on 26 out of the 50 matrices.
 These 26 matrices were made up of 19 sparse matrices from \citetitle{Davis2011} \cite{Davis2011} and seven dense matrices from the "Poisson equation on cube" problem implemented in BDDCML.
-When considering matrices with dimensions up to approximately 3600-by-3600 (matrices 0 to 29), it can be seen that the execution times of IS\_\textit{x}PP are closer to those of the established CUDA solvers compared to matrices with larger dimensions.
-This suggests that the performance of IS\_\textit{x}PP and SSPP does not scale well.
+When considering matrices with dimensions up to approximately 3600-by-3600 (matrices 0 to 29), it can be seen that the execution times of IS\_$x$PP are closer to those of the established CUDA solvers compared to matrices with larger dimensions.
+This suggests that the performance of IS\_$x$PP and SSPP does not scale well.
 
-Additionally, when examining the variants of IS\_\textit{x}PP, it is evident that IS\_128PP is consistently surpassed by variants with a smaller number of threads per block, for both double and single precision.
-To confirm this observation, Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->comparison-of-execution-times-on-all-matrices->ISxPP-double-precision} presents a comparison of execution times for the IS\_\textit{x}PP variants on the set of matrices when double precision was used.
+Additionally, when examining the variants of IS\_$x$PP, it is evident that IS\_128PP is consistently surpassed by variants with a smaller number of threads per block, for both double and single precision.
+To confirm this observation, Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->comparison-of-execution-times-on-all-matrices->ISxPP-double-precision} presents a comparison of execution times for the IS\_$x$PP variants on the set of matrices when double precision was used.
 
 \begin{figure}[ht!]
 	\centering
@@ -1503,22 +1503,22 @@ To confirm this observation, Figure~\ref{Figure:comparing-decomposers-and-solver
 			\addlegendentry{IS\_128PP}
 		\end{axis}
 	\end{tikzpicture}	
-	\caption{Execution times (in seconds) of the variants of IS\_\textit{x}PP on the set of 50 matrices using double precision.
+	\caption{Execution times (in seconds) of the variants of IS\_$x$PP on the set of 50 matrices using double precision.
 		The vertical axis is log-scaled for improved visibility.
 	}
 	\label{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->comparison-of-execution-times-on-all-matrices->ISxPP-double-precision}
 \end{figure}
 
 As depicted in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->comparison-of-execution-times-on-all-matrices->ISxPP-double-precision}, IS\_8PP consistently demonstrated better performance compared to IS\_16PP, which in turn consistently outperformed IS\_32P, and so on.
-These findings suggest that IS\_\textit{x}PP is also affected by the resource idleness issue described on Page~\pageref{Paragraph:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->PCMxPP} for PCM\_\textit{x}PP.
-In IS\_\textit{x}PP, the thread blocks comprise \textit{x}-by-8 threads, as shown in Listing~\ref{Listing:ISxPP-implementation-excerpt} on Line~\ref{Line:ISxPP-implementation-excerpt->num-threads-per-block}.
+These findings suggest that IS\_$x$PP is also affected by the resource idleness issue described on Page~\pageref{Paragraph:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->PCMxPP} for PCM\_$x$PP.
+In IS\_$x$PP, the thread blocks comprise $x$-by-8 threads, as shown in Listing~\ref{Listing:ISxPP-implementation-excerpt} on Line~\ref{Line:ISxPP-implementation-excerpt->num-threads-per-block}.
 Each row of threads within the eight rows of threads in the thread block is responsible for computing values for one right-hand side.
 The number of rows in the thread block has remained constant since the initial implementation of the solver.
 As solvers were not a part of the diploma thesis assignment, the implementation of thread blocks that would dynamically adapt to the number of right-hand sides was not prioritized.
 Each thread in the 1st dimension is responsible for computing one element of a right-hand side.
 For example, thread \code{(x = 10, y = 5)} is responsible for computing the 10th element of the 5th right-hand side.
 
-To aid the explanation of the resource idleness that arises in IS\_\textit{x}PP as a result of its thread block structure, the visualizations of forward and backward substitution are shown in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->comparison-of-execution-times-on-all-matrices->visualization-of-substitutions}.
+To aid the explanation of the resource idleness that arises in IS\_$x$PP as a result of its thread block structure, the visualizations of forward and backward substitution are shown in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->comparison-of-execution-times-on-all-matrices->visualization-of-substitutions}.
 
 \begin{figure}[ht!]
 	\centering
@@ -1557,7 +1557,7 @@ Since each thread block covers the computation of 128 elements, the thread compu
 Therefore, while the threads of the last warp are still computing their elements, the warps preceding the last warp are idle as they will have completed their work earlier.
 In other words, the last warp of each thread block holds the thread block in an SM, preventing the scheduling of another thread block.
 
-As with PCM\_\textit{x}PP, the variants of IS\_\textit{x}PP with fewer threads per block were able to utilize SMs more efficiently, as more of their smaller blocks could be allocated per SM.
+As with PCM\_$x$PP, the variants of IS\_$x$PP with fewer threads per block were able to utilize SMs more efficiently, as more of their smaller blocks could be allocated per SM.
 It can be argued that the idleness of resources is further exacerbated by the fixed size of the 2nd dimension of the thread block, which is set to eight.
 If the number of threads per block were to adapt to the number of right-hand sides, the number of threads in each block would decrease, enabling the allocation of more blocks per SM.
 
@@ -1595,7 +1595,7 @@ The accuracy of the values of unknowns produced by solvers is a crucial performa
 The maximum absolute difference between the expected results and the actual results for the set of 50 matrices using both double and single precision is presented in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->accuracy-of-results-on-all-matrices->double-and-single-precision}.
 For context, the maximum absolute difference for solvers was defined in Equation~\ref{Equation:implementation->decomposition-project->benchmarks->solvers->maximum-difference} as $\max \left| \mathbf{LUPX} - \mathbf{B} \right|$, where $\mathbf{L}$ (lower-triangular matrix), $\mathbf{U}$ (unit upper-triangular matrix), and $\mathbf{P}$ (permutation matrix) are the results of the decomposition operation performed on the input matrix; $\mathbf{X}$ represents the matrix of unknowns whose values are computed by a solver, and $\mathbf{B}$ denotes the matrix of right-hand sides (with all values equal to 1).
 Note that the permutation matrix was represented by a vector in the implementations.
-This section mentions the IS\_\textit{x}PP solver instead of its variants, as they did not differ in terms of accuracy, i.e., there was no need to specifically address each variant.
+This section mentions the IS\_$x$PP solver instead of its variants, as they did not differ in terms of accuracy, i.e., there was no need to specifically address each variant.
 
 \begin{figure}[ht!]
 	\centering
@@ -1636,7 +1636,7 @@ This section mentions the IS\_\textit{x}PP solver instead of its variants, as th
 				\addplot[black,mark=triangle*] table [x=id, y=SSPP-maxAbsDiff] {\datatable};
 				\addlegendentry{SSPP}
 				\addplot[blue,mark=triangle*] table [x=id, y=IS_8PP-maxAbsDiff] {\datatable};
-				\addlegendentry{IS\_\textit{x}PP}
+				\addlegendentry{IS\_$x$PP}
 				\addplot[green!60!black,mark=triangle*] table [x=id, y=CuSolverDnXgetrsPP-maxAbsDiff] {\datatable};
 				\addlegendentry{CuSolverDnXgetrsPP}
 			\end{axis}
@@ -1678,23 +1678,23 @@ This section mentions the IS\_\textit{x}PP solver instead of its variants, as th
 	\caption{Accuracy of results achieved by the solvers listed in Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->table-of-solvers} (excluding the different variants) on the entire set of 50 matrices using both double and single precision.
 		The matrix ID represents the ID of the matrices after they have been sorted according to their dimensions from smallest to largest.
 		The vertical axis is log-scaled for improved visibility.
-		The blue vertical lines indicate matrices for which IS\_\textit{x}PP produced invalid results.
+		The blue vertical lines indicate matrices for which IS\_$x$PP produced invalid results.
 		The accuracy values for the invalid results were not plotted to avoid distorting the vertical axis and allow for comparison of the remaining accuracy values.
 		Additionally, it is important to mention that the vertical axes of both graphs do not cover the same range.
 	}
 	\label{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->accuracy-of-results-on-all-matrices->double-and-single-precision}
 \end{figure}
 
-As mentioned in the caption of Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->accuracy-of-results-on-all-matrices->double-and-single-precision}, IS\_\textit{x}PP occasionally produced invalid results.
+As mentioned in the caption of Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->accuracy-of-results-on-all-matrices->double-and-single-precision}, IS\_$x$PP occasionally produced invalid results.
 Specifically, when using double precision, for four matrices, the solver produced results that resulted in the maximum absolute difference being equal to \num{1.797693e+308}, which is the highest possible value that a variable of type \code{double} can store.
 In the case of single precision, the solver produced invalid results for twelve matrices, with the maximum absolute difference equal to -\num{3.402823E+038} which is close to the lowest possible value that a variable of type \code{float} can store.
 Among the twelve matrices, eleven were sparse, and one was dense.
-Additionally, it is worth noting that the CPU version of IS\_\textit{x}PP also produced the same invalid results, indicating that the issue lies with the algorithm itself rather than the GPU implementation.
-The reason behind IS\_\textit{x}PP computing invalid values in the mentioned cases is currently unclear.
+Additionally, it is worth noting that the CPU version of IS\_$x$PP also produced the same invalid results, indicating that the issue lies with the algorithm itself rather than the GPU implementation.
+The reason behind IS\_$x$PP computing invalid values in the mentioned cases is currently unclear.
 One possible hypothesis is that the computation of certain values is being skipped, leading to a cascade of erroneous calculations.
 
 For completeness, the statistical indices of the accuracy of the results produced by the solvers are presented in Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->accuracy-of-results-on-all-matrices->statistical-indices->double-precision} for double precision and in Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->accuracy-of-results-on-all-matrices->statistical-indices->single-precision} for single precision.
-Note that both tables contain two instances of IS\_\textit{x}PP: IS\_\textit{x}PP and IS\_\textit{x}PP\_inv.
+Note that both tables contain two instances of IS\_$x$PP: IS\_$x$PP and IS\_$x$PP\_inv.
 The former does not consider the invalid values in its indices, while the latter does.
 
 \begin{table}[ht!]
@@ -1705,8 +1705,8 @@ The former does not consider the invalid values in its indices, while the latter
 		SSPP                  &   \num{4.20e+4} &   \num{2.97e+5} & \num{5.82e-11} &  \num{4.38e-8} &  \num{4.99e-6} &   \num{2.10e+6} \\
 		CBLAStrsmPP           &   \num{4.20E+4} &   \num{2.97e+5} & \num{4.08e-11} &  \num{8.75e-8} &  \num{6.70e-6} &   \num{2.10e+6} \\
 		CSDnXgetsfPP          &   \num{4.19e+4} &   \num{2.97e+5} & \num{1.96e-12} & \num{4.63e-11} & \num{4.39e-10} &   \num{2.10e+6} \\
-		IS\_\textit{x}PP      &   \num{1.82E+5} &   \num{1.24E+6} & \num{3.55E-11} &  \num{2.20E-8} &  \num{2.16E-6} &   \num{8.39E+6} \\
-		IS\_\textit{x}PP\_inv & \num{1.43e+307} & \num{4.93e+307} & \num{1.56E-11} &  \num{7.12E-9} &  \num{1.49E-6} & \num{1.80e+308} \\ \hline
+		IS\_$x$PP      &   \num{1.82E+5} &   \num{1.24E+6} & \num{3.55E-11} &  \num{2.20E-8} &  \num{2.16E-6} &   \num{8.39E+6} \\
+		IS\_$x$PP\_inv & \num{1.43e+307} & \num{4.93e+307} & \num{1.56E-11} &  \num{7.12E-9} &  \num{1.49E-6} & \num{1.80e+308} \\ \hline
 	\end{tabular}
 	\caption{Statistical indices of the accuracy of the results produced by the solvers in this benchmark using \textit{double} precision.
 		Columns Q1, Q2, and Q3 represent the first, second, and third quartiles, respectively.
@@ -1724,24 +1724,24 @@ The former does not consider the invalid values in its indices, while the latter
 		SSPP                  & \num{9.01e+13} & \num{6.37e+14} &   \num{0.025} & \num{23.018} & \num{1.37e+3} & \num{4.50e+15} \\
 		CuBLAStrsmPP          & \num{9.01e+13} & \num{6.37e+14} &   \num{0.023} & \num{13.568} & \num{672.659} & \num{4.50e+15} \\
 		CuSolverDnXgetrsPP    & \num{2.25e+13} & \num{1.59e+14} & \num{6.57e-4} &  \num{0.016} &   \num{0.155} & \num{1.13e+15} \\
-		IS\_\textit{x}PP      & \num{1.19E+14} & \num{7.31E+14} &   \num{0.009} &  \num{0.484} & \num{112.875} & \num{4.50E+15} \\
-		IS\_\textit{x}PP\_inv & \num{8.17e+37} & \num{1.47e+38} & \num{3.98e-6} &  \num{0.030} &  \num{43.327} & \num{8.17e+37} \\ \hline
+		IS\_$x$PP      & \num{1.19E+14} & \num{7.31E+14} &   \num{0.009} &  \num{0.484} & \num{112.875} & \num{4.50E+15} \\
+		IS\_$x$PP\_inv & \num{8.17e+37} & \num{1.47e+38} & \num{3.98e-6} &  \num{0.030} &  \num{43.327} & \num{8.17e+37} \\ \hline
 	\end{tabular}
 	\caption{Statistical indices of the accuracy of the results produced by the solvers in this benchmark using \textit{single} precision.}
 	\label{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->accuracy-of-results-on-all-matrices->statistical-indices->single-precision}
 \end{table}
 
 As observed in Tables~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->accuracy-of-results-on-all-matrices->statistical-indices->double-precision} and \ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->accuracy-of-results-on-all-matrices->statistical-indices->single-precision}, the accuracy of the results decreased significantly from double to single precision.
-Specifically, focusing on double precision and excluding IS\_\textit{x}PP\_inv, it can be seen from the 3rd quartiles and the maximum values that the mean values were heavily offset by 12 to 13 matrices.
-For example, except for IS\_\textit{x}PP\_inv, the maximum inaccuracy among all solvers was consistently observed with the 156-by-156 matrix \textit{west0156}.
+Specifically, focusing on double precision and excluding IS\_$x$PP\_inv, it can be seen from the 3rd quartiles and the maximum values that the mean values were heavily offset by 12 to 13 matrices.
+For example, except for IS\_$x$PP\_inv, the maximum inaccuracy among all solvers was consistently observed with the 156-by-156 matrix \textit{west0156}.
 This can be attributed to the matrix's high condition number of approximately \num{6.09e+19}, which indicates its sensitivity to numerical errors and makes it more challenging for the solvers to achieve accurate results.
 
-Both Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->accuracy-of-results-on-all-matrices->statistical-indices->double-precision} and Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->accuracy-of-results-on-all-matrices->statistical-indices->single-precision} show that the accuracy of IS\_\textit{x}PP, i.e., excluding the invalid results, is not poor relative to the other solvers.
+Both Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->accuracy-of-results-on-all-matrices->statistical-indices->double-precision} and Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->accuracy-of-results-on-all-matrices->statistical-indices->single-precision} show that the accuracy of IS\_$x$PP, i.e., excluding the invalid results, is not poor relative to the other solvers.
 However, as the issue with its implementation causes it to produce invalid values, its actual performance in terms of accuracy renders it unusable.
-This conclusion is supported by the statistical indices of IS\_\textit{x}PP\_inv.
+This conclusion is supported by the statistical indices of IS\_$x$PP\_inv.
 
 To summarize, the most accurate solver for both double and single precision on the set of 50 matrices was CuSolverDnXgetrsPP, followed by CuBLAStrsmPP.
-The current implementation of IS\_\textit{x}PP cannot be recommended for use as it contains an unknown issue.
+The current implementation of IS\_$x$PP cannot be recommended for use as it contains an unknown issue.
 
 Taking into account both execution time and the accuracy of the results, the best-performing solver is CuSolverDnXgetrsPP.
 It exhibits only a marginal increase in execution time compared to CuBLAStrsmPP while producing more accurate results.
@@ -1750,10 +1750,10 @@ It exhibits only a marginal increase in execution time compared to CuBLAStrsmPP 
 Overall, in terms of both execution speed and accuracy, the decomposers and solvers provided by the CUDA libraries outperformed the others.
 Specifically, the CuSolverDnXgetrfPP decomposer demonstrated the fastest execution speed while producing the most accurate results.
 Although the CuSolverDnXgetrsPP solver was marginally slower than CuBLAStrsmPP, it produced more accurate results.
-Among the decomposers implemented by the author of this thesis, PCM\_\textit{x}PP emerged as the fastest and most accurate overall.
-However, for specific types of matrices, the ICM\_\textit{x}PP decomposer may be more suitable compared to PCM\_\textit{x}PP.
-Additionally, the processing tolerance of ICM\_\textit{x}PP may prove useful if the decomposer is used as a preconditioner that is not expected to produce highly accurate results.
-While the benchmark results of the IS\_\textit{x}PP solver confirmed that the iterative approach can save time for certain matrix types, its implementation contains an unidentified issue and thus it was disqualified.
+Among the decomposers implemented by the author of this thesis, PCM\_$x$PP emerged as the fastest and most accurate overall.
+However, for specific types of matrices, the ICM\_$x$PP decomposer may be more suitable compared to PCM\_$x$PP.
+Additionally, the processing tolerance of ICM\_$x$PP may prove useful if the decomposer is used as a preconditioner that is not expected to produce highly accurate results.
+While the benchmark results of the IS\_$x$PP solver confirmed that the iterative approach can save time for certain matrix types, its implementation contains an unidentified issue and thus it was disqualified.
 
 
 
@@ -1847,7 +1847,7 @@ Furthermore, the ranks were distributed equally across the eight GPUs available 
 \subsection{Matrices in the Benchmark}\label{Subsection:comparing-decomposers-and-solvers->bddcml-benchmark->matrices-used-for-benchmarks}
 As mentioned before, the set of values used for $H/h$ was limited to the interval $\left[5, 50\right]$.
 The values in the set determine the size of the matrices passed to the decomposer.
-The largest value in the interval, 50, was chosen as the ICM\_\textit{x}PP decomposer would run out of GPU memory for higher values of $H/h$ since the matrices were stored in column-major order on the GPU.
+The largest value in the interval, 50, was chosen as the ICM\_$x$PP decomposer would run out of GPU memory for higher values of $H/h$ since the matrices were stored in column-major order on the GPU.
 
 Given the values of $H/h$, the dimensions of the matrices that decomposers factorized during the \textit{pc\_setup} stage ranged from 104-by-104 to 15,028-by-15,028.
 As mentioned earlier, the decomposer can be called multiple times during the execution of \code{poisson\_on\_cube}.
@@ -1910,16 +1910,16 @@ CuBLAStrsmPP was chosen as it supports the unit diagonal both in $\mathbf{L}$ an
 		\rowcolor[HTML]{EFEFEF} 
 		\multicolumn{1}{|c|}{\cellcolor[HTML]{EFEFEF}\textbf{Name}} & \multicolumn{1}{c|}{\cellcolor[HTML]{EFEFEF}\textbf{Abbreviation}} & \multirow{-2}{*}{\cellcolor[HTML]{C0C0C0}\textbf{Variants}} & \multicolumn{1}{c|}{\multirow{-2}{*}{\cellcolor[HTML]{C0C0C0}\textbf{Performer}}} \\ \hline
 		\multicolumn{1}{|l|}{CuSolverDnXgetrf with Partial Piv.}         & CuSolverDnXgetrfPP &     -     &    GPU    \\
-		\multicolumn{1}{|l|}{Iterative Crout's Method with Partial Piv.} & ICM\_\textit{x}PP  & 8, 16, 32 &    GPU    \\
+		\multicolumn{1}{|l|}{Iterative Crout's Method with Partial Piv.} & ICM\_$x$PP  & 8, 16, 32 &    GPU    \\
 		\multicolumn{1}{|l|}{magma\_dgetrf\_gpu}                         & MAGMAgetrf         &     -     & CPU + GPU \\
-		\multicolumn{1}{|l|}{Parallel Crout's Method with Partial Piv.}  & PCM\_\textit{x}PP  & 8, 16, 32 &    GPU    \\ \hline
+		\multicolumn{1}{|l|}{Parallel Crout's Method with Partial Piv.}  & PCM\_$x$PP  & 8, 16, 32 &    GPU    \\ \hline
 	\end{tabular}
-	\caption{Decomposers compared in the benchmark: CuSolverDnXgetrfPP (mentioned in Section~\ref{Subsection:implementation->libraries-used->CUDA-libraries->cuSOLVER}), ICM\_\textit{x}PP (described in \namerefItalics{Paragraph:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP} in Section~\ref{Subsection:implementation->decomposition-project->implemented-solutions->decomposers}), MAGMAgetrf (description available in the MAGMA documentation\tablefootnote{MAGMA Documentation for getrf URL: \url{https://icl.utk.edu/projectsfiles/magma/doxygen/group__magma__getrf.html}}), and PCM\_\textit{x}PP (described in \namerefItalics{Paragraph:implementation->decomposition-project->implemented-solutions->decomposers->PCMxPP} in Section~\ref{Subsection:implementation->decomposition-project->implemented-solutions->decomposers}).
+	\caption{Decomposers compared in the benchmark: CuSolverDnXgetrfPP (mentioned in Section~\ref{Subsection:implementation->libraries-used->CUDA-libraries->cuSOLVER}), ICM\_$x$PP (described in \namerefItalics{Paragraph:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP} in Section~\ref{Subsection:implementation->decomposition-project->implemented-solutions->decomposers}), MAGMAgetrf (description available in the MAGMA documentation\tablefootnote{MAGMA Documentation for getrf URL: \url{https://icl.utk.edu/projectsfiles/magma/doxygen/group__magma__getrf.html}}), and PCM\_$x$PP (described in \namerefItalics{Paragraph:implementation->decomposition-project->implemented-solutions->decomposers->PCMxPP} in Section~\ref{Subsection:implementation->decomposition-project->implemented-solutions->decomposers}).
 		The \textit{Variants} column indicates the different configurations of the decomposer.
-		For example, ICM\_\textit{x}PP was benchmarked as three separate decomposers depending on the CUDA thread block configuration.
-		In the case of PCM\_\textit{x}PP, the thread blocks are one-dimensional, and the number of threads per block is $x^2$.
-		Unless stated otherwise, the processing tolerance for ICM\_\textit{x}PP was set to zero, and the lower bound and upper bound of conditional partial pivoting tolerance were set to \num{1e-5} and \num{1e+5}, respectively.
-		For PCM\_\textit{x}PP, the conditional partial pivoting tolerance was set to \num{1e-5}.
+		For example, ICM\_$x$PP was benchmarked as three separate decomposers depending on the CUDA thread block configuration.
+		In the case of PCM\_$x$PP, the thread blocks are one-dimensional, and the number of threads per block is $x^2$.
+		Unless stated otherwise, the processing tolerance for ICM\_$x$PP was set to zero, and the lower bound and upper bound of conditional partial pivoting tolerance were set to \num{1e-5} and \num{1e+5}, respectively.
+		For PCM\_$x$PP, the conditional partial pivoting tolerance was set to \num{1e-5}.
 		Note that the \code{magmaf\_dgetrf\_gpu()} function was already used in BDDCML prior to this thesis and it is not available in the Decomposition project.
 		The \textit{Performer} column specifies the primary device used by each decomposer.
 	}
@@ -1989,11 +1989,11 @@ The speedup comparison is shown in Figure~\ref{Figure:comparing-decomposers-and-
 As depicted in Figure~\ref{Figure:comparing-decomposers-and-solvers->bddcml-benchmark->benchmark-results->speedup-comparison-of-decomposers-in-pc-setup-stage->speedup-comparison}, the \textit{pc\_setup} stage was completed in the shortest time when either MAGMAgetrf or CuSolverDnXgetrfPP were used.
 Specifically, with MAGMAgetrf, the execution of the stage was faster for smaller values of $H/h$, whereas for larger values, it was faster with CuSolverDnXgetrfPP.
 In general, the use of the decomposers implemented by the author of this thesis resulted in the \textit{pc\_setup} stage taking longer to complete.
-Out of the author's decomposers, ICM\_\textit{x}PP achieved the best performance.
+Out of the author's decomposers, ICM\_$x$PP achieved the best performance.
 
-\paragraph{ICM\_\textit{x}PP} The best-performing variant of ICM\_\textit{x}PP was ICM\_32PP.
+\paragraph{ICM\_$x$PP} The best-performing variant of ICM\_$x$PP was ICM\_32PP.
 Specifically, ICM\_32PP consistently outperformed ICM\_16PP, which in turn consistently outperformed ICM\_8PP.
-This performance difference among the variants aligns with the results obtained by the variants of ICM\_\textit{x}PP in the Decomposition benchmark for decomposers, as mentioned on Page~\pageref{Text:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->ICMxPP->performance-of-variants}.
+This performance difference among the variants aligns with the results obtained by the variants of ICM\_$x$PP in the Decomposition benchmark for decomposers, as mentioned on Page~\pageref{Text:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->ICMxPP->performance-of-variants}.
 To further analyze ICM\_32PP, Figure~\ref{Figure:comparing-decomposers-and-solvers->bddcml-benchmark->benchmark-results->speedup-comparison-of-decomposers-in-pc-setup-stage->speedup-comparison->ICM_32PP->LU-and-metrics-examples} presents the \code{LU} matrices ICM\_32PP produced, along with its iterative and pivoting metrics for $H/h \in \left\{25, 50\right\}$.
 The matrices presented in Figure~\ref{Figure:comparing-decomposers-and-solvers->bddcml-benchmark->benchmark-results->speedup-comparison-of-decomposers-in-pc-setup-stage->speedup-comparison->ICM_32PP->LU-and-metrics-examples} were chosen at random, as ICM\_32PP was called multiple times within each run of the \code{poisson\_on\_cube} executable.
 Incidentally, the nonzero element pattern of both matrices was similar.
@@ -2055,11 +2055,11 @@ While the patches are not visible in Figure~\ref{Figure:comparing-decomposers-an
 For example, approximately 86\% of the elements in the input matrix for $H/h = 25$ were nonzero, while for $H/h = 50$, the percentage increased to 92\%.
 \end{tight_enumerate}
 
-The summary of the decomposition benchmarks in Section~\ref{Subsection:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->summary-of-results-of-decomposition-benchmarks} suggested that using a higher processing tolerance for ICM\_\textit{x}PP may be suitable when the decomposer is employed as a preconditioner that is not expected to be highly accurate.
+The summary of the decomposition benchmarks in Section~\ref{Subsection:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->summary-of-results-of-decomposition-benchmarks} suggested that using a higher processing tolerance for ICM\_$x$PP may be suitable when the decomposer is employed as a preconditioner that is not expected to be highly accurate.
 As mentioned earlier on Page~\pageref{Text:comparing-decomposers-and-solvers->bddcml-benchmark->poisson-on-cube-stages}, the \textit{Krylov method} stage uses the \code{LU} matrices produced by the decomposer to iteratively improve the solution.
 Hence, an inaccurate decomposition could potentially benefit the overall execution time of the problem.
 To investigate this claim, ICM\_32PP with various processing tolerances was utilized as a decomposer in the \textit{pc\_setup} stage.
-Only the ICM\_32PP variant is presented since it consistently outperformed the other variants of ICM\_\textit{x}PP.
+Only the ICM\_32PP variant is presented since it consistently outperformed the other variants of ICM\_$x$PP.
 Figure~\ref{Figure:comparing-decomposers-and-solvers->bddcml-benchmark->benchmark-results->speedup-comparison-of-decomposers-in-pc-setup-stage->speedup-comparison->ICMxPP-with-varying-processing-tolerances->speedup-comparison-relative-to-MAGMAgetrf} illustrates the speedups of ICM\_32PP with various processing tolerances relative to MAGMAgetrf.
 Furthermore, the figure also displays the execution times of the \textit{pc\_setup} stage for ICM\_32PP with various processing tolerances and MAGMAgetrf.
 
@@ -2299,19 +2299,19 @@ As depicted in Figure~\ref{Figure:comparing-decomposers-and-solvers->bddcml-benc
 Its performance was followed by MAGMAgetrf, and ICM\_32PP 1 (with CuBLAStrsmPP as the solver).
 
 \subsubsection{Accuracy of Results} The accuracy of results in the BDDCML benchmark was evaluated based on the number of iterations required in the \textit{Krylov method} stage.
-However, excluding ICM\_\textit{x}PP with increased processing tolerances, the number of iterations was the same for all decomposers across all values of $H/h$.
+However, excluding ICM\_$x$PP with increased processing tolerances, the number of iterations was the same for all decomposers across all values of $H/h$.
 In other words, the number of iterations for all decomposers listed in Table~\ref{Table:comparing-decomposers-and-solvers->bddcml-benchmark->benchmark-results->table-of-decomposers} matched that of MAGMAgetrf in Figure~\ref{Figure:comparing-decomposers-and-solvers->bddcml-benchmark->benchmark-results->speedup-comparison-of-decomposers-in-pc-setup-stage->speedup-comparison->ICMxPP-with-varying-processing-tolerances->krylov-method-iterations-and-time-with-MAGMAgetrf->iterations}.
 
 
 
 
 \section{TNL Time-Series Problem Benchmark}\label{Section:comparing-decomposers-and-solvers->tnl-time-series-problem-benchmark}
-During the development of the project, a hypothesis was formulated by doc. Ing. T. Oberhuber, Ph.D., that the initial estimate in ICM\_\textit{x}PP could be beneficial for time-series problems.
-Specifically, it was proposed that the \code{LU} matrix from the previous time step could be used as an initial estimate in ICM\_\textit{x}PP for the current time step, potentially reducing the number of iterations needed to process the matrix.
+During the development of the project, a hypothesis was formulated by doc. Ing. T. Oberhuber, Ph.D., that the initial estimate in ICM\_$x$PP could be beneficial for time-series problems.
+Specifically, it was proposed that the \code{LU} matrix from the previous time step could be used as an initial estimate in ICM\_$x$PP for the current time step, potentially reducing the number of iterations needed to process the matrix.
 This hypothesis was based on the observation that the input matrices undergo only slight changes between consecutive time steps, suggesting that the decomposed matrices may require fewer iterations to process.
 
 For this purpose, doc. Ing. T. Oberhuber, Ph.D. implemented a benchmark for \textit{Mean curvature flow}\footnote{Mean curvature flow on Wikipedia: \url{https://en.wikipedia.org/wiki/Mean_curvature_flow}} in TNL\footnote{Mean curvature flow benchmark in TNL: \url{https://gitlab.com/tnl-project/tnl/-/tree/TO/grid/src/Benchmarks/MeanCurvatureFlow}}.
-The benchmark specifically focused on ICM\_\textit{x}PP and aimed to determine whether using the \code{LU} matrix from the previous time step as the initial estimate would improve performance compared to using the default initial estimate (the input matrix).
+The benchmark specifically focused on ICM\_$x$PP and aimed to determine whether using the \code{LU} matrix from the previous time step as the initial estimate would improve performance compared to using the default initial estimate (the input matrix).
 Surprisingly, the benchmark results revealed no discernible difference in performance between the two approaches.
 Therefore, the benchmark results are not presented in this thesis.
 The reason behind the lack of difference remains unclear.
@@ -2324,11 +2324,11 @@ However, it offers an interesting area for further investigation in future resea
 This section summarizes the results of the benchmarks performed for the decomposers and solvers available in the Decomposition project.
 
 Overall, the best-performing decomposer was CuSolverDnXgetrfPP, as it exhibited superior performance in both execution speed and accuracy in every benchmark it was a part of.
-When considering the decomposers implemented by the author of this thesis, PCM\_\textit{x}PP demonstrated consistent performance with an acceptable level of accuracy.
-However, for problems that require a preconditioner that does not need to produce highly accurate results, ICM\_\textit{x}PP is a suitable alternative.
-It is important to note that increasing the processing tolerance of ICM\_\textit{x}PP can lead to higher performance, however, there is no guarantee that it will produce usable results.
+When considering the decomposers implemented by the author of this thesis, PCM\_$x$PP demonstrated consistent performance with an acceptable level of accuracy.
+However, for problems that require a preconditioner that does not need to produce highly accurate results, ICM\_$x$PP is a suitable alternative.
+It is important to note that increasing the processing tolerance of ICM\_$x$PP can lead to higher performance, however, there is no guarantee that it will produce usable results.
 
 In terms of solvers, both CuSolverDnXgetrsPP and CuBLAStrsmPP were the best-performing, with the former being marginally faster than the latter while being slightly less accurate.
 It is worth noting that CuBLAStrsmPP allows for the unit diagonal to be stored either in \code{L} or \code{U}, whereas CuSolverDnXgetrsPP only supports a unit diagonal in \code{L}.
-While IS\_\textit{x}PP demonstrated that its iterative approach can avoid unnecessary calculations in certain problems, it produced invalid results for others, even with its processing tolerance set to zero.
+While IS\_$x$PP demonstrated that its iterative approach can avoid unnecessary calculations in certain problems, it produced invalid results for others, even with its processing tolerance set to zero.
 Therefore, it is not recommended for use.

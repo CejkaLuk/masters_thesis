@@ -1160,7 +1160,7 @@ The \code{mtx} file format is referred to as the \textit{Matrix Market File Form
 
 Each benchmarked operation can be performed in loops with the results of all loops averaged to amount for statistically significant results.
 The results can include, for example, the execution time of the operation and its standard deviation, the maximum absolute difference between the actual results and the expected results, etc.
-The averaged results are logged using \code{TNL::Benchmarks::JsonLogging} as JSON objects into log files which can be later transformed into HTML tables and MATLAB plots using a Python script provided in \code{src/Benchmarks/utils}.
+The averaged results are logged using \code{TNL::Benchmarks::JsonLogging} as JSON objects into log files which can be later transformed into HTML tables and MATLAB plots using a Python script provided in the \code{src/Benchmarks/utils} directory found in the Decomposition repository\footnote{Decomposition GitLab repository URL: \url{https://gitlab.com/tnl-project/decomposition}}.
 
 Note that the maximum absolute difference is computed on the CPU to assure the highest possible accuracy.
 The maximum absolute difference is defined for decomposers as:

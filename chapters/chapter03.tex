@@ -733,7 +733,7 @@ Note that the tables only show the execution times of the best-performing varian
 		msc10848           & 0.1037 &  653.4609 & 231.3460 & 20.6770 \\
 		sinc15             & 0.1237 &  536.8241 & 290.3724 & 24.3491 \\ \hline
 	\end{tabular}
-	\caption{Execution times (in seconds) of the decomposers listed in Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->table-of-decomposers} on the set of matrices (Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->matrices-used-for-benchmarks->15-selected-matrices}) using \textbf{double} precision.
+	\caption{Execution times (in seconds) of the decomposers listed in Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->table-of-decomposers} on the set of matrices (Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->matrices-used-for-benchmarks->15-selected-matrices}) using \textit{double} precision.
 		Only the execution times of the best-performing variants of ICM\_\textit{x}PP and PCM\_\textit{x}PP are presented.
 	}
 	\label{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->execution-times->double-precision}
@@ -760,7 +760,7 @@ Note that the tables only show the execution times of the best-performing varian
 		msc10848           & 0.0917 & 481.6722 & 155.3406 & 11.6422 \\
 		sinc15             & 0.1075 & 517.0449 &        - & 12.6665 \\ \hline
 	\end{tabular}
-	\caption{Execution times (in seconds) of the decomposers listed in Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->table-of-decomposers} on the set of matrices (Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->matrices-used-for-benchmarks->15-selected-matrices}) using \textbf{single} precision.
+	\caption{Execution times (in seconds) of the decomposers listed in Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->table-of-decomposers} on the set of matrices (Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->matrices-used-for-benchmarks->15-selected-matrices}) using \textit{single} precision.
 		Only the execution times of the best-performing variants of ICM\_\textit{x}PP and PCM\_\textit{x}PP are presented.
 		The execution time of ICM\_32PP is missing for the \textit{sinc15} matrix as ICM\_\textit{x}PP failed to decompose the matrix using single precision.
 	}
@@ -1035,7 +1035,7 @@ Given the large discrepancy in result accuracy between double and single precisi
 \end{table}
 
 The statistical indices in Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->statistical-indices} show that the CuSolverDnXgetrfPP decomposer produced the most accurate results followed by CMPP.
-However, cases where the CuSolverDnXgetrfPP decomposer produced less accurate results than all remaining decomposers have been observed, e.g., for matrices 35 \textit{exdata\_1} and 40 \textit{fp}.
+However, cases where the CuSolverDnXgetrfPP decomposer produced less accurate results than all remaining decomposers have been observed, e.g., for matrices 35 (\textit{exdata\_1}) and 40 (\textit{fp}).
 For these matrices, the relative inaccuracy of CuSolverDnXgetrfPP is present for both double and single precision, as Figures~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision} and \ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->single-precision} show, respectively.
 The reasons for the relative inaccuracy are unclear as there is no consistent pattern that would indicate a matrix characteristic unfavorable to CuSolverDnXgetrfPP.
 

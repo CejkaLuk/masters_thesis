@@ -277,12 +277,12 @@ Therefore, unit tests played a crucial role in facilitating smooth development.
 While the structure of unit tests was adopted from TNL, certain modifications were made to meet the requirements of the implementations \cite{Cejka2022}.
 Specifically, the unit tests needed to fulfill the following requirements:
 
-\begin{enumerate}
+\begin{tight_enumerate}
 	\item Lightweight - The unit tests are executed with every compilation of the project and, therefore, should be executed quickly.
 	\item Reusable - The same test should be applicable to different algorithms.
 	\item Versatile - The same test should be capable of running with different data types.
 	\item Thorough - Certain implementations had multiple potential points of failure that must be reliable.
-\end{enumerate}
+\end{tight_enumerate}
 
 To satisfy the requirements posed above, the following concepts were used and implemented:
 
@@ -439,11 +439,11 @@ While the implementation of ICM\_\textit{x}PP was optimized throughout the devel
 The GPU implementation of ICM\_\textit{x}PP follows the algorithm introduced in Section~\ref{Subsection:theory->ICMPP->LUP->ICMPP} with minor modifications.
 Therefore, its description is split into three parts:
 
-\begin{enumerate}
+\begin{tight_enumerate}
 	\item Initial estimate of the decomposition
 	\item Processing by sections
 	\item Computing one iteration of a section
-\end{enumerate}
+\end{tight_enumerate}
 
 \subparagraph{Initial Estimate of the Decomposition} The first step of the ICMPP algorithm, introduced in Section~\ref{Subsection:theory->ICMPP->LUP->ICMPP}, is to estimate the decomposition of matrix $\mathbf{A}$, i.e., to estimate matrices $\mathbf{L}$ and $\mathbf{U}$.
 This estimate is then improved in every iteration of the algorithm until the change between iterations is smaller than some tolerance.
@@ -873,10 +873,10 @@ If all of the lower sections are processed, then the inner while-loop terminates
 
 The outer while loop, with the condition \code{badEl\_idx < dSec\_end - 1}, terminates if either of the following conditions is fulfilled:
 
-\begin{enumerate}
+\begin{tight_enumerate}
 	\item The bad element pivoted in the current iteration is the bottom-right-most element of the diagonal section.
 	\item There are no bad elements in the diagonal section as \code{badEl\_idx} is set to the illegal value, \code{num\_cols}.
-\end{enumerate}
+\end{tight_enumerate}
 
 The first condition arises from the following observation: If the bad element is the bottom-right-most element of the diagonal section, then the diagonal section and the sections below it are processed once the bad element is pivoted.
 In other words, once the bad element is pivoted, there is no need to compute the next iteration as the values produced would be identical to the values of the current iteration.
@@ -1065,13 +1065,13 @@ For convenience, the operations are summarized below.
 Specifically, assuming a system of $n \in \mathbb{N}$ linear equations with $n$ unknowns and $m \in \mathbb{N}$ right-hand sides, solvers solve a linear system defined as $\mathbf{LUX} = \mathbf{PB}$, where $\mathbf{L}$ and $\mathbf{U}$ are the output of an LU decomposition algorithm, $\mathbf{X}$ is an $n$-by-$m$ matrix of unknowns, $\mathbf{P}$ is an $n$-by-$n$ permutation matrix, and $\mathbf{B}$ is an $n$-by-$m$ matrix of right-hand sides.
 In the context of the Decomposition project, solvers perform the following steps:
 
-\begin{enumerate}
+\begin{tight_enumerate}
 	\item If partial pivoting is enabled, permute the rows of matrix $\mathbf{B}$ according to matrix $\mathbf{P}$.
 	\item \label{Item:implementation->decomposition-project->implemented-solutions->solvers->forward-substitution}
 		Perform forward substitution by solving $\mathbf{LY} = \mathbf{B}$.
 	\item \label{Item:implementation->decomposition-project->implemented-solutions->solvers->backward-substitution}
 		Perform backward substitution by solving $\mathbf{UX} = \mathbf{Y}$.
-\end{enumerate}
+\end{tight_enumerate}
 
 At the end of Step~\ref{Item:implementation->decomposition-project->implemented-solutions->solvers->backward-substitution} matrix $\mathbf{X}$ contains the values of the unknowns in the correct order.
 In other words, $\mathbf{X}$ can be directly applied to $\mathbf{AX} = \mathbf{B}$ without the need for permutation.

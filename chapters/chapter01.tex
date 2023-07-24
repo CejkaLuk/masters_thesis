@@ -1,9 +1,9 @@
 \chapter{Theory}
 
 This chapter will introduce the theory behind the core parts of this project.
-First, Nvidia's Graphics Processing Units (GPUs) and their use in General-Purpose Computing (GPGPU) will be briefly described.
+First, Nvidia's Graphics Processing Units (GPUs) and their use in General-Purpose Computing on GPUs (GPGPU) will be briefly described.
 Then, CUDA, the API for communicating with Nvidia GPUs, will be presented.
-The final part introduces the method implemented in this project: Iterative Crout's Method with partial pivoting (ICMPP).
+The final part introduces the method implemented in this project: Iterative Crout's Method with Partial Pivoting (ICMPP).
 
 \section{GPUs}\label{Section:theory->GPUs}
 In essence, a Graphics Processing Unit (GPU) is a device designed to accelerate the graphical output of a computer system.
@@ -174,7 +174,7 @@ This section aims to briefly introduce the thread management system present in C
 To fully leverage the performance Nvidia GPUs can provide, it is paramount to manage their execution units well.
 For this purpose, CUDA provides many functionalities and structures \cite{NVIDIADecember2022}.
 
-\paragraph{CUDA thread} According to \citetitle{NVIDIADecember2022} \cite{NVIDIADecember2022}, a CUDA thread is "\textit{an executed sequence of operations}".
+\paragraph{CUDA Thread} According to \citetitle{NVIDIADecember2022} \cite{NVIDIADecember2022}, a CUDA thread is "\textit{an executed sequence of operations}".
 It represents the most fundamental level of abstraction for carrying out computations or memory operations.
 It is lightweight in design which allows the GPU to switch between threads seamlessly.
 Note that in the context of this project, a CUDA thread may also be referred to simply as a \textit{thread}.
@@ -336,7 +336,7 @@ This section will briefly introduce the memory management system present in CUDA
 
 Similarly to the layout in Section~\ref{Subsection:theory->CUDA->thread-management}, the memory management system of CUDA will be briefly described starting with the most fundamental type of memory and advancing to the highest level.
 
-\paragraph{Registers and local memory} While executing a kernel each thread has access to a memory space that is unique to it, i.e., other threads cannot access it.
+\paragraph{Registers and Local Memory} While executing a kernel, each thread has access to a memory space that is unique to it, i.e., other threads cannot access it.
 The lifetime of this memory is bound to the context of the kernel it is allocated with.
 This space encompasses two separate memories: \textit{registers} and \textit{local memory}.
 
@@ -349,7 +349,7 @@ Local memory for each thread is limited to 512 KB \cite{NVIDIADecember2022}.
 
 While using registers to store frequently-accessed indexing variables can help improve performance, it should be done with care to avoid the performance loss associated with register spilling.
 
-\paragraph{Shared memory} In the context of a kernel, all threads of a block have access to a block-unique memory space referred to as \textit{shared memory}.
+\paragraph{Shared Memory} In the context of a kernel, all threads of a block have access to a block-unique memory space referred to as \textit{shared memory}.
 Similarly to \textit{registers}, shared memory is located on-chip and is therefore high-speed.
 The maximum size of shared memory per block varies depending on the CUDA compute capability version as shown in Table ~\ref{Table:theory->CUDA->memory-management->max-shared-memory-per-block-based-on-compute-capability}.
 
@@ -410,7 +410,7 @@ int main()
 
 For more information regarding shared memory see Section~1.2.3 in \citetitle{Cejka2022} \cite{Cejka2022} or \citetitle{NVIDIADecember2022} \cite{NVIDIADecember2022}.
 
-\paragraph{Global memory} The largest memory space present in CUDA is \textit{global memory}.
+\paragraph{Global Memory} The largest memory space present in CUDA is \textit{global memory}.
 It is occasionally referred to as \textit{device memory} as it resides in an Nvidia GPU's DRAM (Dynamic Random Access Memory).
 While global memory resides in a device's memory it can be accessed by both the host and the device, thus, creating a communication medium between the two.
 The amount of global memory available depends on the GPU used, for example, the Nvidia A100 GPU is available with either 40 GB or 80 GB (shown in Table~\ref{Table:theory->GPUs->GPGPU->nvidia-gpu-details-comparison}).
@@ -829,10 +829,10 @@ Since then, it has become a fundamental component of numerical linear algebra.
 Owing to its early discovery and wide range of uses, many different methods have been developed - Gaussian elimination being arguably the most well-known.
 However, this project focuses on the use of Lower-Upper decomposition with partial pivoting (LUP) and substitution to solve linear equations.
 Specifically, the LUP method selected was the iterative variant of Prescott Durand Crout's matrix decomposition method, referred to - in the context of this project - as the \textit{Iterative Crout Method} (ICM).
-Note that in the context of this project, ICM does not include pivoting; a modification of ICM that includes pivoting will be referred to as \textit{Iterative Crout's Method with partial pivoting} (ICMPP).
+Note that in the context of this project, ICM does not include pivoting; a modification of ICM that includes pivoting will be referred to as \textit{Iterative Crout's Method with Partial Pivoting} (ICMPP).
 
 First, LUP and its use when solving a system of linear equations will be briefly described.
-Then, Crout's Method with partial pivoting (CMPP) will be introduced and, finally, ICMPP will be described.
+Then, Crout's Method with Partial Pivoting (CMPP) will be introduced, and finally, ICMPP will be described.
 
 \subsection{LU Decomposition with Partial Pivoting (LUP)}\label{Subsection:theory->ICMPP->LUP}
 It can be argued that LUP is simply Lower-Upper decomposition (LU) with the added feature of partial pivoting.
@@ -941,12 +941,12 @@ As mentioned in \citetitle{Cejka2022} \cite{Cejka2022} and in \citetitle{Lindfie
 For example, when solving linear time-dependent partial differential equations, each time step presents a system whose right-hand side is determined by the solution of the system belonging to the previous time step.
 In such cases, Gaussian elimination would need to be performed in its entirety for every new right-hand side, whereas LUP would be used to decompose $\mathbf{A}$ once, and then the output of the decomposition would be reused for every new right-hand side.
 
-While there are many different approaches to LUP, this project focuses on \textit{Crout's Method with partial pivoting} (CMPP) and \textit{Iterative Crout's Method with partial pivoting} (ICMPP).
+While there are many different approaches to LUP, this project focuses on \textit{Crout's Method with Partial Pivoting} (CMPP) and \textit{Iterative Crout's Method with Partial Pivoting} (ICMPP).
 
 
 
 \subsection{Crout's Method with Partial Pivoting (CMPP)}\label{Subsection:theory->ICMPP->LUP->CMPP}
-This section aims to introduce an LUP algorithm known as \textit{Crout's Method with partial pivoting} (CMPP).
+This section aims to introduce an LUP algorithm known as \textit{Crout's Method with Partial Pivoting} (CMPP).
 CMPP's base form, Crout's Method (CM), is also referred to as \textit{Crout's matrix decomposition} or \textit{Crout's factorization} and was developed by Prescott Durand Crout \cite{Press2007} in the 20th century.
 In the context of this project, CM refers to the method without partial pivoting and whereas CMPP refers to the method with partial pivoting.
 
@@ -1175,14 +1175,14 @@ In terms of numerical methods such a method is referred to as \textit{direct}.
 
 An alternative group of methods to direct methods is known as iterative methods.
 Unlike direct methods, iterative methods converge to a solution, but there is no guarantee that the exact solution will be obtained.
-An example of an iterative variant of CMPP: \textit{Iterative Crout's Method with partial pivoting} (ICMPP) will be described in the next part.
+An example of an iterative variant of CMPP: \textit{Iterative Crout's Method with Partial Pivoting} (ICMPP) will be described in the next part.
 
 \subsection{Iterative Crout's Method with Partial Pivoting (ICMPP)}\label{Subsection:theory->ICMPP->LUP->ICMPP}
 Seeing as the potential for parallelization is seemingly limited for CMPP's algorithm, an alternative approach can be used.
 One such alternative, put forward by \citename{Anzt2019}{author} in \citetitle{Anzt2019} \cite{Anzt2019}, involves using the formulas of CM in an iterative method.
 Although the method proposed by the authors generates incomplete factorization, i.e., some nonzero elements are omitted during factorization, its principle can be extracted to create an iterative decomposition method that produces a complete factorization.
 As detailed in \citetitle{Cejka2022} \cite{Cejka2022}, the complete-factorization approach converges to a sufficiently approximate solution of $\mathbf{A} = \mathbf{LU}$.
-This approach, labeled as \textit{Iterative Crout's Method} (ICM), has been modified to include partial pivoting, thus creating \textit{Iterative Crout's Method with partial pivoting} (ICMPP).
+This approach, labeled as \textit{Iterative Crout's Method} (ICM), has been modified to include partial pivoting, thus creating \textit{Iterative Crout's Method with Partial Pivoting} (ICMPP).
 
 The decomposition of matrix $\mathbf{A} \in \mathbb{R}^{n \times n}$ into the product of matrices $\mathbf{L}, \mathbf{U} \in \mathbb{R}^{n \times n}$, and a permutation matrix $\mathbf{P} \in \left\{0,1\right\}^{n \times n}$ using ICMPP consists of the following steps \cite{Cejka2022}:
 
@@ -1205,7 +1205,7 @@ The decomposition of matrix $\mathbf{A} \in \mathbb{R}^{n \times n}$ into the pr
 If no such $j$ satisfies the condition, proceed to Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Ut}.
 In this context, \textit{iteratively converge} signifies to continue computing the mentioned elements using Formula~\ref{Equation:theory->ICMPP->LUP->CMPP->lij} until they all satisfy the condition $\left|l^{t-1}_{b, c} - l^{t}_{b, c}\right| < \epsilon$.
 	\item \label{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row}
-		Pivot row $j$ (same as Step~\ref{Item:theory->ICMPP->LUP->CMPP->algorithm-steps->pivot-row-j} in the CMPP algorithm description on page~\pageref{Item:theory->ICMPP->LUP->CMPP->algorithm-steps->pivot-row-j}):
+		Pivot row $j$ (same as Step~\ref{Item:theory->ICMPP->LUP->CMPP->algorithm-steps->pivot-row-j} in the CMPP algorithm described on Page~\pageref{Item:theory->ICMPP->LUP->CMPP->algorithm-steps->pivot-row-j}):
 		\begin{enumerate}
 			\item \label{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row->argmax}
 				Find the index ($p$) of the element largest in absolute value under element $l^{t}_{j, j}$:

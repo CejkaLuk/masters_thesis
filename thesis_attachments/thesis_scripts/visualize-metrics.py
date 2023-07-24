@@ -116,7 +116,7 @@ def iterations_pivots_plot(matrix: np.array, pivots_per_section: np.array, outpu
 
    if save_fig:
       # Save the plot as a PDF file
-      output_file = f"{output_dir}/{matrix_name}_icmxpp_metrics.pdf"
+      output_file = f"{output_dir}/{matrix_name}_icm32pp_metrics.pdf"
       plt.savefig(output_file, format='pdf', bbox_inches='tight', pad_inches = 0)
    else:
       plt.show()
@@ -135,8 +135,8 @@ def main():
    REPO_ROOT = "../.."
 
    # Input directories
-   metrics_dir = f"{REPO_ROOT}/resources/ch03/decomposition-benchmarks/decomposers/ICMxPP_metrics"
-   log_filepath = f"{metrics_dir}/benchmark_log_decomposers_276cd27_icmpp_metrics_{PRECISION}_precision.txt"
+   metrics_dir = f"{REPO_ROOT}/resources/ch03/decomposition-benchmarks/decomposers/ICM32PP_metrics"
+   log_filepath = f"{metrics_dir}/benchmark_log_decomposers_276cd27_icm32pp_metrics_{PRECISION}_precision.txt"
 
    # Output directory - for the plot
    output_dir = f"{REPO_ROOT}/images/ch03/input-matrices"

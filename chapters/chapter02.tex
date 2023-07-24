@@ -122,7 +122,7 @@ The chosen function performs LU decomposition with partial pivoting:
 	\mathbf{PA} = \mathbf{LU} \,,
 \end{equation}
 
-where $\mathbf{P}$ is a permutation matrix, $\mathbf{A}$ is a coefficient matrix, $\mathbf{L}$ is a unit lower-triangular matrix, and $\mathbf{U}$ is an upper-triangular matrix.
+where $\mathbf{P}$ is a permutation matrix, $\mathbf{A}$ is a coefficient matrix, $\mathbf{L}$ is a \textit{unit lower}-triangular matrix, and $\mathbf{U}$ is an upper-triangular matrix.
 In other words, unlike CM, the main diagonal consisting of ones is found in $\mathbf{L}$ and not in $\mathbf{U}$.
 
 The function is data-agnostic, i.e., both single and double precision can be used.
@@ -218,7 +218,7 @@ The former represents the case when the main diagonal of the matrix does not con
 For clarity, to solve $\mathbf{LY}=\mathbf{B}$ using \code{cublas<t>trsm()}, the function must be called with the following parameters:
 
 \begin{tight_itemize}
-	\item \code{CUBLAS\_FILL\_MODE\_LOWER} and \code{CUBLAS\_DIAG\_UNIT} when $\mathbf{L}$ is a \textit{unit} lower-triangular matrix; and
+	\item \code{CUBLAS\_FILL\_MODE\_LOWER} and \code{CUBLAS\_DIAG\_UNIT} when $\mathbf{L}$ is a \textit{unit lower}-triangular matrix; and
 	\item \code{CUBLAS\_FILL\_MODE\_LOWER} and \code{CUBLAS\_DIAG\_NON\_UNIT} when $\mathbf{L}$ is a lower-triangular matrix.
 \end{tight_itemize}
 

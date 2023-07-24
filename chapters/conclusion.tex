@@ -15,7 +15,7 @@ Additionally, the unit tests, which assured the quality of the implemented algor
 Finally, the procedures implemented in the project were compared to established CUDA libraries in terms of execution speed and accuracy of results on a state-of-the-art HPC cluster.
 The comparison of performance was facilitated through two benchmarks.
 The first benchmark - Decomposition benchmark - evaluated the raw performance of the procedures on a set of 50 matrices with varying characteristics.
-The second benchmark - BDDCML benchmark - involved assessing the performance of the procedures as part of a multilevel BDDC solver library.\\
+The second benchmark - BDDCML benchmark - involved assessing the performance of the procedures as part of BDDCML.\\
 The results of the Decomposition benchmark revealed that among the procedures implemented, the PCM\_8PP (Parallel Crout's Method with Partial Pivoting and $8^2$ threads in each one-dimensional CUDA thread block) decomposer exhibited the most consistent performance, while the ICM\_32PP (Iterative Crout's Method with Partial Pivoting and 32-by-32 CUDA thread blocks) decomposer showed suitability only for specific types of matrices.
 However, both decomposers performed worse compared to the CusolverDnXgetrf procedure provided by CUDA.
 The implemented solver, IS\_\textit{x}PP (Iterative Solver with Partial Pivoting and \textit{x}-by-8 CUDA thread blocks), was deemed unusable as it occasionally provided invalid results.\\

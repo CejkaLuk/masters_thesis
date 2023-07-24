@@ -18,7 +18,7 @@ The first benchmark - Decomposition benchmark - evaluated the raw performance of
 The second benchmark - BDDCML benchmark - involved assessing the performance of the procedures as part of a multilevel BDDC solver library.\\
 The results of the Decomposition benchmark revealed that among the procedures implemented, the PCM\_8PP (Parallel Crout's Method with Partial Pivoting and $8^2$ threads in each one-dimensional CUDA thread block) decomposer exhibited the most consistent performance, while the ICM\_32PP (Iterative Crout's Method with Partial Pivoting and 32-by-32 CUDA thread blocks) decomposer showed suitability only for specific types of matrices.
 However, both decomposers performed worse compared to the CusolverDnXgetrf procedure provided by CUDA.
-The implemented solver, IS\_\textit{x}PP (Iterative Solver with Partial Pivoting and \textit{x} threads per CUDA thread block), was deemed unusable as it occasionally provided invalid results.\\
+The implemented solver, IS\_\textit{x}PP (Iterative Solver with Partial Pivoting and \textit{x}-by-8 CUDA thread blocks), was deemed unusable as it occasionally provided invalid results.\\
 The second benchmark revealed that ICM\_32PP was able to compete with CUDA's cusolverDnXgetrf and MAGMA's magma\_dgetrf\_gpu.
 Specifically, the relaxed processing tolerance of the iterative approach of ICM\_32PP allowed it to complete the benchmark at 90\% of the speed of magma\_dgetrf\_gpu.
 

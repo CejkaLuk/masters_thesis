@@ -1092,7 +1092,7 @@ To support this claim, the accuracy of results for various processing tolerances
 		The vertical axis is log-scaled for improved visibility.
 		Note that the accuracy values for the first matrix are not plotted as the decomposers produced results produced that matched the expected results, i.e., the plotted value would be equal to $\log0$.
 		Additionally, certain accuracy values are missing as their decomposers failed to decompose those particular matrices.
-		Specifically, ICM\_\textit{x}PP \num{1e-02} failed to decompose matrices 6 (west0156), 27 (garon1), and 47 (TSOPF\_FS\_b162\_c1), while ICM\_\textit{x}PP \num{1e-01} failed to decompose matrices 6 (west0156), 17 (b2\_ss), 27 (garon1), 33 (freeFlyingRobot\_9), and 47 (TSOPF\_FS\_b162\_c1).
+		Specifically, ICM\_\textit{x}PP \num{1e-02} failed to decompose matrices 6 (\textit{west0156}), 27 (\textit{garon1}), and 47 (\textit{TSOPF\_FS\_b162\_c1}), while ICM\_\textit{x}PP \num{1e-01} failed to decompose matrices 6 (\textit{west0156}), 17 (\textit{b2\_ss}), 27 (\textit{garon1}), 33 (\textit{freeFlyingRobot\_9}), and 47 (\textit{TSOPF\_FS\_b162\_c1}).
 	}
 	\label{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->ICM32PP->various-processing-tolerances}
 \end{figure}
@@ -1109,7 +1109,7 @@ An example of such a scenario is the "Poisson equation on a cube" problem, whose
 
 With regard to the ICM\_\textit{x}PP decomposer with its processing tolerance set to zero, the obtained data seems to contradict the theory proposed in \citetitle{Cejka2022} \cite{Cejka2022}: "\textit{Since Crout’s method is direct, it can be theorized that rounding errors may result in it providing less accurate results compared to its numerical modification}".
 However, it is important to note that the theory was formulated without considering partial pivoting.
-Therefore, the results of this benchmark indicate that combining the iterative approach of ICM\_\textit{x} and partial pivoting is not a viable approach for LU decomposition in terms of accuracy.
+Therefore, the results of this benchmark indicate that combining the iterative approach of ICM\textit{x} and partial pivoting is not a viable approach for LU decomposition in terms of accuracy.
 
 When considering the CMPP and PCM\_\textit{x}PP decomposers, the values in Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->statistical-indices} highlight occasional inaccuracies.
 For example, in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision}, it can be seen that both decomposers exhibit large discrepancies between the expected and actual results for matrix 50 (\textit{sinc15}).
@@ -1217,7 +1217,7 @@ Specifically, the condition \code{( abs( val - NaN ) > process\_tol )} was evalu
 
 Nevertheless, how ICM\_\textit{x}PP\_NaN computed the \code{-NaN} values remains unclear.
 However, it was observed that the introduction of the upper bound for conditional partial pivoting resolved the issue in all affected matrices.
-Although the inclusion of the upper bound had a negative impact on the performance of ICM\_xPP on those particular matrices, it did not affect the performance of the decomposer on the remaining matrices.
+Although the inclusion of the upper bound had a negative impact on the performance of ICM\_\textit{x}PP on those particular matrices, it did not affect the performance of the decomposer on the remaining matrices.
 It is hypothesized that the use of the upper bound for conditional partial pivoting serves as a temporary checkpoint in the computation, effectively eliminating any potential issues that could result in the computation of \code{-NaN} values.
 However, it is also possible that the introduction of the upper bound inadvertently masks another underlying issue in the implementation.
 

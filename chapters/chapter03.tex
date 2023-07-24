@@ -241,7 +241,7 @@ On the other hand, the third fastest decomposer, ICM\_32PP, took 290 seconds to 
 
 \paragraph{ICM\_\textit{x}PP} From Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->precisions}, it can be seen that the performance of ICM\_\textit{x}PP is not as consistent as that of PCM\_\textit{x}PP.
 Specifically, ICM\_\textit{x}PP consistently performed poorly when decomposing the \textit{Cejka} dense matrices as all its variants were slower than every decomposer except for CMPP.\\
-For a better understanding of why ICM\_\textit{x}PP does not perform well on randomly generated dense matrices, the nonzero element pattern of the \textit{Cejka558} matrix along with the iterative and pivoting metrics of ICM\_\textit{x}PP are shown in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->matrix-with-metrics->Cejka558}.
+For a better understanding of why ICM\_\textit{x}PP does not perform well on randomly generated dense matrices, the nonzero element pattern of the \textit{Cejka558} matrix along with the iterative and pivoting metrics of ICM\_32PP are shown in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->matrix-with-metrics->Cejka558}.
 Note that the iterative and pivoting metrics were the same across all variants of ICM\_\textit{x}PP.
 
 \begin{figure}[ht!]
@@ -258,8 +258,8 @@ The color of zero entries is white.}
 	\end{subfigure}\hspace{0.03\textwidth}
 	\begin{subfigure}[t]{0.51\textwidth}
 		\centering
-		\includegraphics[width=\textwidth, keepaspectratio, clip]{images/ch03/input-matrices/decomposition-benchmarks/Cejka558_icmxpp_metrics.pdf}
-		\subcaption{Iterative and pivoting metrics of ICM\_\textit{x}PP collected during the decomposition of the \textit{Cejka558} matrix.
+		\includegraphics[width=\textwidth, keepaspectratio, clip]{images/ch03/input-matrices/decomposition-benchmarks/Cejka558_icm32pp_metrics.pdf}
+		\subcaption{Iterative and pivoting metrics of ICM\_32PP collected during the decomposition of the \textit{Cejka558} matrix.
 Each square represents a 256-by-256 section of the matrix.
 The color in each square represents the number of iterations performed on that section.
 The left and top axes show the section ID in each dimension, while the bottom axis shows the number of pivots performed in a diagonal section.
@@ -267,14 +267,14 @@ For example, the number of elements pivoted in section (0,0) was 14, while in se
 The plot was generated using a Python script.}
 		\label{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->ICMxPP-metrics->Cejka558}
 	\end{subfigure}
-	\caption{Nonzero element pattern of the \textit{Cejka558} matrix along with the iterative and pivoting metrics of ICM\_\textit{x}PP.
+	\caption{Nonzero element pattern of the \textit{Cejka558} matrix along with the iterative and pivoting metrics of ICM\_32PP.
 		The scripts used to generate the plots are available on request or as an attachment to this thesis.
 	}
 	\label{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->matrix-with-metrics->Cejka558}
 \end{figure}
 
 As Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->nonzero-element-pattern->Cejka558} shows, there are no zeros in the entire matrix except for some elements on the main diagonal which are not visible.
-Furthermore, since the matrix values were randomly generated, there were no patterns that would enable ICM\_\textit{x}PP to decompose the matrix rapidly.
+Furthermore, since the matrix values were randomly generated, there were no patterns that would enable ICM\_32PP to decompose the matrix rapidly.
 This is also apparent from Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->ICMxPP-metrics->Cejka558}, where it can be seen that the top-left and center sections were each computed in roughly 527 iterations.
 
 In general, the number of iterations required to process a section of a \textit{Cejka} dense matrix depends on the type of the section.
@@ -344,25 +344,25 @@ The additional iteration is performed to assure that the values of the right sec
 Similarly to the lower sections, the number of iterations required to process a right section is not affected if the section is adjusted to fit the boundaries of the matrix.
 For example, in the context of the \textit{Cejka558} matrix, all right sections were processed in 257 iterations, which aligns with the prediction.
 
-To show that the prediction is valid for other \textit{Cejka} matrices, the iterative and pivoting metrics for ICM\_\textit{x}PP are presented in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->ICMxPP-metrics->Cejka3839-and-Cejka10135} for matrices \textit{Cejka3839} and \textit{Cejka10135}.
+To show that the prediction is valid for other \textit{Cejka} matrices, the iterative and pivoting metrics for ICM\_32PP are presented in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->ICMxPP-metrics->Cejka3839-and-Cejka10135} for matrices \textit{Cejka3839} and \textit{Cejka10135}.
 
 \begin{figure}[ht!]
 	\centering
 	\begin{subfigure}[t]{0.48\textwidth}
 		\centering
-		\includegraphics[width=\textwidth, keepaspectratio]{images/ch03/input-matrices/decomposition-benchmarks/Cejka3839_icmxpp_metrics.pdf}
-		\subcaption{Iterative and pivoting metrics of ICM\_\textit{x}PP collected during the decomposition of the \textit{Cejka3839} matrix.
+		\includegraphics[width=\textwidth, keepaspectratio]{images/ch03/input-matrices/decomposition-benchmarks/Cejka3839_icm32pp_metrics.pdf}
+		\subcaption{Iterative and pivoting metrics of ICM\_32PP collected during the decomposition of the \textit{Cejka3839} matrix.
 Each square represents a 384-by-384 section of the matrix.}
 		\label{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->ICMxPP-metrics->Cejka3839}
 	\end{subfigure}\hspace{0.03\textwidth}
 	\begin{subfigure}[t]{0.48\textwidth}
 		\centering
-		\includegraphics[width=\textwidth, keepaspectratio, clip]{images/ch03/input-matrices/decomposition-benchmarks/Cejka10135_icmxpp_metrics.pdf}
-		\subcaption{Iterative and pivoting metrics of ICM\_\textit{x}PP collected during the decomposition of the \textit{Cejka10135} matrix.
+		\includegraphics[width=\textwidth, keepaspectratio, clip]{images/ch03/input-matrices/decomposition-benchmarks/Cejka10135_icm32pp_metrics.pdf}
+		\subcaption{Iterative and pivoting metrics of ICM\_32PP collected during the decomposition of the \textit{Cejka10135} matrix.
 Each square represents a 1024-by-1024 section of the matrix.}
 		\label{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->ICMxPP-metrics->Cejka10135}
 	\end{subfigure}
-	\caption{Iterative and pivoting metrics of ICM\_\textit{x}PP collected during the decomposition of the \textit{Cejka3839} and \textit{Cejka10135} matrices.}
+	\caption{Iterative and pivoting metrics of ICM\_32PP collected during the decomposition of the \textit{Cejka3839} and \textit{Cejka10135} matrices.}
 	\label{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->ICMxPP-metrics->Cejka3839-and-Cejka10135}
 \end{figure}
 
@@ -397,13 +397,13 @@ To provide context for the iterative metrics, the nonzero element pattern of \co
 	\end{subfigure}\hspace{0.03\textwidth}
 	\begin{subfigure}[t]{0.51\textwidth}
 		\centering
-		\includegraphics[width=\textwidth, keepaspectratio, clip]{images/ch03/input-matrices/decomposition-benchmarks/c-22_icmxpp_metrics.pdf}
-		\subcaption{Iterative and pivoting metrics of ICM\_\textit{x}PP collected during the decomposition of the \textit{c-22} matrix.
+		\includegraphics[width=\textwidth, keepaspectratio, clip]{images/ch03/input-matrices/decomposition-benchmarks/c-22_icm32pp_metrics.pdf}
+		\subcaption{Iterative and pivoting metrics of ICM\_32PP collected during the decomposition of the \textit{c-22} matrix.
 			Each square represents a 384-by-384 section of the matrix.
 		}
 		\label{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->matrix->c-22->icmxpp-metrics}
 	\end{subfigure}
-	\caption{Nonzero element pattern of the \textit{c-22} matrix along with the iterative and pivoting metrics of ICM\_\textit{x}PP.
+	\caption{Nonzero element pattern of the \textit{c-22} matrix along with the iterative and pivoting metrics of ICM\_32PP.
 		In the metrics plot, the color in each square represents the number of iterations performed on that section.
 		The left and top axes show the section ID in each dimension, while the bottom axis shows the number of pivots performed in a diagonal section.
 		However, since no elements were pivoted, the values are all zero.
@@ -413,8 +413,8 @@ To provide context for the iterative metrics, the nonzero element pattern of \co
 
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=0.45\textwidth, keepaspectratio, clip]{images/ch03/input-matrices/decomposition-benchmarks/c-22_icmxpp.pdf}
-	\caption{Nonzero element pattern of the \code{LU} matrix produced by ICM\_\textit{x}PP through the decomposition of the \textit{c-22} matrix.}
+	\includegraphics[width=0.45\textwidth, keepaspectratio, clip]{images/ch03/input-matrices/decomposition-benchmarks/c-22_icm32pp.pdf}
+	\caption{Nonzero element pattern of the \code{LU} matrix produced by ICM\_32PP through the decomposition of the \textit{c-22} matrix.}
 	\label{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->matrix->c-22->icmxpp-LU-nonzero-element-pattern}
 \end{figure}
 
@@ -1173,42 +1173,42 @@ It was explained that the upper bound is necessary only for ICM\_\textit{x}PP, a
 In this context, the version of ICM\_\textit{x}PP without the upper bound for conditional partial pivoting will be referred to as ICM\_\textit{x}PP\_NaN.
 Specifically, ICM\_\textit{x}PP\_NaN would produce results that contained \code{-NaN} values in seven of the 50 matrices.
 The only common characteristic of the matrices was that they were all sparse.
-To illustrate this issue, Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->matrix-with-metrics->ICMxPP-with-nan-results->msc10848} depicts the nonzero element pattern of the \code{LU} matrix produced by ICM\_\textit{x}PP\_NaN through the decomposition of the \textit{msc10848} matrix.
+To illustrate this issue, Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->matrix-with-metrics->ICM32PP-with-nan-results->msc10848} depicts the nonzero element pattern of the \code{LU} matrix produced by ICM\_32PP\_NaN through the decomposition of the \textit{msc10848} matrix.
 The figure also displays the iterative and pivoting metrics of the decomposer that were collected during the decomposition of the aforementioned matrix.
 
 \begin{figure}[ht!]
 	\centering
 	\begin{subfigure}[t]{0.45\textwidth}
 		\centering
-		\includegraphics[width=\textwidth, keepaspectratio]{images/ch03/input-matrices/decomposition-benchmarks/msc10848_icmxpp_nan.pdf}
-		\subcaption{Nonzero element pattern of the \code{LU} matrix produced by ICM\_\textit{x}PP\_NaN through the decomposition of the \textit{msc10848} matrix.
+		\includegraphics[width=\textwidth, keepaspectratio]{images/ch03/input-matrices/decomposition-benchmarks/msc10848_icm32pp_nan.pdf}
+		\subcaption{Nonzero element pattern of the \code{LU} matrix produced by ICM\_32PP\_NaN through the decomposition of the \textit{msc10848} matrix.
 The blue square indicates the presence of \code{NaN} values (\code{-NaN} in absolute value).}
-		\label{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->matrix-with-metrics->ICMxPP-with-nan-results->msc10848->nonzero-element-pattern}
+		\label{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->matrix-with-metrics->ICM32PP-with-nan-results->msc10848->nonzero-element-pattern}
 	\end{subfigure}\hspace{0.03\textwidth}
 	\begin{subfigure}[t]{0.51\textwidth}
 		\centering
-		\includegraphics[width=\textwidth, keepaspectratio, clip]{images/ch03/input-matrices/decomposition-benchmarks/msc10848_icmxpp_nan_metrics.pdf}
-		\subcaption{Iterative and pivoting metrics of ICM\_\textit{x}PP\_NaN collected during the decomposition of the \textit{msc10848} matrix.
+		\includegraphics[width=\textwidth, keepaspectratio, clip]{images/ch03/input-matrices/decomposition-benchmarks/msc10848_icm32pp_nan_metrics.pdf}
+		\subcaption{Iterative and pivoting metrics of ICM\_32PP\_NaN collected during the decomposition of the \textit{msc10848} matrix.
 Each square represents a 1024-by-1024 section of the matrix.
 The color in each square represents the number of iterations performed on that section.
 The left and top axes show the section ID in each dimension, while the bottom axis shows the number of pivots performed in a diagonal section.}
-		\label{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->matrix-with-metrics->ICMxPP-with-nan-results->msc10848->metrics}
+		\label{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->matrix-with-metrics->ICM32PP-with-nan-results->msc10848->metrics}
 	\end{subfigure}
-	\caption{Nonzero element pattern of the \code{LU} matrix produced by ICM\_\textit{x}PP\_NaN through the decomposition of the \textit{msc10848} matrix.
-		The corresponding iterative and pivoting metrics of ICM\_\textit{x}PP\_NaN are included.
+	\caption{Nonzero element pattern of the \code{LU} matrix produced by ICM\_32PP\_NaN through the decomposition of the \textit{msc10848} matrix.
+		The corresponding iterative and pivoting metrics of ICM\_32PP\_NaN are included.
 	}
-	\label{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->matrix-with-metrics->ICMxPP-with-nan-results->msc10848}
+	\label{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->matrix-with-metrics->ICM32PP-with-nan-results->msc10848}
 \end{figure}
 
-As depicted in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->matrix-with-metrics->ICMxPP-with-nan-results->msc10848->nonzero-element-pattern}, the resulting matrix consisted mostly of \code{-NaN} values.
-When considering the metrics presented in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->matrix-with-metrics->ICMxPP-with-nan-results->msc10848->metrics}, it can be seen that ICM\_\textit{x}PP\_NaN erroneously classified the sections containing \code{-NaN} values as processed.
+As depicted in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->matrix-with-metrics->ICM32PP-with-nan-results->msc10848->nonzero-element-pattern}, the resulting matrix consisted mostly of \code{-NaN} values.
+When considering the metrics presented in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->matrix-with-metrics->ICM32PP-with-nan-results->msc10848->metrics}, it can be seen that ICM\_32PP\_NaN erroneously classified the sections containing \code{-NaN} values as processed.
 
-This issue was discovered while plotting the nonzero element patterns of the \code{LU} matrices produced by ICM\_\textit{x}PP\_NaN.
+This issue was discovered while plotting the nonzero element patterns of the \code{LU} matrices produced by ICM\_32PP\_NaN.
 The unit tests and benchmark results did not reveal any indications of invalid values.
 The maximum absolute difference was calculated as follows: \code{TNL::max( TNL::abs( A - A\_res ) )}, where \code{A\_res} represents the result of \code{L*U}.
 The value of the maximum absolute difference did not indicate the presence of \code{-NaN} values, as the \code{TNL::abs()} function returned \code{-NaN}.
 
-Furthermore, as depicted in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->matrix-with-metrics->ICMxPP-with-nan-results->msc10848->metrics}, the dark blue sections were processed in a single iteration.
+Furthermore, as depicted in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->matrix-with-metrics->ICM32PP-with-nan-results->msc10848->metrics}, the dark blue sections were processed in a single iteration.
 This implies that during the processing check, as shown on
 Page~\pageref{Listing:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->kernels->diagonal-compute} in Listing~\ref{Listing:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->kernels->diagonal-compute} on Line~\ref{Line:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->kernels->diagonal-compute->processing-check}, the \code{-NaN} values were incorrectly evaluated as processed.
 Specifically, the condition \code{( abs( val - NaN ) > process\_tol )} was evaluated as \code{false} due to the \code{abs()} function also returning \code{-NaN}.
@@ -2006,7 +2006,7 @@ Incidentally, the nonzero element pattern of both matrices was similar.
 	\hspace{0.03\textwidth}
 	\begin{subfigure}[t]{0.51\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{images/ch03/input-matrices/bddcml-benchmark/poc-25_4_2_icmxpp_metrics.pdf}
+		\includegraphics[width=\textwidth]{images/ch03/input-matrices/bddcml-benchmark/poc-25_4_2_icm32pp_metrics.pdf}
 		\caption{Iterative and pivoting metrics of ICM\_32PP collected during the decomposition of a 1,964-by-1,964 matrix when $H/h$ was set to 25.
 			Each square represents a 256-by-256 section of the matrix.
 		}
@@ -2022,14 +2022,14 @@ Incidentally, the nonzero element pattern of both matrices was similar.
 	\hspace{0.03\textwidth}
 	\begin{subfigure}[t]{0.51\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{images/ch03/input-matrices/bddcml-benchmark/poc-50_4_2_icmxpp_metrics.pdf}
+		\includegraphics[width=\textwidth]{images/ch03/input-matrices/bddcml-benchmark/poc-50_4_2_icm32pp_metrics.pdf}
 		\caption{Iterative and pivoting metrics of ICM\_32PP collected during the decomposition of a 7,664-by-7,664 matrix when $H/h$ was set to 50.
 			Each square represents a 768-by-768 section of the matrix.
 		}
 		\label{Figure:comparing-decomposers-and-solvers->bddcml-benchmark->benchmark-results->speedup-comparison-of-decomposers-in-pc-setup-stage->speedup-comparison->ICM_32PP->50-4-2->metrics}
 	\end{subfigure}
 
-	\caption{Visualization of the nonzero element patterns in matrices arising in the \textit{pc\_setup} stage for $H/h \in \left\{25, 50\right\}$.
+	\caption{Visualization of the nonzero element patterns of \code{LU} matrices produced by ICM\_32PP in the \textit{pc\_setup} stage for $H/h \in \left\{25, 50\right\}$.
 		The figure includes the iterative and pivoting metrics of ICM\_32PP.
 		In the \code{LU} plot, the color of nonzero elements depends on their absolute value.
 		Small entries are light orange, large entries are black, and the color of mid-range entries ranges from light green to deep blue depending on the median of $\log_{10}$ of the nonzero values (with slight alterations) \cite{Davis2006}.
@@ -2143,7 +2143,7 @@ Furthermore, the figure also displays the execution times of the \textit{pc\_set
 	\end{subfigure}
 	\caption{Speedup comparison of the \textit{pc\_setup} stage for ICM\_32PP with various processing tolerances relative to MAGMAgetrf.
 		The execution times of the stage are included for context.
-		The name of each ICM\_\textit{x}PP decomposer follows the naming pattern \textit{decomposer <processing\_tolerance>}.
+		The name of each ICM\_32PP decomposer follows the naming pattern \textit{decomposer <processing\_tolerance>}.
 	}
 	\label{Figure:comparing-decomposers-and-solvers->bddcml-benchmark->benchmark-results->speedup-comparison-of-decomposers-in-pc-setup-stage->speedup-comparison->ICMxPP-with-varying-processing-tolerances->speedup-comparison-relative-to-MAGMAgetrf-and-pc-setup-execution-time}
 \end{figure}
@@ -2239,7 +2239,7 @@ Figure~\ref{Figure:comparing-decomposers-and-solvers->bddcml-benchmark->benchmar
 		\label{Figure:comparing-decomposers-and-solvers->bddcml-benchmark->benchmark-results->speedup-comparison-of-decomposers-in-pc-setup-stage->speedup-comparison->ICMxPP-with-varying-processing-tolerances->krylov-method-iterations-and-time-with-MAGMAgetrf->time}
 	\end{subfigure}
 	\caption{Number of iterations and execution times of the \textit{Krylov method} stage for ICM\_32PP with various processing tolerances and MAGMAgetrf.
-		The name of each ICM\_\textit{x}PP decomposer follows the naming pattern \textit{decomposer <processing\_tolernace>}.
+		The name of each ICM\_32PP decomposer follows the naming pattern \textit{decomposer <processing\_tolernace>}.
 	}
 	\label{Figure:comparing-decomposers-and-solvers->bddcml-benchmark->benchmark-results->speedup-comparison-of-decomposers-in-pc-setup-stage->speedup-comparison->ICMxPP-with-varying-processing-tolerances->krylov-method-iterations-and-time-with-MAGMAgetrf}
 \end{figure}

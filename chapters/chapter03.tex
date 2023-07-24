@@ -243,7 +243,7 @@ On the other hand, the third fastest decomposer, ICM\_32PP, took 290 seconds to 
 \paragraph{ICM\_\textit{x}PP} From Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->precisions}, it can be seen that the performance of ICM\_\textit{x}PP is not as consistent as that of PCM\_\textit{x}PP.
 Specifically, ICM\_\textit{x}PP consistently performed poorly when decomposing the \textit{Cejka} dense matrices as all its variants were slower than every decomposer except for CMPP.\\
 For a better understanding of why ICM\_\textit{x}PP does not perform well on randomly generated dense matrices, the nonzero element pattern of the \textit{Cejka558} matrix along with the iterative and pivoting metrics of ICM\_32PP are shown in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->matrix-with-metrics->Cejka558}.
-Note that the iterative and pivoting metrics were the same across all variants of ICM\_\textit{x}PP.
+Note that the iterative and pivoting metrics were near-identical across all variants of ICM\_\textit{x}PP.
 
 \begin{figure}[ht!]
 	\centering
@@ -479,8 +479,8 @@ Note that unlike in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomp
 Out of the three variants of ICM\_\textit{x}PP that were benchmarked on the subset of 15 matrices, ICM\_32PP performed the best and ICM\_8PP the worst, as can be seen in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->comparison-of-execution-times-on-subset-of-matrices->ICMxPP-double-precision}.
 
 To determine the reason behind the differences in performance between the variants, it is necessary to consider different aspects of the implementations.
-Since the section size is the same for all variants and the difference in the number of threads performing a row swap in each variant does not affect the performance, the only remaining major factor is the kernels computing the iterations.\\
-Disregarding the slight changes in the implementations of the kernels since they were benchmarked in \citetitle{Cejka2022} \cite{Cejka2022}, it can be argued that the difference in the performance of the variants of ICM\_\textit{x}PP is due to uncoalesced and inefficient global memory access.
+Since the section size is near-identical for all variants, and the difference in the number of threads performing a row swap in each variant does not affect the performance, the only remaining major factor is the kernels computing the iterations.\\
+Disregarding the changes in the implementations of the kernels since they were benchmarked in \citetitle{Cejka2022} \cite{Cejka2022}, it can be argued that the difference in the performance of the variants of ICM\_\textit{x}PP is due to uncoalesced and inefficient global memory access.
 
 First, the issue of uncoalesced global memory access will be described.
 In the context of the Decomposition benchmark for decomposers, the matrices were stored in row-major order on the GPU for the ICM\_\textit{x}PP decomposer.
@@ -1585,9 +1585,7 @@ To put the results into perspective, Table~\ref{Table:comparing-decomposers-and-
 \end{table}
 
 As demonstrated in Figure~\ref{Figure:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->comparison-of-execution-times-on-all-matrices->double-and-single-precision} and confirmed in Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->comparison-of-execution-times-on-all-matrices->total-execution-time-of-solvers-on-set-of-50-matrices}, the fastest solver for the set of 50 matrices was CuBLAStrsmPP.
-Excluding the solvers from CUDA libraries, IS\_8PP was the fastest solver as it outperformed SSPP on 26 out of 50 matrices.
-It is worth noting that the total execution time of IS\_8PP, as shown in Table~\ref{Table:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->comparison-of-execution-times-on-all-matrices->total-execution-time-of-solvers-on-set-of-50-matrices}, is nearly double that of SSPP.
-This is due to SSPP exhibiting a significantly lower execution time for certain matrices, particularly the \textit{Cejka} dense matrices.
+Excluding the solvers from CUDA libraries, SSPP was the fastest solver, even though it outperformed IS\_8PP on only 24 out of 50 matrices.
 
 
 \subsubsection{Accuracy of Results on All Matrices}\label{Subsection:comparing-decomposers-and-solvers->decomposition-project-benchmarks->solvers-benchmark->accuracy-of-results-on-all-matrices}
@@ -1897,7 +1895,8 @@ Furthermore, while the nonzero element pattern in Figure~\ref{Figure:comparing-d
 
 
 \subsection{Benchmark Results}\label{Subsection:comparing-decomposers-and-solvers->bddcml-benchmark->benchmark-results}
-This section presents the benchmark results obtained by running the BDDCML benchmark using the decomposers listed in Table~\ref{Table:comparing-decomposers-and-solvers->bddcml-benchmark->benchmark-results->table-of-decomposers}, paired with the CuBLAStrsmPP solver.
+This section presents the benchmark results obtained by running the BDDCML benchmark using the decomposers listed in Table~\ref{Table:comparing-decomposers-and-solvers->bddcml-benchmark->benchmark-results->table-of-decomposers}, paired with the CuBLAStrsmPP solver (except for the MAGMA decomposer, which uses its own solver).
+CuBLAStrsmPP was chosen as it supports the unit diagonal both in $\mathbf{L}$ and $\mathbf{U}$.
 
 \begin{table}[ht!]
 	\centering
@@ -2304,7 +2303,7 @@ In other words, the number of iterations for all decomposers listed in Table~\re
 
 
 \section{TNL Time-Series Problem Benchmark}\label{Section:comparing-decomposers-and-solvers->tnl-time-series-problem-benchmark}
-During the development of the project, a hypothesis was formulated that the initial estimate in ICM\_\textit{x}PP could be beneficial for time-series problems.
+During the development of the project, a hypothesis was formulated by doc. Ing. T. Oberhuber, Ph.D., that the initial estimate in ICM\_\textit{x}PP could be beneficial for time-series problems.
 Specifically, it was proposed that the \code{LU} matrix from the previous time step could be used as an initial estimate in ICM\_\textit{x}PP for the current time step, potentially reducing the number of iterations needed to process the matrix.
 This hypothesis was based on the observation that the input matrices undergo only slight changes between consecutive time steps, suggesting that the decomposed matrices may require fewer iterations to process.
 

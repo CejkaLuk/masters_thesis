@@ -16,7 +16,7 @@ The Template Numerical Library (TNL) \cite{Oberhuber2021, Klinkovsky2022} is an 
 According to the core team behind the project, TNL aims to be the C++ Standard Template Library (STL) for HPC \cite{prXEEmGjoxB89XBn}.
 In practice, this means facilitating a base for the development of, for example, efficient numerical solvers and other HPC algorithms.
 Similarly to STL, TNL is implemented in C++ and uses up-to-date programming paradigms to provide a user-friendly interface.
-Additionally - as the name suggests - TNL utilizes the advantages provided by C++ templates such as minimal overhead runtime and broad compatibility of functionalities.
+Additionally, TNL utilizes the advantages provided by C++ templates such as minimal overhead runtime and broad compatibility of functionalities.
 In terms of HPC, TNL provides a unified interface for managing multicore CPUs, GPUs, and distributed systems.
 
 While TNL provides a wide range of data structures and functionalities, this section will only briefly present those utilized in the \textit{Decomposition} project.
@@ -38,12 +38,12 @@ By default, the allocator corresponding to \code{Device} is set.
 \end{tight_itemize}
 
 At its core, \code{Array} contains a pointer to the data and the size of the array.
-Additionally, methods providing different functionalities are present, for example, \code{resize()} or \code{forAllElements()}, where the latter executes a given lambda expression\footnote{C++ lambda expressions on cppreference: \url{https://en.cppreference.com/w/cpp/language/lambda}} for each element of the array; the lambda is executed by the same device whose memory space contains the data.
+Additionally, methods providing various functionalities are present, for example, \code{resize()} or \code{forAllElements()}, where the latter executes a given lambda expression\footnote{C++ lambda expressions on cppreference: \url{https://en.cppreference.com/w/cpp/language/lambda}} for each element of the array; the lambda is executed by the same device whose memory space contains the data.
 Note that while all methods can be executed on the host (CPU), only those prefixed with \code{\_\_cuda\_callable\_\_} can be executed on the device (Nvidia GPU).
 The \code{\_\_cuda\_callable\_\_} macro is defined as \code{\_\_device\_\_ \_\_host\_\_}, where \code{\_\_device\_\_} indicates that the function can only be called from and executed on the device, and \code{\_\_host\_\_} indicates that the function can only be called from and executed by the host.
 
 \paragraph{Vector} Extending \code{Array} is the \code{TNL::Containers::Vector} class \cite{ixA8ZYptYohwlgwt}.
-Its template parameters are identical to that of \code{Array} except for changes in nomenclature.
+Its template parameters are identical to those of \code{Array} except for changes in nomenclature.
 While its parent class possesses functionalities largely centered around memory management, \code{Vector} adds basic vector operations such as addition, subtraction, scalar multiplication, etc.
 
 \paragraph{Dense Matrix} The data structure implementing a dense matrix, i.e., a matrix storing all its values (zeros and nonzeros inclusive), is the \code{TNL::Matrices::DenseMatrix} class \cite{ixA8ZYptYohwlgwt}.
@@ -63,7 +63,7 @@ Analogous to \code{Vector}, \code{DenseMatrix} contains a variety of functionali
 
 In this project, an often-used method is the data-accessing operator: \code{operator( row, col )}.
 This operator returns a reference to an element at a given row and column.
-While this access is fast, it can only be used to access data from the same device whose memory space contains the data as it is prefixed with \code{\_\_cuda\_callable\_\_}.
+While this access is fast, it can only be used to access data from the same device whose memory space contains the data, as it is prefixed with \code{\_\_cuda\_callable\_\_}.
 For cross-device data access, either \code{setElement( row, col, value )} or \code{getElement( row, col )} can be used.
 Notwithstanding, the use of \code{setElement} and \code{getElement} is discouraged as copying a single element between devices is synonymous with low performance.
 Note that \code{getElement()} returns the value of the element.
@@ -84,7 +84,7 @@ In contrast, the overloaded operator \code{operator=} of both \code{Array} and \
 \paragraph{Parallel For Loop} Parallelization of a for loop performing independent tasks in CUDA is a simple task.
 However, for user comfort, TNL provides a parallel for-loop implementation: \code{TNL::Algorithms::parellelFor( begin, end, f )}, where \code{begin} and \code{end} specify the boundary indices, and \code{f} represents the lambda function performed in each iteration.
 Note that the implementation supports multi-index values, i.e., parallelization of nested for loops is implicitly supported.
-Notwithstanding dynamic parallelism, TNL's parallelized for-loop cannot be run within kernels.
+However, it is noteworthy that TNL's parallelized for-loop cannot be run within kernels as it does not support dynamic parallelism.
 
 \paragraph{Parallel Reduction} Parallel reduction with sequential addressing, described in Section~\ref{Subsection:theory->CUDA->parallel-reduction}, is available in TNL in different forms.
 The basic form, where an array is reduced to a single value, is provided by \code{TNL::Algorithms::reduce( array, reduction )} where \code{array} can be an array, view, or another compatible object, and \code{reduction} specifies the reduction operation to perform.
@@ -186,7 +186,7 @@ Similarly to \code{cusolverDnXgetrf()}, the full list of parameters can be found
 \subsubsection{cuBLAS}\label{Subsection:implementation->libraries-used->CUDA-libraries->cuBLAS}
 The cuBLAS library serves as a CUDA-specific Linear Algebra Subroutine Library \cite{h9oJtLLHaTFaL3ME}.
 Given that the \textit{Decomposition} project aims to provide a complete, TNL-compatible solution for LU decomposition and for solving systems of equations, the \code{cusolverDnXgetrs()} function alone is not sufficient.
-While it is a performant solver, according to the cuSOLVER documentation \cite{5D33zKi5iStCty0r}, it is only compatible with the matrix format produced by \code{cusolverDnXgetrf()}.
+While \code{cusolverDnXgetrs()} is a performant solver, according to the cuSOLVER documentation \cite{5D33zKi5iStCty0r}, it is only compatible with the matrix format produced by \code{cusolverDnXgetrf()}.
 In other words, \code{cusolverDnXgetrs()} is only capable of solving systems:
 
 \begin{equation}
@@ -196,7 +196,7 @@ In other words, \code{cusolverDnXgetrs()} is only capable of solving systems:
 
 where $\mathbf{L}$ is a \textit{unit lower}-triangular matrix and $\mathbf{U}$ is an upper-triangular matrix.
 Note that, in practice, matrices $\mathbf{L}$ and $\mathbf{U}$ are stored together in a single matrix, following the format shown in Equation~\ref{Equation:implementation->libraries-used->CUDA-libraries->cuSOLVER->matrix-A-format}.
-Since CM can only produce the opposite, i.e., a lower-triangular matrix coupled with a \textit{unit upper}-triangular matrix, an alternative approach was needed for solving linear systems using CM.
+Since CM can only produce a lower-triangular matrix coupled with a \textit{unit upper}-triangular matrix, an alternative approach was needed for solving linear systems using CM.
 
 One such alternative, offered by the cuBLAS library, is the \code{cublas<t>trsm()} function.
 Similarly to the cuSOLVER functions introduced earlier, \code{t} can be either \code{S}, \code{D}, \code{C}, or \code{Z}, i.e., \code{float}, \code{double}, \code{cuComplex}, or \code{cuDoubleComplex}, respectively.
@@ -354,7 +354,8 @@ However, it remained as further testing showed promising results.
 \begin{lstlisting}[caption={The declaration of the \code{decompose()} method for the CMPP decomposer.
 On input, matrix \code{LU} is assumed to contain the values of $\mathbf{A}$, and \code{piv} is expected to be appropriately sized.
 On output, matrix \code{LU} contains the values of matrices $\mathbf{L}$ and $\mathbf{U}$ in the format presented in Equation~\ref{Equation:implementation->decomposition-project->implemented-solutions->decomposers->CMPP}, and \code{piv} contains the row permutations in the format set by cuSOLVER and cuBLAS, i.e., row \code{i} was swapped with row \code{piv[ i ]} \cite{5D33zKi5iStCty0r}.
-The template parameters, \code{Matrix} and \code{Vector}, are expected to be data structures from TNL that inherit from the \code{TNL::Matrices::DenseMatrix} and \code{TNL::Containers::Vector} types, respectively.},label={Listing:implementation->decomposition-project->implemented-solutions->decomposers->CMPP}]
+The template parameters, \code{Matrix} and \code{Vector}, are expected to be either \code{TNL::Matrices::DenseMatrix} and \code{TNL::Containers::Vector}, respectively, or types that inherit from them.
+},label={Listing:implementation->decomposition-project->implemented-solutions->decomposers->CMPP}]
 template< typename Matrix, typename Vector >
 static void
 decompose( Matrix& LU, Vector& piv );
@@ -478,7 +479,8 @@ Moreover, to decompose an $n$-by-$n$ matrix, such an approach would require $n^2
 Assuming that each CUDA thread was to compute one element in an iteration, this would translate to $n^2$ threads being allocated in every iteration.
 This approach does not scale well.
 
-Furthermore, due to the dependency of elements described in Section~\ref{Subsection:theory->ICMPP->LUP->CMPP}, it is futile to compute values of \code{LU} that have extensive chains of dependencies if the elements they depend on have not been processed.
+Furthermore, due to the dependency of elements described in Section~\ref{Subsection:theory->ICMPP->LUP->CMPP}, it is futile to compute values of \code{LU} if the elements they depend on have not been processed.
+The elements that an element of \code{LU} depends on are described as its \textit{chains of dependencies}.
 The chains of dependencies for a specific element are visualized in Figure~\ref{Figure:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->chain-of-dependencies}.
 
 \begin{figure}[ht!]
@@ -1003,7 +1005,7 @@ The core part of the kernel is the use of shared memory.
 As detailed at the end of Section~2.2.1 in \citetitle{Cejka2022} \cite{Cejka2022}, the computing of the sum used in the formula of each element is identical to that of matrix multiplication with the exception that not all elements in the row and column are used.
 In particular, each block of threads is responsible for computing a block of elements in \code{LUnext}.
 Thus, to use shared memory and avoid unnecessary accesses to global memory, the block of threads performs matrix multiplication by iterating over blocks of elements.
-In other words, it loads a block of elements, multiplies them, and then moves on to the next block.
+In other words, it loads a block of elements from global memory to shared memory, multiplies them, and then moves on to the next block.
 The value a thread computes for each block of elements is added to a local variable, \code{sum}.
 Matrix multiplication by blocks of elements using shared memory is depicted in Figure~\ref{Figure:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->CUDA-matrix-multiplication-with-shared-memory}.
 
@@ -1051,7 +1053,7 @@ It is noteworthy that the values located to the bottom-right of the bad element 
 The reasoning behind this is that those values are not computed by the preceding kernel as they would not be high-quality.
 Therefore, their assignment is omitted to mitigate unnecessary accesses to global memory.
 
-The kernels for computing the lower and right sections are similar to that of the diagonal section, therefore, they are included in Listings~\ref{Listing:ICMxPP-implementation->kernels->lower-section-compute} and \ref{Listing:ICMxPP-implementation->kernels->right-section-compute}, respectively.
+The kernels for computing the lower and right sections are similar to the kernel computing the diagonal section, therefore, they are included in Listings~\ref{Listing:ICMxPP-implementation->kernels->lower-section-compute} and \ref{Listing:ICMxPP-implementation->kernels->right-section-compute}, respectively.
 Similarly, the assignment kernel for non-diagonal sections is shown only in Listing~\ref{Listing:ICMxPP-implementation->kernels->nondiagonal-assign}.
 
 \subsubsection{Solvers}\label{Subsection:implementation->decomposition-project->implemented-solutions->solvers}
@@ -1074,6 +1076,7 @@ At the end of Step~\ref{Item:implementation->decomposition-project->implemented-
 In other words, $\mathbf{X}$ can be directly applied to $\mathbf{AX} = \mathbf{B}$ without the need for permutation.
 
 The full list of solvers and their characteristics is presented in Table~\ref{Table:implementation->decomposition-project->implemented-solutions->solvers->solvers-in-the-project}.
+As can be seen from Table~\ref{Table:implementation->decomposition-project->implemented-solutions->solvers->solvers-in-the-project}, two solvers were implemented as part of this project: SSPP and IS\_\textit{x}PP.
 
 \begin{table}[!ht]
 	\centering
@@ -1089,15 +1092,13 @@ The full list of solvers and their characteristics is presented in Table~\ref{Ta
 		The solvers in \textbf{bold} font were implemented by the author of the project.
 		The "PP" suffix indicates whether partial pivoting is used.
 		The "\textit{x}" in the name of certain solvers signifies their CUDA thread configuration.
-		The "Unit diag. In" column indicates the format of the input matrix the solver supports, i.e., if the unit diagonal should be in $\mathbf{L}$, $\mathbf{U}$, or either.
+		The "Unit diag. in" column indicates the format of the input matrix the solver supports, i.e., if the unit diagonal is expected in $\mathbf{L}$, $\mathbf{U}$, or either.
 	}
 	\label{Table:implementation->decomposition-project->implemented-solutions->solvers->solvers-in-the-project}
 \end{table}
 
-As can be seen from Table~\ref{Table:implementation->decomposition-project->implemented-solutions->solvers->solvers-in-the-project}, two solvers were implemented as part of this project: SSPP and IS\_\textit{x}PP.
-
 \paragraph{Sequential Solver with Partial Pivoting (SSPP)}\label{Paragraph:implementation->decomposition-project->implemented-solutions->solvers->SSPP}
-Similarly to the CMPP decomposer, the Sequential Solver with partial pivoting (SSPP) is a basic algorithm implemented only for the CPU as its sequential algorithm would be inefficient on the GPU.
+Similarly to the CMPP decomposer, the Sequential Solver with Partial Pivoting (SSPP) is a basic algorithm implemented only for the CPU as its sequential algorithm would be inefficient on the GPU.
 
 The purpose of the SSPP solver is to provide an accurate and simple solver.
 Therefore, it was not optimized or improved upon except for adding support for multiple right-hand sides.
@@ -1134,7 +1135,7 @@ The definition of the \code{solve()} method for the IS\_\textit{x}PP solver is s
 
 
 \subsection{Benchmarks}\label{Subsection:implementation->decomposition-project->benchmarks}
-One of the tasks for this thesis was to compare the performance of decomposers and solvers that were implemented by the author with that of established libraries.
+One of the tasks for this thesis was to compare the performance of the decomposers and solvers implemented by the author of this thesis with those of established libraries.
 For this purpose, a benchmark system was implemented for both decomposers and solvers.
 It is important to note that while the benchmark system was implemented as part of \citetitle{Cejka2022} \cite{Cejka2022}, it was adapted from the SpMV TNL Benchmark structure\footnote{TNL SpMV Benchmark GitLab repository URL: \url{https://gitlab.com/tnl-project/tnl/-/tree/main/src/Benchmarks/SpMV}}.
 However, with the introduction of partial pivoting into the project, the implementation underwent major refactoring.
@@ -1203,7 +1204,7 @@ Note that both the interface and BDDCML needed to be extended.
 Therefore, the repositories were forked and the changes related to the Decomposition project were added separately.
 The final versions of both repositories that contain changes related to the Decomposition project are available on request or as an attachment to this thesis.
 
-\paragraph{Benchmarks} The performance of decomposers and solvers provided by the Decomposition project is compared with the corresponding routines of the MAGMA library \cite{Tomov2010} which was already used in BDDCML.
+\paragraph{Benchmarks} The performance of decomposers and solvers provided by the Decomposition project is compared with the corresponding routines of the MAGMA library \cite{Tomov2010}, which was already used in BDDCML.
 In particular, the performance was compared when solving the "Poisson equation on a cube" problem present in BDDCML.
 Furthermore, for the results of the performance comparison to be statistically significant, a benchmarking system was implemented.
 The system comprises:

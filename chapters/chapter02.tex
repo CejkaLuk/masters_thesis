@@ -602,7 +602,7 @@ By default, $\epsilon_1$ is set to 1e-5 and $\epsilon_2$ is set to 1e+5.
 If the absolute value of $lu_{j, j}$ falls outside this interval, it is considered a \textit{bad element} that requires pivoting.
 The upper bound was introduced for ICM\_\textit{x}PP as a result of extensive testing performed on a set of matrices with varying characteristics.
 In some cases, without the upper bound, the ICM\_\textit{x}PP decomposer produced matrices with \code{NaN} values.
-This issue is discussed further in Section~\ref{Subsection:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices}.
+This issue is discussed further in Section~\ref{Subsection:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices} on Page~\pageref{Text:comparing-decomposers-and-solvers->decomposition-project-benchmarks->decomposers-benchmark->accuracy-of-results-on-all-matrices->double-precision->ICMxPP-nan-values-explanation-beginning}.
 
 For clarity, the outline of processing the matrix by sections using the ICMPP algorithm is presented below:
 
@@ -777,7 +777,7 @@ In other words, the kernels are asynchronously called from the host, executed on
 Another important aspect of the implementation is the processing tolerance, \code{process\_tol}.
 As can be seen on Line~\ref{Line:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->processing-diagonal-section->processing-tolerance} in Listing~\ref{Listing:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->processing-diagonal-section}, it is set to zero.
 The value was chosen to provide accurate results as even small nonzero values, e.g., 1e-5, could greatly reduce the accuracy while increasing the performance by a negligible amount.
-The reason behind the great reduction in accuracy stems from the "avalanche" effect described earlier in \textit{Processing by Sections}.
+The reason behind the great reduction in accuracy stems from the "avalanche" effect described earlier in \namerefItalics{Subparagrah:implementation->decomposition-project->implemented-solutions->decomposers->ICMxPP->processing-by-sections}.
 However, in this case, the avalanche exhibits a quality-decreasing characteristic since the elements in the top-left corner would not be of the highest quality due to the relaxed tolerance.
 In other words, the imperfectness of elements in the top-left corner causes a butterfly effect resulting in highly inaccurate results.
 For more details, see Sections~2.2.1 and 2.3, and Chapter~3 in \citetitle{Cejka2022} \cite{Cejka2022}.

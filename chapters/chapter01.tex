@@ -983,7 +983,7 @@ The algorithm itself consists of the following steps (assuming input matrix $\ma
 	\item \label{Item:theory->ICMPP->LUP->CMPP->algorithm-steps->pivot-row-j}
 		Pivot row $j$:
 	\begin{enumerate}
-		\item In the values computed in step \ref{Item:theory->ICMPP->LUP->CMPP->algorithm-steps->compute-values-in-column-j}, find the index ($p$) of the element largest in absolute value:
+		\item In the values computed in Step~\ref{Item:theory->ICMPP->LUP->CMPP->algorithm-steps->compute-values-in-column-j}, find the index ($p$) of the element largest in absolute value:
 		\begin{equation}
 			p = \argmax_k \left\{ \left| l_{k, j} \right|: k=j,\dots, n \right\} \,.
 		\end{equation}
@@ -991,7 +991,7 @@ The algorithm itself consists of the following steps (assuming input matrix $\ma
 		\item If $l_{j,j}$ is equal to 0, then the decomposition algorithm has failed as the matrix is singular.
 	\end{enumerate}
 	\item Compute values from $u_{j,j+1}$ to $u_{j,n}$ in row $j$ of $\mathbf{U}$.
-	\item Increment $j$ by 1 and go to step \ref{Item:theory->ICMPP->LUP->CMPP->algorithm-steps->stop-execution-if}.
+	\item Increment $j$ by 1 and go to Step~\ref{Item:theory->ICMPP->LUP->CMPP->algorithm-steps->stop-execution-if}.
 \end{enumerate}
 
 See Figure~\ref{Figure:theory->ICMPP->LUP->CMPP->algorithm-advance-visualisation} for a visualization of the algorithm's advance  and Listing~\ref{Listing:theory->ICMPP->LUP->CMPP->pseudocode} for a pseudocode implementing the algorithm.

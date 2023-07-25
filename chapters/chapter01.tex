@@ -1168,7 +1168,7 @@ Thus far, the variation of CMPP discussed will either produce an exact solution 
 In terms of numerical methods such a method is referred to as \textit{direct}.
 
 An alternative group of methods to direct methods is known as iterative methods.
-Unlike direct methods, iterative methods improve an initial estimate of a solution until a desired accuracy is reached.
+Unlike direct methods, iterative methods improve an initial estimate of a solution until the desired accuracy is reached.
 An example of an iterative variant of CMPP: \textit{Iterative Crout's Method with Partial Pivoting} (ICMPP) will be described in the next part.
 
 \subsection{Iterative Crout's Method with Partial Pivoting (ICMPP)}\label{Subsection:theory->ICMPP->LUP->ICMPP}
@@ -1230,7 +1230,7 @@ While the instructions in Steps~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-s
 	\item Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt} - The element $l^{t}_{i,j} \left(i, j \in \widehat{n}; n \in \mathbb{N}\right)$ is dependent only on elements from matrices $\mathbf{A}$, $\mathbf{L}^{t-1}$, and $\mathbf{U}^{t-1}$.
 Since the values in the first matrix are constant - excluding the swapping of rows - and the last two matrices were set in the previous iteration, no elements from $\mathbf{L}^{t}$ are dependent on each other.
 Thus, all elements $l^{t}_{i,j}$ can be computed simultaneously.
-	\item Step \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->process-lower-sections} - The absolute-value conditions can be checked in parallel, and, similarly to Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt}, the iterative processing is computed according to the formula used in the same step.
+	\item Step \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->process-lower-sections} - The absolute-value conditions can be evaluated in parallel, and for the iterative processing, the formula from Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt} is used.
 	\item Step \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row} - The $\max$ operation mentioned in Section~\ref{Subsection:theory->CUDA->parallel-reduction} can be adapted to suit the needs of $\argmax$ used in Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row->argmax}.
 While the swapping of elements in two rows can be performed in parallel, Steps~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row->swap-rows} and \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row->singular-matrix-check} must be executed consecutively.
 	\item Step \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Ut} - The element $u^{t}_{i,j} \left(i, j \in \widehat{n}; n \in \mathbb{N}\right)$ is dependent only on elements from matrices $\mathbf{A}$, $\mathbf{L}^{t}$, and $\mathbf{U}^{t-1}$.

@@ -398,7 +398,7 @@ Specifically, the algorithm consists of the following steps (changes compared to
 		\item \label{Item:implementation->decomposition-project->implemented-solutions->decomposers->PCxMPP->algorithm-steps->piv-row-j-maxarg-in-paralllel}
 			In the values computed in Step~\ref{Item:implementation->decomposition-project->implemented-solutions->decomposers->PCxMPP->algorithm-steps->compute-values-in-column-j-in-paralllel}, find the index ($p$) of the element largest in absolute value \colorbox{nvidia-light}{using parallel reduction}:
 		\begin{equation}
-			p = \argmax_k \left\{ \left| l_{k, j} \right|: k=j,\dots, n \right\} \,.
+			p = \argmax_{j \leq k \leq n} \left| l_{k, j} \right| \,.
 		\end{equation}
 		\item If $j$ is not equal to $p$, swap rows $j$ and $p$ in matrices $\mathbf{L}$, $\mathbf{U}$, and $\mathbf{P}$.
 		\item If $l_{j,j}$ is equal to 0, then the decomposition algorithm has failed as the matrix is singular.

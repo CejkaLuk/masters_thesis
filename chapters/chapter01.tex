@@ -1168,14 +1168,14 @@ Thus far, the variation of CMPP discussed will either produce an exact solution 
 In terms of numerical methods such a method is referred to as \textit{direct}.
 
 An alternative group of methods to direct methods is known as iterative methods.
-Unlike direct methods, iterative methods converge to a solution, but there is no guarantee that the exact solution will be obtained.
+Unlike direct methods, iterative methods improve an initial estimate of a solution until a desired accuracy is reached.
 An example of an iterative variant of CMPP: \textit{Iterative Crout's Method with Partial Pivoting} (ICMPP) will be described in the next part.
 
 \subsection{Iterative Crout's Method with Partial Pivoting (ICMPP)}\label{Subsection:theory->ICMPP->LUP->ICMPP}
 Seeing as the potential for parallelization is seemingly limited for CMPP's algorithm, an alternative approach can be used.
 One such alternative, put forward by \citename{Anzt2019}{author} in \citetitle{Anzt2019} \cite{Anzt2019}, involves using the formulas of CM in an iterative method.
 Although the method proposed by the authors generates incomplete factorization, i.e., some nonzero elements are omitted during factorization, its principle can be extracted to create an iterative decomposition method that produces a complete factorization.
-As detailed in \citetitle{Cejka2022} \cite{Cejka2022}, the complete-factorization approach converges to a sufficiently approximate solution of $\mathbf{A} = \mathbf{LU}$.
+As detailed in \citetitle{Cejka2022} \cite{Cejka2022}, the complete-factorization approach iteratively refines the initial estimates of $\mathbf{L}$ and $\mathbf{U}$ until the desired accuracy of $\mathbf{A} = \mathbf{LU}$ is reached.
 This approach, labeled as \textit{Iterative Crout's Method} (ICM), has been modified to include partial pivoting, thus creating \textit{Iterative Crout's Method with Partial Pivoting} (ICMPP).
 
 The decomposition of matrix $\mathbf{A} \in \mathbb{R}^{n \times n} \left(n \in \mathbb{N}\right)$ into the product of matrices $\mathbf{L}, \mathbf{U} \in \mathbb{R}^{n \times n}$, and a permutation matrix $\mathbf{P} \in \left\{0,1\right\}^{n \times n}$ using ICMPP consists of the following steps \cite{Cejka2022}:
@@ -1194,13 +1194,13 @@ The decomposition of matrix $\mathbf{A} \in \mathbb{R}^{n \times n} \left(n \in 
 		\begin{align}
 			l_{i,j}^{t} &= a_{i,j} - \sum_{k=1}^{j-1}l_{i,k}^{t-1}u_{k,j}^{t-1} &\quad i \geq j \nonumber\,.
 		\end{align}
-	\item \label{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->converge-lower-sections}
+	\item \label{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->process-lower-sections}
 		Take the first $j \in \widehat{n}$ that satisfies the conditions $\left|l^{t-1}_{j, j} - l^{t}_{j, j}\right| \leq \epsilon_1$ (where $\epsilon_1$ denotes a tolerance, e.g., 0.001) and $\left|l^{t}_{j, j}\right| \leq \epsilon_2$, where $\epsilon_2$ denotes a \textit{pivoting tolerance}, e.g., 1e-5.
 		In other words, find the first element on the main diagonal of $\mathbf{L}$ whose value is finalized and check if it requires pivoting according to the pivoting tolerance.
 		In the context of this project, pivoting an element only when it is smaller than (or equal to) the pivoting tolerance is referred to as \textit{conditional partial pivoting}.
 		If no such $j$ satisfies the conditions, proceed to Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Ut}.
-		Then, \textit{iteratively converge} all elements in $\mathbf{L}^{t}$ below row $j$ from column 1 to column $j$ (including both boundaries), i.e., $l^{t}_{b, c}$ where $j < b \leq n$ and $1 \leq c \leq j$.
-		In this context, \textit{iteratively converge} signifies to continue computing the mentioned elements using Formula~\ref{Equation:theory->ICMPP->LUP->CMPP->lij} until they all satisfy the condition $\left|l^{t-1}_{b, c} - l^{t}_{b, c}\right| \leq \epsilon_1$.
+		Then, \textit{iteratively process} all elements in $\mathbf{L}^{t}$ below row $j$ from column 1 to column $j$ (including both boundaries), i.e., $l^{t}_{b, c}$ where $j < b \leq n$ and $1 \leq c \leq j$.
+		In this context, \textit{iteratively process} signifies to continue computing the mentioned elements using Formula~\ref{Equation:theory->ICMPP->LUP->CMPP->lij} until they all satisfy the condition $\left|l^{t-1}_{b, c} - l^{t}_{b, c}\right| \leq \epsilon_1$.
 	\item \label{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row}
 		Pivot row $j$ (same as Step~\ref{Item:theory->ICMPP->LUP->CMPP->algorithm-steps->pivot-row-j} in the CMPP algorithm described on Page~\pageref{Item:theory->ICMPP->LUP->CMPP->algorithm-steps->pivot-row-j}):
 		\begin{enumerate}
@@ -1219,27 +1219,27 @@ The decomposition of matrix $\mathbf{A} \in \mathbb{R}^{n \times n} \left(n \in 
 		\begin{align}
 			u_{i,j}^{t} &= \frac{1}{l_{i,i}^{t}} \left ( a_{i,j} - \sum_{k=1}^{i-1}l_{i,k}^{t}u_{k,j}^{t-1} \right ) &\quad i < j \nonumber\,.
 		\end{align}
-	\item \label{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->evaluate-convergence-rule}
+	\item \label{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->evaluate-processing-rule}
 		If the maximum absolute difference between $\mathbf{L}^{t-1}$ and $\mathbf{L}^{t}$, or between $\mathbf{U}^{t-1}$ and $\mathbf{U}^{t}$, exceeds tolerance $\epsilon_1$, then increment $t$ by 1 and return to Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt}.
-	\item The algorithm has converged to an approximate solution of $\mathbf{A} = \mathbf{LUP}$, where $\mathbf{A}$  represents its original state before any potential changes occurred during this algorithm.
+	\item The algorithm has iteratively refined the initial estimates of $\mathbf{L}$ and $\mathbf{U}$ in $\mathbf{A} = \mathbf{LUP}$, where $\mathbf{A}$ represents its original state before any potential changes occurred during this algorithm.
 \end{enumerate}
 
-While the instructions in Steps~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt} to \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->evaluate-convergence-rule} must be performed consecutively, the operations in each step can be executed in parallel:
+While the instructions in Steps~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt} to \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->evaluate-processing-rule} must be performed consecutively, the operations in each step can be executed in parallel:
 
 \begin{itemize}
 	\item Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt} - The element $l^{t}_{i,j} \left(i, j \in \widehat{n}; n \in \mathbb{N}\right)$ is dependent only on elements from matrices $\mathbf{A}$, $\mathbf{L}^{t-1}$, and $\mathbf{U}^{t-1}$.
 Since the values in the first matrix are constant - excluding the swapping of rows - and the last two matrices were set in the previous iteration, no elements from $\mathbf{L}^{t}$ are dependent on each other.
 Thus, all elements $l^{t}_{i,j}$ can be computed simultaneously.
-	\item Step \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->converge-lower-sections} - The absolute-value conditions can be checked in parallel, and, similarly to Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt}, the iterative convergence is computed according to the same formula.
+	\item Step \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->process-lower-sections} - The absolute-value conditions can be checked in parallel, and, similarly to Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt}, the iterative processing is computed according to the formula used in the same step.
 	\item Step \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row} - The $\max$ operation mentioned in Section~\ref{Subsection:theory->CUDA->parallel-reduction} can be adapted to suit the needs of $\argmax$ used in Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row->argmax}.
 While the swapping of elements in two rows can be performed in parallel, Steps~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row->swap-rows} and \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row->singular-matrix-check} must be executed consecutively.
 	\item Step \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Ut} - The element $u^{t}_{i,j} \left(i, j \in \widehat{n}; n \in \mathbb{N}\right)$ is dependent only on elements from matrices $\mathbf{A}$, $\mathbf{L}^{t}$, and $\mathbf{U}^{t-1}$.
 Matrices $\mathbf{A}$ and $\mathbf{U}^{t-1}$ were covered in the description of parallelization of Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt} and matrix $\mathbf{L}^{t}$ was finalized in Steps~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->compute-Lt} to \ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row}.
 Thus, since no elements from $\mathbf{U}^{t}$ are dependent on each other, they can be computed simultaneously.
-	\item Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->evaluate-convergence-rule} - Since the evaluation of the convergence rule has no dependencies, it is entirely parallelizable.
+	\item Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->evaluate-processing-rule} - Since the evaluation of the processing rule has no dependencies, it is entirely parallelizable.
 \end{itemize}
 
-Note that due to the nature of iterative methods, it is not possible to accurately predict the number of iterations needed to converge to an approximate solution.
+Note that due to the nature of iterative methods, it is not possible to accurately predict the number of iterations needed to iteratively refine the initial estimate until the desired accuracy is reached.
 Thus, the performance of ICMPP may heavily depend on the nonzero element structure of matrix $\mathbf{A}$.
 
 To summarize, in Sections~\ref{Section:theory->GPUs} and \ref{Section:theory->CUDA} a high-performance parallel computing system was introduced in the form of Nvidia GPUs manageable by CUDA.

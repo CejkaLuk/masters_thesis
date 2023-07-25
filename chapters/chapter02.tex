@@ -349,7 +349,7 @@ The declaration of the \code{decompose()} method for the CMPP decomposer is show
 The definition of \code{decompose()} differs from the algorithm described in Section~\ref{Subsection:theory->ICMPP->LUP->CMPP} in the tolerance of partial pivoting.
 In this context, \textit{tolerance} refers to the conditions under which a row is pivoted.
 While most LUP algorithms have no tolerance, i.e., they pivot every row, the CMPP decomposer employs \textit{conditional partial pivoting}.
-Initially, conditional partial pivoting, described in Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->converge-lower-sections} of ICMPP's algorithm on Page~\pageref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->converge-lower-sections}, was included in the CMPP decomposer to test the stability of the concept.
+Initially, conditional partial pivoting, described in Step~\ref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->process-lower-sections} of ICMPP's algorithm on Page~\pageref{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->process-lower-sections}, was included in the CMPP decomposer to test the stability of the concept.
 However, it remained as further testing showed promising results.
 
 \begin{lstlisting}[caption={The declaration of the \code{decompose()} method for the CMPP decomposer.

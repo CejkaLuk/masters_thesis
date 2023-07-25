@@ -979,7 +979,7 @@ The algorithm itself consists of the following steps (assuming input matrix $\ma
 	\begin{enumerate}
 		\item In the values computed in Step~\ref{Item:theory->ICMPP->LUP->CMPP->algorithm-steps->compute-values-in-column-j}, find the index ($p$) of the element largest in absolute value:
 		\begin{equation}
-			p = \argmax_k \left\{ \left| l_{k, j} \right|: k=j,\dots, n \right\} \,.
+			p = \argmax_{j \leq k \leq n} \left| l_{k, j} \right| \,.
 		\end{equation}
 		\item If $j$ is not equal to $p$, swap rows $j$ and $p$ in matrices $\mathbf{L}$, $\mathbf{U}$, and $\mathbf{P}$.
 		\item If $l_{j,j}$ is equal to 0, then the decomposition algorithm has failed as the matrix is singular.
@@ -1032,12 +1032,12 @@ See Figure~\ref{Figure:theory->ICMPP->LUP->CMPP->algorithm-advance-visualisation
 		,line width=1pt] {};
 		
 		% Pivoting
-		\draw [decorate, decoration = {brace, raise=0.7cm, amplitude=6pt}, thick] (nj.south) to node [midway, left=0.9cm] (argmax) {$\argmax\limits_k \left| l_{k, j} \right|$} (jj.north);
-		\draw[arrow_head-arrow_head, decorate, decoration={}, bend left, out=140, in=140] (argmax.west) to node [midway, rotate=28, above=-1cm, right=-1.2cm] {Swap rows $j$ and $k$} (jj.west);
+		\draw [decorate, decoration = {brace, raise=0.7cm, amplitude=6pt}, thick] (nj.south) to node [midway, left=0.9cm] (argmax) {$p = \argmax\limits_{j \leq k \leq n} \left| l_{k, j} \right|$} (jj.north);
+		\draw[arrow_head-arrow_head, decorate, decoration={}, bend left, out=140, in=140] (argmax.west) to node [midway, rotate=28, above=-1cm, right=-1cm] {Swap rows $j$ and $p$} (jj.west);
 		
 		% Labels		
 		\node[text_label, above=5mm of {$(jj2.north west)!0.5!(jdot.north east)$}] 			 {Prior Iterations};
-		\node[text_label, left=4cm of {$(dotj.south west)!1.4!(j2j.north west)$}, rotate=90] {Prior Iterations};
+		\node[text_label, left=4.5cm of {$(dotj.south west)!1.4!(j2j.north west)$}, rotate=90] {Prior Iterations};
 		\node[text_label, below=3mm of nj] 													 {Iteration $j$};
 		\node[text_label, right=33mm of nj, align=center] 									 {Subsequent\\Iterations};
 	\end{tikzpicture}
@@ -1207,7 +1207,7 @@ The decomposition of matrix $\mathbf{A} \in \mathbb{R}^{n \times n} \left(n \in 
 			\item \label{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row->argmax}
 				Find the index ($p$) of the element largest in absolute value in column $j$ from row $j$ to $n$:
 				\begin{equation}
-					p = \argmax_k \left\{ \left| l^{t}_{k, j} \right|: k=j,\dots, n \right\} \nonumber\,.
+					p = \argmax_{j \leq k \leq n} \left| l^{t}_{k, j} \right| \nonumber\,.
 				\end{equation}
 			\item \label{Item:theory->ICMPP->LUP->ICMPP->algorithm-steps->pivot-row->swap-rows}
 				If $j$ is not equal to $p$, swap rows $j$ and $p$ in matrices $\mathbf{A}$, $\mathbf{L}^{t}$, $\mathbf{U}^{t}$, and $\mathbf{P}$.

@@ -1171,7 +1171,7 @@ The maximum absolute difference is defined for decomposers as:
 \end{equation}
 
 where $\mathbf{A}$ is the input matrix, matrices $\mathbf{L}$ and $\mathbf{U}$ are the results of the LU decomposition operation, and $\mathbf{P}$ is the permutation matrix (represented in code by a pivoting vector).
-To clarify, the maximum absolute difference for decomposers is the largest absolute difference between a computed element and its expected result.
+To clarify, the \textit{maximum absolute difference} for decomposers is defined as the largest absolute difference between the expected value of each element in the original matrix ($\mathbf{A}$) and its corresponding computed value, represented in matrix form as $\mathbf{LUP}$, after the LU decomposition process.
 
 For solvers the maximum absolute difference is defined as:
 
@@ -1181,7 +1181,8 @@ For solvers the maximum absolute difference is defined as:
 \end{equation}
 
 where matrices $\mathbf{L}$, $\mathbf{U}$, and $\mathbf{P}$ are the same as in Equation~\ref{Equation:implementation->decomposition-project->benchmarks->decomposers->maximum-difference}, $\mathbf{X}$ is the computed matrix of unknowns, and $\mathbf{B}$ is the matrix of right-hand sides.
-To clarify, the computed unknowns are used in the system of equations in matrix form, and then the largest absolute difference between the left- and right-hand sides is used.
+To clarify, the \textit{maximum absolute difference} for solvers is calculated by comparing the computed unknowns ($\mathbf{X}$) used in the system of equations, represented in matrix form as $\mathbf{LUPX}$, with the right-hand side matrix ($\mathbf{B}$).
+The metric measures the largest absolute difference between the elements of $\mathbf{LUPX}$ and the corresponding elements of $\mathbf{B}$.
 
 As mentioned in \citetitle{Cejka2022} \cite{Cejka2022}, many aspects of the implementations can only be verified on larger matrices.
 Thus, aside from unit tests, benchmarks were a crucial part of assuring the quality of the implementations.
